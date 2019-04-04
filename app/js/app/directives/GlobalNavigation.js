@@ -61,8 +61,6 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                         api.assignments.getMyAssignments({assignmentStatus:"IN_PROGRESS"}).$promise.then(function(results) {
                             scope.myIncompleteAssignments = results.length;
 
-                        }).catch(function() {
-                            scope.myIncompleteAssignments = null;
                         });                    
 
                         scope.user.$promise.then(function(user) {
@@ -77,8 +75,6 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                                     scope.contentProblems = "";
                                 }
                             }
-                        }).catch(function() {
-                            // The user probably isn't logged in. We don't care.
                         });
                     }
 

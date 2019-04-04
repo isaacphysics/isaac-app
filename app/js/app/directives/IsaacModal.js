@@ -25,10 +25,8 @@ define([], function() {
 
                     scope.modals = scope.modals || {};
 
-                    scope.$on("$stateChangeStart", function(e, toState, toParams) {
-                        if (toParams['#'] != "isaacModal") {
-                            $("#isaacModal").foundation("reveal", "close");
-                        }
+                    scope.$on("$stateChangeStart", function() {
+                        $("#isaacModal").foundation("reveal", "close");
                     });
 
                     scope.modals[attrs.isaacModal] = {

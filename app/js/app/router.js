@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["angular", "@uirouter/angularjs", "@uirouter/angularjs/release/stateEvents"], function(angular, _angularUiRouter) {
+define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
     // Declare app level module which depends on filters, and services
     angular.module('isaac.router', [
         'ui.router',
-        'ui.router.state.events',
         'isaac.services',
     ])
 
@@ -508,8 +507,9 @@ define(["angular", "@uirouter/angularjs", "@uirouter/angularjs/release/stateEven
         $sp.state('board', {
             url: "/board/:id",
             onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
-                $location.url("/gameboards#" + $stateParams.id);
+                $location.url("/#" + $stateParams.id);
                 $rootScope.setLoading(false);
+                throw "Prevent entering board redirect state."
             }],
         });
 
@@ -1035,17 +1035,17 @@ define(["angular", "@uirouter/angularjs", "@uirouter/angularjs/release/stateEven
             let toHash = $location.hash();
             toHash = toHash ? "#" + toHash : "";
 
-            if (error.detail == "require_login")
+            if (error == "require_login")
                 $state.go('login', {
                     target: $state.href(toState, toParams) + toHash
                 });
 
-            if (error.detail == "require_role")
+            if (error == "require_role")
                 $state.go('403', {
                     target: $state.href(toState, toParams) + toHash
                 });
 
-            if (error.detail.status == 404)
+            if (error.status == 404)
                 $state.go('404', {
                     target: $state.href(toState, toParams) + toHash
                 });
