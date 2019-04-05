@@ -11,3 +11,4 @@ app/ts/**/*.js*
 ngrok.yml
 app/isaac.js*
 app/isaac.css*
+webpack-bundle-stats.json
