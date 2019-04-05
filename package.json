@@ -53,13 +53,9 @@
     "file-loader": "1.1.11",
     "html-loader": "0.5.5",
     "imports-loader": "0.8.0",
-    "karma": "^4.0.1",
-    "karma-junit-reporter": "0.2.2",
     "ngtemplate-loader": "2.0.1",
     "node-sass": "4.9.2",
-    "protractor": "0.20.1",
     "shelljs": "0.2.6",
-    "single-page-server": "0.1.1",
     "systemjs-builder": "0.15.15",
     "typescript": "2.9.2",
     "webpack": "4.12.0",
@@ -88,8 +84,6 @@
     ]
   },
   "scripts": {
-    "preupdate-webdriver": "npm install",
-    "update-webdriver": "webdriver-manager update",
     "build:js": "webpack",
     "build:css": "node-sass --output-style compressed --source-map true --source-map-contents --include-path node_modules scss/app.scss app/isaac.css",
     "build:dev": "npm run build:js && npm run build:css",
