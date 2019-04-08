@@ -437,6 +437,9 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 console.log(error);
                             }
                             sketch.log = scope.log;
+                            sketch.onNewEditorState = (s) => { scope.newEditorState(s) };
+                            sketch.onCloseMenus = () => { scope.$broadcast("closeMenus") };
+                            sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y) };
                             $rootScope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);

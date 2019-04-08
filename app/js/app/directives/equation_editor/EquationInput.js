@@ -62,6 +62,8 @@ define(["p5",
                         console.log(error);
                     }
                     sketch.log = scope.log;
+                    sketch.onNewEditorState = (s) => { scope.newEditorState(s) };
+                    sketch.onCloseMenus = () => { scope.$broadcast("closeMenus") };
                     $rootScope.sketch = sketch;
                     return sketch;
                 }, editorCanvas);

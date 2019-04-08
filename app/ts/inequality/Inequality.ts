@@ -510,7 +510,7 @@ export
                 this.activeDockingPoint = null;
 
                 // This is the point where the mouse/touch is.
-                let touchPoint = this.p.createVector(tx, ty);
+                // let touchPoint = this.p.createVector(tx, ty);
                 // This is less refined than doing the proximity detection thing, but works much better (#4)
                 if (symbol != null && symbol.id != this.movingSymbol.id) {
                     symbol.highlight(false);
@@ -522,9 +522,13 @@ export
                 }
             });
 
-            this.scope.notifySymbolDrag(tx, ty);
+            this.onNotifySymbolDrag(tx, ty);
         }
     };
+
+    onCloseMenus = () => { /* Override this on the outside if needed */ };
+
+    onNotifySymbolDrag = (x: number, y: number) => { /* Override this on the outside if needed */ }
 
     touchEnded = () => {
         if (this.textEntry) return;
@@ -533,16 +537,7 @@ export
         if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click
             // Close the menu when touching the canvas
-            this.scope.$broadcast("closeMenus");
-            this.scope.selectionHandleFlags.symbolModMenuOpen = false;
-
-            this.scope.dragMode = "selectionBox";
-            $(".selection-box").css({
-                left: -10,
-                top: -10,
-                width: 0,
-                height: 0
-            });
+            this.onCloseMenus();
         }
 
         if (this.movingSymbol != null) {
@@ -641,6 +636,10 @@ export
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
+    onNewEditorState = (state: object) => {
+        console.error('Unoverridden onNewEditorState called');
+    }
+
     updateState = (fromTextEntry = false) => {
         let symbolWithMostChildren = null;
         let mostChildren = 0;
@@ -654,7 +653,7 @@ export
 
         if (symbolWithMostChildren != null) {
             let flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return undefined == e ? '' : e.replace(/,/g, ";") });
-            this.scope.newEditorState({
+            this.onNewEditorState({
                 result: {
                     "tex": symbolWithMostChildren.formatExpressionAs("latex").trim(),
                     "mhchem": symbolWithMostChildren.formatExpressionAs("mhchem").trim(),
@@ -667,7 +666,7 @@ export
                 textEntry: fromTextEntry
             });
         } else {
-            this.scope.newEditorState({
+            this.onNewEditorState({
                 result: null,
                 symbols: [],
                 textEntry: fromTextEntry
