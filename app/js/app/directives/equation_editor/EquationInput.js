@@ -57,13 +57,14 @@ define(["p5",
                 let editorCanvas = element.find(".equation-editor-text-entry")[0];
                 let p = new p5(function (p5instance) {
                     try {
-                        sketch = new Inequality(p5instance, scope, element.width(), element.height(), [], { textEntry: true });
+                        sketch = new Inequality(p5instance, element.width(), element.height(), [], { textEntry: true });
                     } catch (error) {
                         console.log(error);
                     }
                     sketch.log = scope.log;
                     sketch.onNewEditorState = (s) => { scope.newEditorState(s) };
                     sketch.onCloseMenus = () => { scope.$broadcast("closeMenus") };
+                    sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role) };
                     $rootScope.sketch = sketch;
                     return sketch;
                 }, editorCanvas);

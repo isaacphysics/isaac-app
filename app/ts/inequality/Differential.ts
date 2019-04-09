@@ -55,7 +55,7 @@ class Differential extends Widget {
      * Prevents Differentials from being detached from Derivatives when the user is not an admin/editor.
      */
     get isDetachable() {
-        const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        const userIsPrivileged = this.s.isUserPrivileged();
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 

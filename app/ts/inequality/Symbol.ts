@@ -95,7 +95,7 @@ export
      * @returns {boolean} True if this symbol is detachable from its parent, false otherwise.
      */
     get isDetachable(): boolean {
-        const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        const userIsPrivileged = this.s.isUserPrivileged();
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADifferential;
     }
 

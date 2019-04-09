@@ -102,7 +102,6 @@ export
 
     constructor(
         private p: p5,
-        public scope,
         private width: number,
         private height: number,
         private initialSymbolsToParse: Array<Object>,
@@ -528,7 +527,11 @@ export
 
     onCloseMenus = () => { /* Override this on the outside if needed */ };
 
-    onNotifySymbolDrag = (x: number, y: number) => { /* Override this on the outside if needed */ }
+    onNotifySymbolDrag = (x: number, y: number) => { /* Override this on the outside if needed */ };
+
+    isUserPrivileged = () => { return false }; /* Override this on the outside if needed */
+
+    isTrashActive = () => { return false }; /* Override this on the outside if needed */
 
     touchEnded = () => {
         if (this.textEntry) return;
@@ -560,7 +563,7 @@ export
                     dockingPoint: this.activeDockingPoint.name,
                     timestamp: Date.now()
                 });
-            } else if (this.scope.trashActive) {
+            } else if (this.isTrashActive()) {
                 this.log.actions.push({
                     event: "TRASH_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
