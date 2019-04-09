@@ -506,10 +506,9 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
         $sp.state('board', {
             url: "/board/:id",
-            onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
-                $location.url("/#" + $stateParams.id);
+            onEnter: ["$stateParams", "$state", "$rootScope", function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.id}, {location: "replace"});
                 $rootScope.setLoading(false);
-                throw "Prevent entering board redirect state."
             }],
         });
 
