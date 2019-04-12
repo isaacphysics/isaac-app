@@ -1,5 +1,5 @@
 "use strict";
-define(["p5", "inequality", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, inequality, tester, templateUrl) {
+define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (inequality, tester, templateUrl) {
 
     return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
@@ -440,14 +440,15 @@ define(["p5", "inequality", "../../../lib/equation_editor/test_cases.js", "/part
                                 fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
                                 fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
                             }
-                            ));
+                            )
+                        ); // Double brackets for destructuring...?
                         sketch.log = scope.log;
-                        sketch.onNewEditorState = scope.newEditorState; //(s) => { scope.newEditorState(s); };
+                        sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
                         sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
                         sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
                         sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
                         sketch.isTrashActive = () => { return scope.trashActive; };
-
+                        // FIXME: I'm not even sure that this next line is necessary...
                         $rootScope.sketch = p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {

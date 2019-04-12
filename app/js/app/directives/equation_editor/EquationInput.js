@@ -1,12 +1,10 @@
 "use strict";
-define(["p5",
-        "nearley",
+define(["nearley",
         "app/js/lib/equation_editor/grammar.ne",
-        "app/ts/inequality/Inequality.ts",
+        "inequality",
         "/partials/equation_editor/equation_input.html"],
-        function(p5, nearley, grammar, Inequality, templateUrl) {
+        function(nearley, grammar, inequality, templateUrl) {
 
-    Inequality = Inequality.Inequality;
     const compiledGrammar = nearley.Grammar.fromCompiled(grammar);
 
     const parseExpression = (expression = '') => {
@@ -54,21 +52,29 @@ define(["p5",
                 inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
 
                 let sketch = null;
+                let p;
                 let editorCanvas = element.find(".equation-editor-text-entry")[0];
-                let p = new p5(function (p5instance) {
-                    try {
-                        sketch = new Inequality(p5instance, element.width(), element.height(), [], { textEntry: true });
-                    } catch (error) {
-                        console.log(error);
+                ({ sketch, p } = inequality.makeInequality(
+                    editorCanvas,
+                    element.width() * Math.ceil(window.devicePixelRatio),
+                    element.height() * Math.ceil(window.devicePixelRatio),
+                    [],
+                    {
+                        textEntry: true,
+                        fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
+                        fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
                     }
-                    sketch.log = scope.log;
-                    sketch.onNewEditorState = (s) => { scope.newEditorState(s) };
-                    sketch.onCloseMenus = () => { scope.$broadcast("closeMenus") };
-                    sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role) };
-                    $rootScope.sketch = sketch;
-                    return sketch;
-                }, editorCanvas);
-                void p;
+                    )
+                ); // Double brackets for destructuring...?
+                sketch.log = scope.log;
+                sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
+                sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
+                sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
+                sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
+                sketch.isTrashActive = () => { return scope.trashActive; };
+                // FIXME: I'm not even sure that this next line is necessary...
+                $rootScope.sketch = p;
+
 
                 // Magic starts here
 
