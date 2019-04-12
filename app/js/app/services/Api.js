@@ -110,10 +110,14 @@ define([], function() {
                 method: 'POST',
                 url: urlPrefix+"/auth/logout",
             },
-            'getUserAuthenticationSettings': {
+            'getUserAuthSettings': {
                 method: 'GET',
                 url: urlPrefix+"/auth/user_authentication_settings/:userId",
                 isArray: false 
+            },
+            'getCurrentUserAuthSettings': {
+                method: 'GET',
+                url: urlPrefix+"/auth/user_authentication_settings"
             },
         });
         

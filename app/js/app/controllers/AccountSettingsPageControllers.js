@@ -27,6 +27,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.emailPreferences = {"NEWS_AND_UPDATES": true, "ASSIGNMENTS": true, "EVENTS": true};
     $scope.subjectInterests = {};
     $scope.betaFeatures = {};
+    $scope.authenticationSettings = {};
     $scope.passwordChangeState = {
         passwordCurrent : ""
     };
@@ -62,10 +63,6 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         $scope.editingSelf = true;
     }
 
-    api.authentication.getUserAuthenticationSettings({'userId':$scope.user.id}).$promise.then(function(result){
-        $scope.authenticationSettings = result;
-    });
-
     if ($scope.editingSelf) {
         api.user.getUserPreferences().$promise.then(function(result){
             // Only update values if response contains key:
@@ -79,6 +76,13 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             }
             $scope.subjectInterests = result.SUBJECT_INTEREST || $scope.subjectInterests;
             $scope.betaFeatures = result.BETA_FEATURE || $scope.betaFeatures;
+        });
+        api.authentication.getCurrentUserAuthSettings().$promise.then(function(result){
+            $scope.authenticationSettings = result;
+        });
+    } else {
+        api.authentication.getUserAuthSettings({'userId':$scope.user.id}).$promise.then(function(result){
+            $scope.authenticationSettings = result;
         });
     }
 
@@ -196,9 +200,15 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     $scope.removeLinkedAccount = function(provider) {
         api.removeLinkedAccount(provider).then(function() {
-            api.authentication.getUserAuthenticationSettings({'userId':$scope.user.id}).$promise.then(function(result){
-                $scope.authenticationSettings = result;
-            });
+            if ($scope.editingSelf) {
+                api.authentication.getCurrentUserAuthSettings().$promise.then(function(result){
+                    $scope.authenticationSettings = result;
+                });
+            } else {
+                api.authentication.getUserAuthSettings({'userId':$scope.user.id}).$promise.then(function(result){
+                    $scope.authenticationSettings = result;
+                });
+            }
         });
     }
     
