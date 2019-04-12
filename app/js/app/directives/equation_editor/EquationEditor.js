@@ -1,7 +1,5 @@
 "use strict";
-define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, Inequality, tester, templateUrl) {
-
-    Inequality = Inequality.Inequality;
+define(["p5", "inequality", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, inequality, tester, templateUrl) {
 
     return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
@@ -430,22 +428,27 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         scope.historyPtr = 0;
 
                         scope.future = [];
-                        let p = new p5(function (p5instance) {
-                            try {
-                                sketch = new Inequality(p5instance, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
-                            } catch (error) {
-                                console.log(error);
+
+                        let p;
+                        let eqnEditorElement = element.find(".equation-editor")[0];
+                        ({ sketch, p } = inequality.makeInequality(
+                            eqnEditorElement,
+                            element.width() * Math.ceil(window.devicePixelRatio),
+                            element.height() * Math.ceil(window.devicePixelRatio),
+                            scope.state.symbols,
+                            {
+                                fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
+                                fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
                             }
-                            sketch.log = scope.log;
-                            sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
-                            sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
-                            sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
-                            sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
-                            sketch.isTrashActive = () => { return scope.trashActive; };
-                            $rootScope.sketch = sketch;
-                            return sketch;
-                        }, element.find(".equation-editor")[0]);
-                        void p;
+                            ));
+                        sketch.log = scope.log;
+                        sketch.onNewEditorState = scope.newEditorState; //(s) => { scope.newEditorState(s); };
+                        sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
+                        sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
+                        sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
+                        sketch.isTrashActive = () => { return scope.trashActive; };
+
+                        $rootScope.sketch = p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {
                             sketch.p.remove();
