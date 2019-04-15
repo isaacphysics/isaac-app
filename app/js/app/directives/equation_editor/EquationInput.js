@@ -1,23 +1,11 @@
 "use strict";
-define(["nearley",
-        "app/js/lib/equation_editor/grammar.ne",
-        "inequality",
+define(["inequality",
+        "inequality-grammar",
         "/partials/equation_editor/equation_input.html"],
-        function(nearley, grammar, inequality, templateUrl) {
+        function(inequality, inequality_grammar, templateUrl) {
 
-    const compiledGrammar = nearley.Grammar.fromCompiled(grammar);
-
-    const parseExpression = (expression = '') => {
-        const parser = new nearley.Parser(compiledGrammar)
-        let output = null
-        try {
-            output = parser.feed(expression).results
-        } catch (error) {
-            output = { error }
-        }
-        return output
-    }
-    void parseExpression;
+    const parseExpression = inequality_grammar.parseExpression;
+    // void parseExpression;
 
     return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
@@ -105,8 +93,8 @@ define(["nearley",
                         scope.state = {result: {python: pycode}};
                         scope.textEntryError = [];
 
-                        let parsedExpression = _.uniqWith(parseExpression(pycode), _.isEqual);
-                        //console.log(parsedExpression);
+                        let parsedExpression = parseExpression(pycode);
+                        // console.log(parsedExpression);
 
                         if (parsedExpression.hasOwnProperty('error') || (parsedExpression.length === 0 && pycode != '')) {
                             // A parse error of some description!
