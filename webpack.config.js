@@ -87,6 +87,17 @@ module.exports = function(env) {
         {
           test: /script\/.*\.js$/,
           use: [{loader: 'script-loader'}]
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                outputPath: 'assets/font',
+              },
+            }
+          ]
         }
       ]
     },

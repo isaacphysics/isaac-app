@@ -1,7 +1,5 @@
 "use strict";
-define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, MySketch, tester, templateUrl) {
-
-    MySketch = MySketch.MySketch;
+define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (inequality, tester, templateUrl) {
 
     return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
@@ -28,10 +26,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 // Are we dragging a new symbol from the menu?
                 scope.draggingNewSymbol = false;
-
-                // The moving symbol(s) when symbol(s) are moving.
-                // In practice, only one (top-level) symbol can be moving at any given time, because no multi-touch.
-                scope.selectedSymbols = [];
 
                 // TODO Figure out this one. I'm not sure this is necessary, really...
                 scope.selectionHandleFlags = {
@@ -434,16 +428,28 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         scope.historyPtr = 0;
 
                         scope.future = [];
-                        let p = new p5(function (p5instance) {
-                            try {
-                                sketch = new MySketch(p5instance, scope, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
-                            } catch (error) {
-                                console.log(error);
+
+                        let p;
+                        let eqnEditorElement = element.find(".equation-editor")[0];
+                        ({ sketch, p } = inequality.makeInequality(
+                            eqnEditorElement,
+                            element.width() * Math.ceil(window.devicePixelRatio),
+                            element.height() * Math.ceil(window.devicePixelRatio),
+                            scope.state.symbols,
+                            {
+                                fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
+                                fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
                             }
-                            $rootScope.sketch = sketch;
-                            return sketch;
-                        }, element.find(".equation-editor")[0]);
-                        void p;
+                            )
+                        ); // Double brackets for destructuring...?
+                        sketch.log = scope.log;
+                        sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
+                        sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
+                        sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
+                        sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
+                        sketch.isTrashActive = () => { return scope.trashActive; };
+                        // FIXME: I'm not even sure that this next line is necessary...
+                        $rootScope.sketch = p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {
                             sketch.p.remove();
