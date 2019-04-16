@@ -82,10 +82,10 @@ services:
       - elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
-      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
-      - /local/data/keys:/local/data/rutherford/keys:ro
-      - /local/data/school_list_2019.csv:/local/data/rutherford/school_list_2019.csv:ro
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
+      - /local/data/rutherford-content:/local/data/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/keys:ro
+      - /local/data/school_list_2019.csv:/local/data/school_list_2019.csv:ro
       - /var/log/isaac/$ENV:/isaac-logs:rw
     networks:
       default:
