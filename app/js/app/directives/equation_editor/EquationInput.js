@@ -5,7 +5,6 @@ define(["inequality",
         function(inequality, inequality_grammar, templateUrl) {
 
     const parseExpression = inequality_grammar.parseExpression;
-    // void parseExpression;
 
     return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
