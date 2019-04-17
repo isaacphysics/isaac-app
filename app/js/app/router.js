@@ -641,6 +641,14 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             },
         });
 
+        $sp.state('error_stale', {
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/error_stale.html",
+                },
+            },
+        });
+
         $sp.state('accountSettings', {
             url: "/account?next&userId&authToken",
             resolve: {

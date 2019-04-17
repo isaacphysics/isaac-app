@@ -130,7 +130,12 @@ define([
                     if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0) && !response.data.bypassGenericSiteErrorPage) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
-                        $state.go('error');
+                        if (response.status == 502) {
+                            // A '502 Bad Gateway' response means that the API no longer exists:
+                            $state.go('error_stale');
+                        } else {
+                            $state.go('error');
+                        }
                         console.warn("Error from API:", response);
                     }
                     return $q.reject(response);
