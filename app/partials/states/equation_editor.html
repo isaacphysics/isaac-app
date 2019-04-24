@@ -1,8 +1,11 @@
 <div class="row">
     <div class="small-16 columns" style="margin-bottom:50px">
         <h1>{{ editorMode | capitalize}} Equation Editor</h1>
-        <h5 ng-hide="editorMode== 'maths'">Go to: <a href="/equality">[Maths Equation Editor]</a></h5>
-        <h5 ng-hide="editorMode== 'chemistry'">Go to: <a href="/equality?mode=chemistry">[Chemistry Equation Editor]</a></h5>
+        <h5>Other modes:
+            <span ng-hide="editorMode== 'maths'">[<a href="/equality">Maths</a>]</span>
+            <span ng-hide="editorMode== 'chemistry'">[<a href="/equality?mode=chemistry">Chemistry</a>]</span>
+            <span ng-hide="editorMode== 'logic'">[<a href="/equality?mode=logic">Boolean Logic</a>]</span>
+        </h5>
     </div>
 </div>
 <div class="row">
@@ -11,7 +14,7 @@
             <input ng-model="eqnEditorSeed" class="equation-seed" type="text" placeholder="Paste the seed!" />
         </div>
 
-        <div equation-input state="eqnState" question-doc="questionDoc" editor-mode="editorMode"></div>
+        <div equation-input state="eqnState" question-doc="questionDoc" editor-mode="editorMode" logic-syntax="logicSyntax"></div>
 
         <div ng-show="eqnState.result">
             <div style="margin-bottom:25px;"></div>
@@ -24,8 +27,8 @@
             </h3>
 
             <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                <pre ng-if="editorMode == 'maths'" style="padding:10px;background:#eee;text-align:center;font-size:2rem;word-wrap:break-word;white-space:pre-wrap;">${{eqnState.result.tex}}$</pre>
-                <pre ng-if="editorMode == 'chemistry'" style="padding:10px;background:#eee;text-align:center;font-size:2rem;word-wrap:break-word;white-space:pre-wrap;">$\ce{ {{eqnState.result.mhchem}} }$</pre>
+                <pre class="eqn-editor-symbols" ng-if="editorMode == 'maths' || editorMode == 'logic'" style="padding:10px;background:#eee;text-align:center;font-size:2rem;word-wrap:break-word;white-space:pre-wrap;">${{eqnState.result.tex}}$</pre>
+                <pre class="eqn-editor-symbols" ng-if="editorMode == 'chemistry'" style="padding:10px;background:#eee;text-align:center;font-size:2rem;word-wrap:break-word;white-space:pre-wrap;">$\ce{ {{eqnState.result.mhchem}} }$</pre>
             </div>
 
             <div style="margin-bottom:25px;"></div>
@@ -37,12 +40,12 @@
                 </span>
                 </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                    <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mhchem}}</pre>
+                    <pre class="eqn-editor-symbols" style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mhchem}}</pre>
                 </div>
             </div>
 
             <div style="margin-bottom:25px;"></div>
-            <div ng-if="editorMode == 'maths'">
+            <div ng-if="editorMode != 'chemistry'">
                 <h3>
                     Python-like
                     <span data-ot="An example of Python-like code representing the formula. We use this to check answers on Isaac with the Sympy package." class="has-tip" aria-haspopup="true" style="float:right;">
@@ -51,7 +54,7 @@
                 </h3>
                 <span style="font-size: 0.8rem;">You can use this syntax to type answers to symbolic questions!</span>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                    <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.python}}</pre>
+                    <pre class="eqn-editor-symbols" style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.python}}</pre>
                 </div>
                 <div style="margin-bottom:25px;"></div>
             </div>
@@ -62,7 +65,7 @@
                 </span>
             </h3>
             <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                <pre style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mathml}}</pre>
+                <pre class="eqn-editor-symbols" style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mathml}}</pre>
             </div>
             <div style="margin-bottom:45px;"></div>
             <div ng-show="segueEnvironment=='DEV'">
@@ -75,7 +78,7 @@
                     </span>
                 </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                    <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.uniqueSymbols}}</pre>
+                    <pre class="eqn-editor-symbols" style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.uniqueSymbols}}</pre>
                 </div>
                 <div style="margin-bottom:25px;"></div>
                 <h3>
@@ -85,7 +88,7 @@
                     </span>
                 </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
-                    <pre style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.symbols}}</pre>
+                    <pre class="eqn-editor-symbols" style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.symbols}}</pre>
                 </div>
             </div>
             <div style="margin-bottom:25px;"></div>

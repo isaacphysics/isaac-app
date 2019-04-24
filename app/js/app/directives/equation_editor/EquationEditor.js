@@ -1,7 +1,5 @@
 "use strict";
-define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, MySketch, tester, templateUrl) {
-
-    MySketch = MySketch.MySketch;
+define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (inequality, tester, templateUrl) {
 
     return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
@@ -28,10 +26,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 // Are we dragging a new symbol from the menu?
                 scope.draggingNewSymbol = false;
-
-                // The moving symbol(s) when symbol(s) are moving.
-                // In practice, only one (top-level) symbol can be moving at any given time, because no multi-touch.
-                scope.selectedSymbols = [];
 
                 // TODO Figure out this one. I'm not sure this is necessary, really...
                 scope.selectionHandleFlags = {
@@ -131,7 +125,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     let w = 0;
                     if (scope.state.result) {
                         let spans = rp.find(".katex > span.katex-html > span");
-                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c);
+                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c, 0);
                     }
                     let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
@@ -313,7 +307,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 // Parses available symbols and generates the menu bar. Then opens the editor.
                 // FIXME This function may or may not need refactoring to improve the flexibility of menu creation.
-                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
+                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode = 'maths', logicSyntax = 'logic') {
 
                     return new Promise(function (resolve, _reject) {
 
@@ -324,6 +318,11 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         delete scope.symbolLibrary.customChemicalSymbols;
                         delete scope.symbolLibrary.augmentedOps;
                         delete scope.symbolLibrary.allowVars;
+                        delete scope.symbolLibrary.logicOps;
+
+                        scope.editorMode = editorMode;
+                        scope.logicSyntax = logicSyntax;
+                        scope.symbolLibrary.logicOps = logicFunctions(logicSyntax);
 
                         // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
                         scope.symbolLibrary.allowVars = true;
@@ -334,7 +333,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         let onEqualityPage = document.location.pathname === '/equality';
                         let userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
-                        if (editorMode === "maths" && questionDoc && questionDoc.availableSymbols) {
+                        if ((editorMode === "maths" || editorMode === "logic") && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             let parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
@@ -390,8 +389,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 symbols: []
                             };
                         scope.questionDoc = questionDoc;
-                        scope.editorMode = editorMode;
-
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
@@ -431,16 +428,28 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         scope.historyPtr = 0;
 
                         scope.future = [];
-                        let p = new p5(function (p5instance) {
-                            try {
-                                sketch = new MySketch(p5instance, scope, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
-                            } catch (error) {
-                                console.log(error);
+
+                        let p;
+                        let eqnEditorElement = element.find(".equation-editor")[0];
+                        ({ sketch, p } = inequality.makeInequality(
+                            eqnEditorElement,
+                            element.width() * Math.ceil(window.devicePixelRatio),
+                            element.height() * Math.ceil(window.devicePixelRatio),
+                            scope.state.symbols,
+                            {
+                                fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
+                                fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
                             }
-                            $rootScope.sketch = sketch;
-                            return sketch;
-                        }, element.find(".equation-editor")[0]);
-                        void p;
+                            )
+                        ); // Double brackets for destructuring...?
+                        sketch.log = scope.log;
+                        sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
+                        sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
+                        sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
+                        sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
+                        sketch.isTrashActive = () => { return scope.trashActive; };
+                        // FIXME: I'm not even sure that this next line is necessary...
+                        $rootScope.sketch = p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {
                             sketch.p.remove();
@@ -1111,6 +1120,69 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     return result;
                 };
 
+                let logicFunctions = function(syntax = 'logic') {
+                    let labels = {
+                        logic: {
+                            and: "\\land",
+                            or: "\\lor",
+                            not: "\\lnot",
+                            equiv: "\\equiv",
+                            True: "\\mathsf{T}",
+                            False: "\\mathsf{F}"
+                        },
+                        binary: {
+                            and: "\\cdot",
+                            or: "+",
+                            not: "\\overline{x}",
+                            equiv: "\\equiv",
+                            True: "1",
+                            False: "0"
+                        }
+                    };
+                    return [
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "and" },
+                            menu: { label: labels[syntax]['and'], texLabel: true }
+                        },
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "or" },
+                            menu: { label: labels[syntax]['or'], texLabel: true }
+                        },
+                        {
+                            type: "LogicNot",
+                            properties: {},
+                            menu: { label: labels[syntax]['not'], texLabel: true }
+                        },
+                        {
+                            type: "Relation",
+                            properties: { relation: "equiv" },
+                            menu: { label: labels[syntax]['equiv'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: true },
+                            menu: { label: labels[syntax]['True'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: false },
+                            menu: { label: labels[syntax]['False'], texLabel: true }
+                        },
+                        {
+                            type: "Brackets",
+                            properties: {
+                                type: "round",
+                            },
+                            menu: {
+                                label: "(x)",
+                                texLabel: true
+                            }
+                        }
+                    ];
+                };
+
                 scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
@@ -1457,6 +1529,8 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         }
                     }
                     ],
+
+                    logicOps: logicFunctions(scope.logicSyntax),
 
                     trig: [{
                         type: "Fn",

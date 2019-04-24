@@ -1,25 +1,10 @@
 "use strict";
-define(["p5",
-        "nearley",
-        "app/js/lib/equation_editor/grammar.ne",
-        "app/ts/inequality/Inequality.ts",
+define(["inequality",
+        "inequality-grammar",
         "/partials/equation_editor/equation_input.html"],
-        function(p5, nearley, grammar, MySketch, templateUrl) {
+        function(inequality, inequality_grammar, templateUrl) {
 
-    MySketch = MySketch.MySketch;
-    const compiledGrammar = nearley.Grammar.fromCompiled(grammar);
-
-    const parseExpression = (expression = '') => {
-        const parser = new nearley.Parser(compiledGrammar)
-        let output = null
-        try {
-            output = parser.feed(expression).results
-        } catch (error) {
-            output = { error }
-        }
-        return output
-    }
-    void parseExpression;
+    const parseExpression = inequality_grammar.parseExpression;
 
     return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
@@ -28,6 +13,7 @@ define(["p5",
                 state: "=",
                 questionDoc: "=",
                 editorMode: "=",
+                logicSyntax: "=",
             },
             restrict: "A",
             templateUrl: templateUrl,
@@ -45,8 +31,6 @@ define(["p5",
                     }
                 }
 
-                scope.selectedSymbols = [];
-
                 let letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
                 let inverseLetterMap = {};
                 for (let k in letterMap) {
@@ -55,13 +39,29 @@ define(["p5",
                 inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
 
                 let sketch = null;
+                let p;
                 let editorCanvas = element.find(".equation-editor-text-entry")[0];
-                let p = new p5(function (p5instance) {
-                    sketch = new MySketch(p5instance, scope, element.width(), element.height(), [], true);
-                    $rootScope.sketch = sketch;
-                    return sketch;
-                }, editorCanvas);
-                void p;
+                ({ sketch, p } = inequality.makeInequality(
+                    editorCanvas,
+                    element.width() * Math.ceil(window.devicePixelRatio),
+                    element.height() * Math.ceil(window.devicePixelRatio),
+                    [],
+                    {
+                        textEntry: true,
+                        fontItalicPath: 'assets/STIXGeneral-Italic.ttf',
+                        fontRegularPath: 'assets/STIXGeneral-Regular.ttf',
+                    }
+                    )
+                ); // Double brackets for destructuring...?
+                sketch.log = scope.log;
+                sketch.onNewEditorState = (s) => { scope.newEditorState(s); };
+                sketch.onCloseMenus = () => { scope.$broadcast("closeMenus"); };
+                sketch.isUserPrivileged = () => { return _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role); };
+                sketch.onNotifySymbolDrag = (x, y) => { scope.notifySymbolDrag(x, y); };
+                sketch.isTrashActive = () => { return scope.trashActive; };
+                // FIXME: I'm not even sure that this next line is necessary...
+                $rootScope.sketch = p;
+
 
                 // Magic starts here
 
@@ -92,8 +92,8 @@ define(["p5",
                         scope.state = {result: {python: pycode}};
                         scope.textEntryError = [];
 
-                        let parsedExpression = _.uniqWith(parseExpression(pycode), _.isEqual);
-                        //console.log(parsedExpression);
+                        let parsedExpression = parseExpression(pycode);
+                        // console.log(parsedExpression);
 
                         if (parsedExpression.hasOwnProperty('error') || (parsedExpression.length === 0 && pycode != '')) {
                             // A parse error of some description!
@@ -185,7 +185,7 @@ define(["p5",
                         $("#equationModal").foundation("reveal", "close");
                     };
 
-                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
+                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode, scope.logicSyntax).then(function(finalState) {
                         scope.state = finalState;
                         if (finalState.hasOwnProperty("result") && finalState.result && finalState.result.hasOwnProperty("python")) {
                             element.find(".eqn-text-input")[0].value = finalState.result.python;

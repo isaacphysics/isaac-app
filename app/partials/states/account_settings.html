@@ -158,8 +158,8 @@
                         <li>
                             <label>
                                 <strong>School</strong> 
-                                 <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for schools and universities in the UK or Ireland. Use the 'other' box if you study elsewhere or to type 'none' if you are not at school."></span>
-                                 <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                 <span aria-haspopup="true" class="icon-help has-tip" data-ot="Your current school. You can search for schools and universities in the UK or Ireland. Use the 'other' box if you study elsewhere or to type 'none' if you are not at school."></span>
+                                 <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your current school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                             </label>
                             <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                                 {{schools}}      
@@ -268,7 +268,7 @@
 
                 </form>
                 <div ng-show="user.role == 'STUDENT' && editingSelf" class="large-16 columns account-warning">
-                    <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="pages({id: 'contact_us_teacher'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+                    <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="pages({id: 'contact_us_teacher'})" target="_blank">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
                 </div>
                 <div class="account-reorder-wrap">
                     <div class="account-reorder-bottom">
@@ -282,8 +282,8 @@
             <!-- TAB 1 -->
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
                 <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
-                    <div ng-show="user.hasSegueAccount || !editingSelf">
-                        <div id="password-current-wrap" class="row"  ng-if="user.hasSegueAccount  && editingSelf">
+                    <div ng-show="authenticationSettings.hasSegueAccount || !editingSelf">
+                        <div id="password-current-wrap" class="row"  ng-if="authenticationSettings.hasSegueAccount  && editingSelf">
                             <div  class="large-6 columns">
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
@@ -295,11 +295,11 @@
                             <div  class="large-6 columns">
                                 <label for="account-password" ng-class="{'disabled' : !passwordChangeState.passwordCurrent}">
                                     <!-- Change text if user doesn't have account -->
-                                    <strong ng-if="user.hasSegueAccount">New password</strong>
-                                    <strong ng-if="!user.hasSegueAccount">Set password</strong>
+                                    <strong ng-if="authenticationSettings.hasSegueAccount">New password</strong>
+                                    <strong ng-if="!authenticationSettings.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
-                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}" autocomplete="new-password">
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !authenticationSettings.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}" autocomplete="new-password">
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
@@ -318,7 +318,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-hide="user.hasSegueAccount || !editingSelf">
+                    <div ng-hide="authenticationSettings.hasSegueAccount || !editingSelf">
                         <p>You do not currently have a password set for this account; you sign in using <span ng-repeat="account in user.linkedAccounts"><span ng-if="$middle">, </span><span ng-if="user.linkedAccounts.length > 1 && $last"> or </span>{{account | capitalize}}</span>.</p>
                         <p ng-hide="user.emailVerificationStatus == 'DELIVERY_FAILED'">Please <a ng-click="requestPassword()">click here to request a password reset email</a> if you would like to add password access to your account.</p>
                     </div>

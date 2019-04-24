@@ -87,6 +87,17 @@ module.exports = function(env) {
         {
           test: /script\/.*\.js$/,
           use: [{loader: 'script-loader'}]
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                outputPath: 'assets/font',
+              },
+            }
+          ]
         }
       ]
     },
@@ -100,6 +111,7 @@ module.exports = function(env) {
         'jquery-ui/datepicker' : 'jquery-ui/ui/widgets/datepicker',
         '/partials': 'app/partials',
         'showdown': 'app/js/lib/showdown/showdown.js',
+        'p5': 'node_modules/p5/lib/p5.min.js' // p5 otherwise defaults to non-minified!
       },
     },
 

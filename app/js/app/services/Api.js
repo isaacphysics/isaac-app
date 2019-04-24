@@ -77,7 +77,7 @@ define([], function() {
             },
             'getEventsOverTime' : {
                 method: 'GET',
-                url: urlPrefix + "/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
+                url: urlPrefix + "/questions/answered_questions/:userId?from_date=:from_date&to_date=:to_date"
             },
             'getUserPreferences' : {
                 method: 'GET',
@@ -109,6 +109,15 @@ define([], function() {
             'logout': {
                 method: 'POST',
                 url: urlPrefix+"/auth/logout",
+            },
+            'getUserAuthSettings': {
+                method: 'GET',
+                url: urlPrefix+"/auth/user_authentication_settings/:userId",
+                isArray: false 
+            },
+            'getCurrentUserAuthSettings': {
+                method: 'GET',
+                url: urlPrefix+"/auth/user_authentication_settings"
             },
         });
         
@@ -381,9 +390,9 @@ define([], function() {
         let questionsPerPage = 10;
         let questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
         let conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
-        let gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
-        let deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
-        let saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
+        let gameBoardsList = $resource(urlPrefix + "/gameboards/user_gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
+        let deleteBoard = $resource(urlPrefix + "/gameboards/user_gameboards/:id", {}, {'query': {method: 'DELETE'}});
+        let saveBoard = $resource(urlPrefix + "/gameboards/user_gameboards/:id", {}, {'query': {method: 'POST'}});
         let eventsList = $resource(urlPrefix + "/events");
 
         this.getQuestionList = function(page){
