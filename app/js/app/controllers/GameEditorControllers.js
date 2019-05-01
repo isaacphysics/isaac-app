@@ -24,6 +24,8 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     $scope.loading = false;
     $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
     $scope.boardTags = boardProcessor.boardTags;
+    $scope.bookShow = false;
+    $scope.bookSelection = "problem_solving";
 
     let sortField = $stateParams.sort ? $stateParams.sort : null;
 
@@ -193,6 +195,54 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         }
         $scope.currentGameBoard = newGameBoard;
     }
+
+
+    $scope.$watch('bookSelection', function(newThing, oldThing) {
+        if (newThing == "books") {
+            $scope.bookShow = true;
+        } else {
+            $scope.bookShow = false;
+            $scope.questionSearchText = "";
+            $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = "1";
+            sortField = "title";
+        }
+    }, true);
+
+    $scope.bookId = $stateParams.bookId ? $stateParams.bookId : "";
+
+    $scope.$watch('bookId', function(newThing, oldThing) {
+        if (newThing === "A-Level Book Old") {
+            $scope.questionSearchText = "physics_skills_14";
+            $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = null;
+            sortField = "title";
+        }
+        if (newThing === "A-Level Book New") {
+            $scope.questionSearchText = "physics_skills_19";
+            $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = null;
+            sortField = "title";
+        }
+        if (newThing === "GCSE Book") {
+              $scope.questionSearchText = "phys_book_gcse";
+              $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = null;
+            sortField = "title";
+        }
+        if (newThing === "Maths Book") {
+            $scope.questionSearchText = "maths_book";
+            $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = null;
+            sortField = "title";
+        }
+        if (newThing === "Chemistry Book") {
+            $scope.questionSearchText = "chemistry_16";
+            $scope.questionSearchSubject = "";
+            $scope.questionSearchLevel = null;
+            sortField = "title";
+        }
+    }, true);
 
     $scope.resetForm = function() {
         $scope.boardCreatedSuccessfully = false;

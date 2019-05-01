@@ -7,11 +7,6 @@
 	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</a>
 	    </div>
 	</div>
-	<div class="row ru-page-heading">
-		<div class="columns">
-			<p class="hide-for-small-only">Click the following links to show questions from our Mastering Essential <strong><a ng-click="findBookQuestions('phys_book_gcse')">GCSE Physics</a></strong>, <strong><a ng-click="findBookQuestions('physics_skills_14')">Pre-University Physics</a></strong>, <strong><a style="white-space: nowrap;" ng-click="findBookQuestions('physics_skills_19')">Pre-University Physics (3rd Edition: 2019)</a></strong> or <strong><a ng-click="findBookQuestions('chemistry_16')">Physical Chemistry</a></strong> books.</p>
-		</div>
-	</div>
 		<div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
 			<form ng-submit="saveGameBoard()">
 				<div class="row">
@@ -39,35 +34,50 @@
 									</select>
 								</span>
 							</li>
-							<li>
-								<strong>Find Questions by...</strong>
-								<div class="row">
-									<div class="small-16 medium-8 columns">
-										<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
-				                        <select ng-model="questionSearchSubject">
-				                            <option value="">Any</option>
-				                            <option value="physics">Physics</option>
-				                            <option value="maths">Mathematics</option>
-				                        </select>
-									</div>								
-									<div class="small-16 medium-8 columns">
-										<label><strong>Question Level</strong></label>
-				                        <select ng-model="questionSearchLevel">
-				                            <option value="{{null}}">Any</option>
-				                            <option value="1">1 (GCSE)</option>
-				                            <option value="2">2</option>
-				                            <option value="3">3</option>
-				                            <option value="4">4</option>
-				                            <option value="5">5</option>
-				                            <option value="6">6 (Post A-Level)</option>
-				                        </select>
-									</div>
-									<div class="small-16 columns">
-						                <label><strong>and by Question Title or Topic</strong></label>
-						                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">														
-									</div>
+							<li><strong>Find Questions by...</strong></li>
+							<span>
+								<label><strong>Book or Problem Solving</strong></label>
+								<select ng-model="bookSelection">
+									<option value="">Problem Solving</option>
+									<option value="books">Book</option>
+								</select>
+							</span>
+							<span ng-show="bookShow">
+								<label><strong>Choose Book</strong></label>
+								<select ng-model="bookId">
+									<option value="A-Level Book Old">A-Level Book Old</option>
+									<option value="A-Level Book New">A-Level Book New</option>
+									<option value="GCSE Book">GCSE Book</option>
+									<option value="Maths Book">Maths Book</option>
+									<option value="Chemistry Book">Chemistry Book</option>
+								</select>
+							</span>
+							<div ng-hide="bookShow" class="row">
+								<div class="small-16 medium-8 columns">
+									<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
+			                        <select ng-model="questionSearchSubject">
+			                            <option value="">Any</option>
+			                            <option value="physics">Physics</option>
+			                            <option value="maths">Mathematics</option>
+			                        </select>
+								</div>								
+								<div class="small-16 medium-8 columns">
+									<label><strong>Question Level</strong></label>
+			                        <select ng-model="questionSearchLevel">
+			                            <option value="{{null}}">Any</option>
+			                            <option value="1">1</option>
+			                            <option value="2">2</option>
+			                            <option value="3">3</option>
+			                            <option value="4">4</option>
+			                            <option value="5">5</option>
+			                            <option value="6">6 (Post A-Level)</option>
+			                        </select>
 								</div>
-							</li>
+								<div class="small-16 columns">
+					                <label><strong>and by Question Title or Topic</strong></label>
+					                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">														
+								</div>
+							</div>
 							<li>
 								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
 							</li>
