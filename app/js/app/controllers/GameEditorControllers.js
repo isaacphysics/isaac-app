@@ -201,6 +201,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         if (newThing == "books") {
             $scope.bookShow = true;
         } else {
+            $scope.bookId = "";
             $scope.bookShow = false;
             $scope.questionSearchText = "";
             $scope.questionSearchSubject = "";
