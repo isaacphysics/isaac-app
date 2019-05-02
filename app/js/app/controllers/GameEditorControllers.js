@@ -215,20 +215,15 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     $scope.$watch('bookId', function(newThing, oldThing) {
         if (newThing === "A-Level Book Old") {
             $scope.questionSearchText = "physics_skills_14";
-        }
-        if (newThing === "A-Level Book New") {
+        } else if (newThing === "A-Level Book New") {
             $scope.questionSearchText = "physics_skills_19";
-        }
-        if (newThing === "GCSE Book") {
+        } else if (newThing === "GCSE Book") {
               $scope.questionSearchText = "phys_book_gcse";
-        }
-        if (newThing === "Maths Book") {
+        } else if (newThing === "Maths Book") {
             $scope.questionSearchText = "maths_book";
-        }
-        if (newThing === "Chemistry Book") {
+        } else if (newThing === "Chemistry Book") {
             $scope.questionSearchText = "chemistry_16";
-        }
-        if (newThing !== "") {
+        } if (newThing !== "") {
             $scope.questionSearchSubject = "";
             $scope.questionSearchLevel = null;
             sortField = "title";
