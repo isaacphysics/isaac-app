@@ -48,6 +48,13 @@ define(["../../honest/responsive_video", "/partials/content/ParsonsQuestion.html
                     }
                 };
 
+                scope.resetState = function() {
+                    ctrl.selectedValue = {
+                        items: [],
+                        remainingItems: angular.copy(scope.parsonsQuestionItems),
+                    };
+                }
+
                 scope.initaliseState = function() {
 
                     if (scope.question.selectedChoice) {
@@ -61,10 +68,7 @@ define(["../../honest/responsive_video", "/partials/content/ParsonsQuestion.html
                     } else {
                         // We have no answer and no seed
                         console.debug("No previous answer or seed.");
-                        ctrl.selectedValue = {
-                            items: [],
-                            remainingItems: angular.copy(scope.parsonsQuestionItems),
-                        };
+                        scope.resetState();
                     }
                 };
                 scope.initaliseState();
