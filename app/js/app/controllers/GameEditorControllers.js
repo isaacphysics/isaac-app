@@ -212,9 +212,9 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
     $scope.bookId = $stateParams.bookId ? $stateParams.bookId : "";
 
-    $scope.$watch('bookId', function(newThing, oldThing) {
-        if (newThing !== "") {
-            $scope.questionSearchText = newThing;
+    $scope.$watch('bookId', function(bookId, oldBookId) {
+        if (bookId !== "" && bookId !== null) {
+            $scope.questionSearchText = bookId;
             $scope.questionSearchSubject = "";
             $scope.questionSearchLevel = null;
             sortField = "title";
