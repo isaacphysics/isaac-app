@@ -170,6 +170,8 @@ define(function(require) {
 
 	.directive('isaacFreeTextQuestion', require("./directives/content/FreeTextQuestion"))
 
+	.directive('isaacParsonsQuestion', require("./directives/content/ParsonsQuestion"))
+
 	.directive('isaacQuickQuestion', require("./directives/content/QuickQuestion"))
 
 	.directive('isaacPod', require("./directives/content/Pod"))

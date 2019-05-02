@@ -37,6 +37,7 @@ define([
     "angular-google-maps",
     "../lib/opentip-jquery.js",
     "foundation-sites/js/vendor/modernizr",
+    "ng-sortable",
     ], function(rv, ineq, require) {
 
     // Require polyfill script to enable packages which are dependent on older versions of jQuery
@@ -81,7 +82,8 @@ define([
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date'
+        'ui.date',
+        'as.sortable',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', '$analyticsProvider',

@@ -1,0 +1,85 @@
+.isaac-parsons-question {
+    .parsons-panel {
+        min-height: 200px;
+        padding: 0.5rem;
+        background-color: #999;
+        border: solid 1px #333;
+        color: #333;
+    }
+    .parsons-item {
+        background-color: #ffe330;
+        color: #333;
+        border: solid 1px #333;
+        padding: 0.2rem 0.5rem;
+        font-style: normal;
+    }
+    .ru-answer-block-panel {
+        padding-bottom: 1em;
+    }
+    .as-sortable-placeholder {
+        opacity: 0.8;
+        box-sizing: border-box;
+    }
+    .parsons-item-instruction {
+        border: dashed 2px white;
+        background: inherit;
+        color: white;
+    }
+    button {
+        display: block;
+        margin: auto;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        background-color: #ccc;
+        color: #333;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+.as-sortable-item {
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    border: solid 1px darkgrey;
+    background-color: #fff;
+}
+
+.as-sortable-item-handle {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+}
+
+.as-sortable-drag {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.8;
+}
+
+.as-sortable-hidden {
+    display: none !important;
+}
+
+.as-sortable-un-selectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.as-sortable-item, .as-sortable-placeholder, .parsons-item {
+    display: block;
+    margin: 5px 2px;
+    /*border-radius: 7px;*/
+    padding: 0.2rem 0.5rem;
+    code {
+        background-color: inherit;
+        border: none;
+        color: inherit;
+    }
+}
+
