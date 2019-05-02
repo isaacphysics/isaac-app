@@ -213,17 +213,8 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     $scope.bookId = $stateParams.bookId ? $stateParams.bookId : "";
 
     $scope.$watch('bookId', function(newThing, oldThing) {
-        if (newThing === "A-Level Book Old") {
-            $scope.questionSearchText = "physics_skills_14";
-        } else if (newThing === "A-Level Book New") {
-            $scope.questionSearchText = "physics_skills_19";
-        } else if (newThing === "GCSE Book") {
-              $scope.questionSearchText = "phys_book_gcse";
-        } else if (newThing === "Maths Book") {
-            $scope.questionSearchText = "maths_book";
-        } else if (newThing === "Chemistry Book") {
-            $scope.questionSearchText = "chemistry_16";
-        } if (newThing !== "") {
+        if (newThing !== "") {
+            $scope.questionSearchText = newThing;
             $scope.questionSearchSubject = "";
             $scope.questionSearchLevel = null;
             sortField = "title";
