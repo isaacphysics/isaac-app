@@ -20,18 +20,24 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     // setup defaults.
     $scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
     $scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
-    $scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
-    $scope.loading = false;
+    $scope.questionSearchLevel = $stateParams.level ? $stateParams.level : null;
+    $scope.bookId = $stateParams.book_id ? $stateParams.book_id : "";
     $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
     $scope.boardTags = boardProcessor.boardTags;
-    $scope.bookShow = false;
-    $scope.onlineShow = false;
     $scope.bookSelection = "";
+
+    // If URL parameters passed in, default to using them:
+    if ($scope.questionSearchText != "" || $scope.questionSearchSubject != "") {
+        $scope.bookSelection = "online";
+    } else if ($scope.bookId != "") {
+        $scope.bookSelection = "books";
+    }
+
+    $scope.loading = false;
 
     let sortField = $stateParams.sort ? $stateParams.sort : null;
 
     let largeNumberOfResults = -1; // assumes -1 limit will return all possible results.
-    let bookIds = ["physics_skills_14", "physics_skills_19", "phys_book_gcse", "pre_uni_maths", "chemistry_16"];
 
     $scope.hasGroups = false;
     $scope.boardCreatedSuccessfully = false;
@@ -115,7 +121,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     let mostRecentQueryID = 0;
     let doQuestionSearch = function(searchQuery, searchLevel, searchTags) {
         let isFastTrackQuery = searchQuery == "fasttrack";
-        let isBookQuery = bookIds.indexOf(searchQuery) >= 0;
+        let isBookQuery = $scope.bookSelection && $scope.bookId;
         return api.getQuestionsResource().query({
             searchString: isFastTrackQuery ? '' : searchQuery,
             tags: isBookQuery ? searchQuery : searchTags, //  If it's a book, just the book tags; ignore others!
@@ -201,21 +207,19 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
 
     $scope.$watch('bookSelection', function(newThing, oldThing) {
+        if (newThing === oldThing) {
+            return;
+        }
         if (newThing == "books") {
-            $scope.bookShow = true;
-            $scope.online = false;
+            // Pass and set no default for now!
         } else if (newThing == "online"){
             $scope.bookId = "";
-            $scope.onlineShow = true;
-            $scope.bookShow = false;
             $scope.questionSearchText = "";
             $scope.questionSearchSubject = "physics";
             $scope.questionSearchLevel = "1";
             sortField = "title";
         }
     }, true);
-
-    $scope.bookId = $stateParams.bookId ? $stateParams.bookId : "";
 
     $scope.$watch('bookId', function(bookId, oldBookId) {
         if (bookId !== "" && bookId !== null) {

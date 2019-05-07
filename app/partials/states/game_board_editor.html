@@ -42,7 +42,7 @@
 									<option value="online">Online questions</option>
 								</select>
 							</span>
-							<span ng-show="bookShow">
+							<span ng-show="bookSelection == 'books'">
 								<label><strong>Choose Book</strong></label>
 								<select ng-model="bookId">
 									<option value="physics_skills_14">A Level Physics (Pre 3rd Edition)</option>
@@ -52,7 +52,7 @@
 									<option value="chemistry_16">A-Level Physical Chemistry</option>
 								</select>
 							</span>
-							<div ng-show="onlineShow" class="row">
+							<div ng-show="bookSelection == 'online'" class="row">
 								<div class="small-16 medium-8 columns">
 									<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
 			                        <select ng-model="questionSearchSubject">
@@ -97,7 +97,7 @@
 							</li>								
 						</ol>
 					</div>
-					<div class="small-16 medium-10 columns" ng-show="onlineShow || (bookShow && bookId)">
+					<div class="small-16 medium-10 columns" ng-show="bookSelection =='online' || (bookSelection =='books' && bookId)">
 						<div class="row">
 							<div class="small-16">
 								<div class="results-panel">
