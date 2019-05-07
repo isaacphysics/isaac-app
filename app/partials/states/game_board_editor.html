@@ -34,12 +34,12 @@
 									</select>
 								</span>
 							</li>
-							<li><strong>Find Questions by...</strong></li>
+							<li><strong>Find Questions from Isaac</strong></li>
 							<span>
-								<label><strong>Problem Solving or Skills Mastery / Book</strong></label>
+								<label><strong>Books or Online Only</strong></label>
 								<select ng-model="bookSelection">
-									<option value="">Problem Solving</option>
-									<option value="books">Skills Mastery / Book</option>
+									<option value="books">Books</option>
+									<option value="online">Online Only</option>
 								</select>
 							</span>
 							<span ng-show="bookShow">
@@ -52,7 +52,7 @@
 									<option value="chemistry_16">A-Level Physical Chemistry</option>
 								</select>
 							</span>
-							<div ng-hide="bookShow" class="row">
+							<div ng-show="onlineShow" class="row">
 								<div class="small-16 medium-8 columns">
 									<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
 			                        <select ng-model="questionSearchSubject">
@@ -97,7 +97,7 @@
 							</li>								
 						</ol>
 					</div>
-					<div class="small-16 medium-10 columns">
+					<div class="small-16 medium-10 columns" ng-show="onlineShow || (bookShow && bookId)">
 						<div class="row">
 							<div class="small-16">
 								<div class="results-panel">

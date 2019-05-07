@@ -25,7 +25,8 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
     $scope.boardTags = boardProcessor.boardTags;
     $scope.bookShow = false;
-    $scope.bookSelection = "problem_solving";
+    $scope.onlineShow = false;
+    $scope.bookSelection = "";
 
     let sortField = $stateParams.sort ? $stateParams.sort : null;
 
@@ -133,25 +134,27 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         }
 
         timer = $timeout(function() {
-            $scope.loading = true;
-            let myQueryID = ++mostRecentQueryID; // increment then assign query id
-            doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
-            .$promise.then(function(questionsFromServer) {
-                // only display results for most recent query request (i.e. not most recent asynchronous repsonse)
-                if (myQueryID == mostRecentQueryID) {
-                    // update the view
-                    $scope.searchResults = questionsFromServer.results.filter(function(r) {
-                        let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
-                        return keepElement || $scope.isStaffUser;
-                    });
-                    // try to sort the results if requested.
-                    if (sortField) {
-                        $scope.searchResults.sort((a, b) => { return a[sortField] > b[sortField] ? 1 : -1; });
-                        sortField = null;
+            if ($scope.bookSelection == "books" || $scope.bookSelection == "online"){
+                $scope.loading = true;
+                let myQueryID = ++mostRecentQueryID; // increment then assign query id
+                doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
+                .$promise.then(function(questionsFromServer) {
+                    // only display results for most recent query request (i.e. not most recent asynchronous repsonse)
+                    if (myQueryID == mostRecentQueryID) {
+                        // update the view
+                        $scope.searchResults = questionsFromServer.results.filter(function(r) {
+                            let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
+                            return keepElement || $scope.isStaffUser;
+                        });
+                        // try to sort the results if requested.
+                        if (sortField) {
+                            $scope.searchResults.sort((a, b) => { return a[sortField] > b[sortField] ? 1 : -1; });
+                            sortField = null;
+                        }
+                        $scope.loading = false;
                     }
-                    $scope.loading = false;
-                }
-            });
+                });
+            }
         }, 500);
     });
     
@@ -200,11 +203,13 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     $scope.$watch('bookSelection', function(newThing, oldThing) {
         if (newThing == "books") {
             $scope.bookShow = true;
-        } else {
+            $scope.online = false;
+        } else if (newThing == "online"){
             $scope.bookId = "";
+            $scope.onlineShow = true;
             $scope.bookShow = false;
             $scope.questionSearchText = "";
-            $scope.questionSearchSubject = "";
+            $scope.questionSearchSubject = "physics";
             $scope.questionSearchLevel = "1";
             sortField = "title";
         }
