@@ -1,147 +1,161 @@
 <div class="game-editor">
-	<div class="row ru-page-heading">
-	    <div class="medium-14 columns">
-	        <h1>Build an Assignment</h1>
-	    </div>
-	    <div class="medium-2 columns text-right hide-for-small-only">
-	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</a>
-	    </div>
-	</div>
-	<div class="row ru-page-heading">
-		<div class="columns">
-			<p class="hide-for-small-only">Click the following links to show questions from our Mastering Essential <strong><a ng-click="findBookQuestions('phys_book_gcse')">GCSE Physics</a></strong>, <strong><a ng-click="findBookQuestions('physics_skills_14')">Pre-University Physics</a></strong>, <strong><a style="white-space: nowrap;" ng-click="findBookQuestions('physics_skills_19')">Pre-University Physics (3rd Edition: 2019)</a></strong> or <strong><a ng-click="findBookQuestions('chemistry_16')">Physical Chemistry</a></strong> books.</p>
-		</div>
-	</div>
-		<div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
-			<form ng-submit="saveGameBoard()">
-				<div class="row">
-					<div class="small-16 medium-6 columns results-panel">
-						<h4>Create your board</h4>
-						<ol class="builder-steps">
-							<li>
-				                <span>
-				                    <label class="ru-form-required"><strong>Name your board</strong></label>
-				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required  maxlength="255" />				                    
-				                </span>
-							</li>
-							<li ng-show="isStaffUser">
-				                <span>
-				                    <label><strong>Choose your URL (must be unique and not contain spaces)</strong></label>
-				                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
-				                </span>
-							</li>
-							<li ng-show="isStaffUser">
-								<span>
-									<label><strong>Tag your board as</strong></label>
-									<select ng-model="currentGameBoard.tags">
-										<option value="">None</option>
-										<option value="{{boardTags.isaac.identifier}}">Created by Isaac</option>
-									</select>
-								</span>
-							</li>
-							<li>
-								<strong>Find Questions by...</strong>
-								<div class="row">
-									<div class="small-16 medium-8 columns">
-										<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
-				                        <select ng-model="questionSearchSubject">
-				                            <option value="">Any</option>
-				                            <option value="physics">Physics</option>
-				                            <option value="maths">Mathematics</option>
-				                        </select>
-									</div>								
-									<div class="small-16 medium-8 columns">
-										<label><strong>Question Level</strong></label>
-				                        <select ng-model="questionSearchLevel">
-				                            <option value="{{null}}">Any</option>
-				                            <option value="1">1 (GCSE)</option>
-				                            <option value="2">2</option>
-				                            <option value="3">3</option>
-				                            <option value="4">4</option>
-				                            <option value="5">5</option>
-				                            <option value="6">6 (Post A-Level)</option>
-				                        </select>
-									</div>
-									<div class="small-16 columns">
-						                <label><strong>and by Question Title or Topic</strong></label>
-						                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">														
-									</div>
-								</div>
-							</li>
-							<li>
-								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
-							</li>
-							<li ng-show="isStaffUser">
-								<label><strong>Choose your Wildcard</strong></label>
-								<div class="row">
-									<div class="small-16 columns">
-						                <select ng-model="userSelectedBoardWildCardId">
-						                    <option value="RANDOM">Random Wildcard</option>
-						                    <option ng-repeat="wildCard in wildCardList" ng-value="wildCard.id">{{wildCard.title}}</option>
-						                </select>
-									</div>
-								</div>	  									
-							</li>
-							<li>
-							    <button ng-disabled="currentGameBoard.questions.length == 0" type="submit" class="expand">Save this board</button>
-							</li>								
-						</ol>
-					</div>
-					<div class="small-16 medium-10 columns">
-						<div class="row">
-							<div class="small-16">
-								<div class="results-panel">
-									<h4>Choose your questions <span ng-show="!loading && searchResults">({{searchResults.length}})</span></h4>
-					                <div class="text-center" ng-if="loading">
-					                	<img src="/assets/loading.gif">
-					                </div>
+    <div class="row ru-page-heading">
+        <div class="medium-14 columns">
+            <h1>Build an Assignment</h1>
+        </div>
+        <div class="medium-2 columns text-right hide-for-small-only">
+            <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</a>
+        </div>
+    </div>
+        <div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
+            <form ng-submit="saveGameBoard()">
+                <div class="row">
+                    <div class="small-16 medium-6 columns results-panel">
+                        <h4>Create your board</h4>
+                        <ol class="builder-steps">
+                            <li>
+                                <span>
+                                    <label class="ru-form-required"><strong>Name your board</strong></label>
+                                    <input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required  maxlength="255" />                                 
+                                </span>
+                            </li>
+                            <li ng-show="isStaffUser">
+                                <span>
+                                    <label><strong>Choose your URL (must be unique and not contain spaces)</strong></label>
+                                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
+                                </span>
+                            </li>
+                            <li ng-show="isStaffUser">
+                                <span>
+                                    <label><strong>Tag your board as</strong></label>
+                                    <select ng-model="currentGameBoard.tags">
+                                        <option value="">None</option>
+                                        <option value="{{boardTags.isaac.identifier}}">Created by Isaac</option>
+                                    </select>
+                                </span>
+                            </li>
+                            <li>
+                                <strong>Find Questions from Isaac</strong>
+                                    <div>
+                                    <span>
+                                        <label><strong>Books or Online questions</strong></label>
+                                        <select ng-model="bookSelection">
+                                            <option value="books">Books</option>
+                                            <option value="online">Online questions</option>
+                                        </select>
+                                    </span>
+                                    <span ng-show="bookSelection == 'books'">
+                                        <label><strong>Choose Book</strong></label>
+                                        <select ng-model="bookId">
+                                            <option value="physics_skills_14">A Level Physics (Pre 3rd Edition)</option>
+                                            <option value="physics_skills_19">A Level Physics (3rd Edition)</option>
+                                            <option value="phys_book_gcse">GCSE Physics</option>
+                                            <option value="maths_book">Pre-Uni Maths</option>
+                                            <option value="chemistry_16">A-Level Physical Chemistry</option>
+                                        </select>
+                                    </span>
+                                    <div ng-show="bookSelection == 'online'" class="row">
+                                        <div class="small-16 medium-8 columns">
+                                            <label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
+                                            <select ng-model="questionSearchSubject">
+                                                <option value="">Any</option>
+                                                <option value="physics">Physics</option>
+                                                <option value="maths">Mathematics</option>
+                                            </select>
+                                        </div>                              
+                                        <div class="small-16 medium-8 columns">
+                                            <label><strong>Question Level</strong></label>
+                                            <select ng-model="questionSearchLevel">
+                                                <option value="{{null}}">Any</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6 (Post A-Level)</option>
+                                            </select>
+                                        </div>
+                                        <div class="small-16 columns">
+                                            <label><strong>and by Question Title or Topic</strong></label>
+                                            <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
+                            </li>
+                            <li ng-show="isStaffUser">
+                                <label><strong>Choose your Wildcard</strong></label>
+                                <div class="row">
+                                    <div class="small-16 columns">
+                                        <select ng-model="userSelectedBoardWildCardId">
+                                            <option value="RANDOM">Random Wildcard</option>
+                                            <option ng-repeat="wildCard in wildCardList" ng-value="wildCard.id">{{wildCard.title}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <button ng-disabled="currentGameBoard.questions.length == 0" type="submit" class="expand">Save this board</button>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="small-16 medium-10 columns" ng-show="bookSelection =='online' || (bookSelection =='books' && bookId)">
+                        <div class="row">
+                            <div class="small-16">
+                                <div class="results-panel">
+                                    <h4>Choose your questions <span ng-show="!loading && searchResults">({{searchResults.length}})</span></h4>
+                                    <div class="text-center" ng-if="loading">
+                                        <img src="/assets/loading.gif">
+                                    </div>
 
-					                <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided. <a href="javascript:void(0)" ng-click="doNotFilterByLevelOrSubject()" ng-show="questionSearchLevel != '' || questionSearchSubject != ''"><br/>Click to search all Questions</a>.</p>
+                                    <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided. <a href="javascript:void(0)" ng-click="doNotFilterByLevelOrSubject()" ng-show="questionSearchLevel != '' || questionSearchSubject != ''"><br/>Click to search all Questions</a>.</p>
 
-					                <ul ng-if="!loading" class="no-bullet results-list" ng-show="!loading && searchResults.length > 0">
-					                	<li ng-repeat="question in searchResults track by $index"><label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
-					                </ul>
-								</div>									
-							</div>
-						</div>
-						<div class="row" ng-show="currentGameBoard.questions.length > 0">
-							<div class="small-16">
-								<div class="results-panel">
-									<h4>Currently Selected Questions ({{currentGameBoard.questions.length}}/10)</h4>
-					                <ul class="no-bullet selected-questions results-list">
-					                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
-					                </ul>
-				               	</div>									
-							</div>
-						</div>					
-					</div>
-				</div>							
-			</form>	
-		</div>
-		<div class='small-16 columns' ng-show="boardCreatedSuccessfully">
-			<h3>Your board has been created successfully</h3>
+                                    <ul ng-if="!loading" class="no-bullet results-list" ng-show="!loading && searchResults.length > 0">
+                                        <li ng-repeat="question in searchResults track by $index"><label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="currentGameBoard.questions.length > 0">
+                            <div class="small-16">
+                                <div class="results-panel">
+                                    <h4>Currently Selected Questions ({{currentGameBoard.questions.length}}/10)</h4>
+                                    <ul class="no-bullet selected-questions results-list">
+                                        <li ng-repeat="question in currentGameBoard.questions track by $index"> <label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </div>
+        <div class='small-16 columns' ng-show="boardCreatedSuccessfully">
+            <h3>Your board has been created successfully</h3>
             <a class="ru-button-big" ui-sref="groups()">Create a new group</a>
             <a class="ru-button-big" ng-show="!hasGroups" ui-sref="setAssignments()">Assign boards to groups</a>
             <a class="ru-button-big" ng-click="resetForm(); modals.gameCreated.hide();">Create another board</a>
-		</div>
-	<section ng-show="currentGameBoard.questions.length > 0">
-	    <form data-abide ng-submit="saveGameBoard()">
-		    <div class="row">
-	            <div class="small-16 columns">
-	            	<h2 ng-show="!boardCreatedSuccessfully">Game Board Preview</h2>
-	            	<h2 ng-show="boardCreatedSuccessfully">Game Board (<a ui-sref="board({id:currentGameBoard.id})">view</a>)</h2>
-	            </div>
-		    </div>    
-		    <div class="row">
-		    	<div class="small-16 columns">
-		    		<h2 class="text-center">{{currentGameBoard.title}}</h2>
-		    		<div class="clearfix"></div>
+        </div>
+    <section ng-show="currentGameBoard.questions.length > 0">
+        <form data-abide ng-submit="saveGameBoard()">
+            <div class="row">
+                <div class="small-16 columns">
+                    <h2 ng-show="!boardCreatedSuccessfully">Game Board Preview</h2>
+                    <h2 ng-show="boardCreatedSuccessfully">Game Board (<a ui-sref="board({id:currentGameBoard.id})">view</a>)</h2>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="small-16 columns">
+                    <h2 class="text-center">{{currentGameBoard.title}}</h2>
+                    <div class="clearfix"></div>
 
-					<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
-		        </div>
-		    </div>
-	    </form>
-	</section>
+                    <div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
+                </div>
+            </div>
+        </form>
+    </section>
 </div>
 
 <div isaac-modal="gameEditorHelp">
@@ -150,7 +164,7 @@
     <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
   </div>
   <div class="reveal-modal-body">
-		<div isaac-page-fragment="game_builder_intro"> </div>
+        <div isaac-page-fragment="game_builder_intro"> </div>
   </div>
 </div>
 

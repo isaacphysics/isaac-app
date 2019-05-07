@@ -898,7 +898,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('gameEditor', {
-            url: "/game_builder?query&subject&level&sort&base",
+            url: "/game_builder?query&subject&level&book_id&sort&base",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
             },
