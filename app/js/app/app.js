@@ -644,6 +644,7 @@ define([
 
                 $rootScope.notificationWebSocket.onopen = function(_event) {
                     $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
+                    $rootScope.webSocketErrorCount = 0; // Reset error count on successful open.
                 }
 
 
@@ -737,14 +738,14 @@ define([
                             } else {
                                 $rootScope.webSocketErrorCount += 1;
                                 // If too many errors have occurred whilst re-trying, abort:
-                                if ($rootScope.webSocketErrorCount > 3) {
+                                if ($rootScope.webSocketErrorCount >= 3) {
                                     console.error("WebSocket reconnect failed multiple times. Aborting retry!");
                                     break;
                                 }
                                 // This is likely a network interrupt or else a server restart.
                                 // For the latter, we really don't want all reconnections at once.
-                                // Wait a random time between 10s and 60s, and then attempt reconnection:
-                                var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
+                                // Wait a random time between 20s and 60s, and then attempt reconnection:
+                                var randomRetryIntervalSeconds = 20 + Math.floor(Math.random() * 40);
                                 console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
                                 $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, randomRetryIntervalSeconds * 1000);
                             }
