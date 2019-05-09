@@ -71,6 +71,7 @@
                                     <div class="streak-value" ng-if="user.userSnapshot != null">
                                         {{ user.userSnapshot.streakRecord.currentStreak || 0 }}
                                     </div>
+                                    <div class="streak-value" ng-if="!user.userSnapshot && webSocketErrorCount > 0">?</div>
                                     Progress
     
                                 </span>
