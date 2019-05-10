@@ -285,7 +285,13 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             // Create biology generic pages and register them here
         }
         
-        $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
+        $sp.state('questions', {
+                url: "/questions",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('gameBoards', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)

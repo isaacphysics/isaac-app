@@ -23,8 +23,6 @@ define([], function() {
 
         this.pods = $resource(urlPrefix + "/pages/pods/" + subject.id);
 
-        this.questionsPage = $resource(urlPrefix + "/pages/question_summary/top_boards_content");
-
         this.questionPages = $resource(urlPrefix + "/pages/questions/:id");
 
         this.conceptPages = $resource(urlPrefix + "/pages/concepts/:id");
