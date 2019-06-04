@@ -293,6 +293,43 @@
 
 }
 
+.equation-input .value-help {
+    font-size: 0.9em;
+    font-style: normal;
+    font-weight: bold;
+    color: #888;
+    background: white;
+    position: absolute;
+    right: 1ex;
+    top: 0.5ex;
+    padding-left: 0.3ex;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+
+    .popup {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        opacity: 1;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        color: black;
+        font-weight: normal;
+        font-style: italic;
+        width: 200px;
+        font-size: 0.8rem;
+        box-shadow: 0px 0px 5px #888;
+        z-index: 999;
+    }
+
+    &:active .popup, &:hover .popup {
+        display: block;
+    }
+}
+
 .ru-answer-block {
     input, textarea {
         @include radius(3px);

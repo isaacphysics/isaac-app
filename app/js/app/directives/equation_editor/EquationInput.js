@@ -24,7 +24,7 @@ define(["inequality",
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
-                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).join(", ");
+                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).sort().join(", ");
                     } catch (err) {
                         // Do not let invalid availableSymbols prevent anyone from answering the question!
                         scope.symbolList = null;
@@ -187,7 +187,7 @@ define(["inequality",
 
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode, scope.logicSyntax).then(function(finalState) {
                         scope.state = finalState;
-                        if (finalState.hasOwnProperty("result") && finalState.result.hasOwnProperty("python")) {
+                        if (finalState.hasOwnProperty("result") && finalState.result && finalState.result.hasOwnProperty("python")) {
                             element.find(".eqn-text-input")[0].value = finalState.result.python;
                         }
                         scope.$apply();
@@ -197,9 +197,12 @@ define(["inequality",
                 scope.$watch("state", function(s) {
                     if (s && s.result) {
                         // We have an existing answer to the question.
-                        // If we have the LaTeX form, render it; else answer was typed and we failed to parse it:
                         if (s.result.tex) {
+                            // If we have the LaTeX form, render it
                             katex.render(s.result.tex, element.find(".eqn-preview > .inner-eqn-preview")[0]);
+                        } else if (s.result.python == "") {
+                            // This catches cases where someone has typed and then backspaced it all.
+                            element.find(".eqn-preview > .inner-eqn-preview").html("Click to enter your answer");
                         } else {
                             // This branch is only triggered when we can't parse a typed answer.
                             element.find(".eqn-preview > .inner-eqn-preview").html("Click to replace your typed answer");
