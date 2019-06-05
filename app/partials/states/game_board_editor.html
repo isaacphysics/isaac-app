@@ -101,7 +101,7 @@
                             </li>
                         </ol>
                     </div>
-                    <div class="small-16 medium-10 columns" ng-show="bookSelection =='online' || (bookSelection =='books' && bookId)">
+                    <div class="small-16 medium-10 columns" ng-show="bookSelection =='online' || (bookSelection =='books' && bookId) || currentGameBoard.questions.length > 0">
                         <div class="row">
                             <div class="small-16">
                                 <div class="results-panel">
@@ -110,7 +110,10 @@
                                         <img src="/assets/loading.gif">
                                     </div>
 
-                                    <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided. <a href="javascript:void(0)" ng-click="doNotFilterByLevelOrSubject()" ng-show="questionSearchLevel != '' || questionSearchSubject != ''"><br/>Click to search all Questions</a>.</p>
+                                    <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided. 
+                                        <!-- <a href="javascript:void(0)" ng-click="doNotFilterByLevelOrSubject()" ng-show="questionSearchLevel != '' || questionSearchSubject != ''"><br/>Click to search all Questions</a>. -->
+                                    </p>
+                                    <p class="small-text-center" ng-show="!loading && currentGameBoard.questions.length > 0 && !(bookSelection =='online' || (bookSelection =='books' && bookId))">Use the filter on the left to select questions.</p>
 
                                     <ul ng-if="!loading" class="no-bullet results-list" ng-show="!loading && searchResults.length > 0">
                                         <li ng-repeat="question in searchResults track by $index"><label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
