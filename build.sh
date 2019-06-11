@@ -37,7 +37,7 @@ fi
 
 npm install &&
 npm run build:prod &&
-docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION . &&
+docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --pull --build-arg API_VERSION=$SEGUE_VERSION . &&
 docker push "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" ||
 exit 1
 
@@ -46,7 +46,7 @@ rm -rf isaac-app
 
 git clone -b $SEGUE_VERSION --depth 1 https://github.com/ucam-cl-dtg/isaac-api.git &&
 cd isaac-api &&
-docker build -t "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" . &&
+docker build -t "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" --pull . &&
 docker push "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" ||
 exit 1
 
