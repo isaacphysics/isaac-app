@@ -20,7 +20,7 @@
 </div>
 <div style="position: relative" ng-show="editorMode == 'maths'">
     <div class="equation-editor-text-entry" style="height: 0; overflow: hidden"></div>
-    <input ng-keyup="textEdit()" ng-paste="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="or type your answer here" style="font-family: monospace; font-size: 1.4rem;" autocorrect="off" autocapitalize="off" spellcheck="false"></input>
+    <input ng-keyup="textEdit()" ng-paste="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="or type your formula here" style="font-family: monospace; font-size: 1.4rem;" autocorrect="off" autocapitalize="off" spellcheck="false"></input>
     <span class="value-help">?<div class="popup">Here are some examples of expressions you can type:<br><br>a*x**2 + b x + c<br>c == sqrt(a**2 + b**2)<br>(1/2) mv**2<br>x_3 = x_1 + x_2<br><br>As you type, the box above will preview the result.</div></span>
     <div ng-show="textEntryError.length > 0" style='margin-bottom:10px'><strong>Careful!</strong>
         <ul>
