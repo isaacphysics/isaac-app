@@ -166,11 +166,13 @@ define([], function() {
 			}, {
 				id: "shapes",
 				parent: "geometry"
-			}, {
-				id: "symmetry",
-				parent: "geometry",
-				comingSoon: true,
-			},
+			}, 
+			// Removed 07/05/19
+			// {
+			// 	id: "symmetry",
+			// 	parent: "geometry",
+			// 	comingSoon: true,
+			// },
 			
 			// Calculus topics
 

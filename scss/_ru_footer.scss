@@ -8,7 +8,6 @@ footer
     color: #fff;
     font-weight: 300;
     font-size: 0.9rem;
-    padding-bottom: 2.5em;
 }
 
 // Desktop
@@ -91,7 +90,7 @@ a[class^='ru ru-social-icon']
 
 .ru-footer-base
 {
-    margin-top: 1em;
+    margin-top: 1.25em !important;
     color: #fff;
     line-height: 150%;
     font-style: italic;
@@ -114,7 +113,14 @@ img.ru-mobile-logo
 .ru-mobile-doe
 {
     position: absolute;
-    top: 20px;
+    margin-top: 1rem !important;
+    margin-right: 2rem;
+    z-index: 1; // make clickable on small screens (over the social icon margin)
+    @media only screen and (max-width: 32rem)
+    {
+        margin-top: 0.5rem !important;
+        margin-right: 1rem;
+    }
 }
 
 .ru-mobile-social

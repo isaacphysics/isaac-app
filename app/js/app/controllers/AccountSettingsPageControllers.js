@@ -27,14 +27,10 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.emailPreferences = {"NEWS_AND_UPDATES": true, "ASSIGNMENTS": true, "EVENTS": true};
     $scope.subjectInterests = {};
     $scope.betaFeatures = {};
+    $scope.authenticationSettings = {};
     $scope.passwordChangeState = {
         passwordCurrent : ""
     };
-
-    // It appears ng-model can no longer cope matching a string value to a number?
-    if ($scope.user.defaultLevel) {
-        $scope.user.defaultLevel = String($scope.user.defaultLevel);
-    }
 
     // the hash will be used as an anchor
     if ($location.hash){
@@ -80,6 +76,13 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             }
             $scope.subjectInterests = result.SUBJECT_INTEREST || $scope.subjectInterests;
             $scope.betaFeatures = result.BETA_FEATURE || $scope.betaFeatures;
+        });
+        api.authentication.getCurrentUserAuthSettings().$promise.then(function(result){
+            $scope.authenticationSettings = result;
+        });
+    } else {
+        api.authentication.getUserAuthSettings({'userId':$scope.user.id}).$promise.then(function(result){
+            $scope.authenticationSettings = result;
         });
     }
 
@@ -185,7 +188,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         let linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
 
         // loop through linked accounts
-        angular.forEach($scope.user.linkedAccounts, function(account){
+        angular.forEach($scope.authenticationSettings.linkedAccounts, function(account){
             Object.keys(linked).forEach(function(key) {
                 // If there is a match update to true
                 if (key === account) linked[key] = true;
@@ -197,9 +200,18 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     $scope.removeLinkedAccount = function(provider) {
         api.removeLinkedAccount(provider).then(function() {
-            auth.updateUser();
+            if ($scope.editingSelf) {
+                api.authentication.getCurrentUserAuthSettings().$promise.then(function(result){
+                    $scope.authenticationSettings = result;
+                });
+            } else {
+                api.authentication.getUserAuthSettings({'userId':$scope.user.id}).$promise.then(function(result){
+                    $scope.authenticationSettings = result;
+                });
+            }
         });
     }
+    
     $scope.addLinkedAccount = function(provider) {
         auth.linkRedirect(provider);
     }

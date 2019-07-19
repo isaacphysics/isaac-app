@@ -37,6 +37,7 @@ define([
     "angular-google-maps",
     "../lib/opentip-jquery.js",
     "foundation-sites/js/vendor/modernizr",
+    "ng-sortable",
     ], function(rv, ineq, require) {
 
     // Require polyfill script to enable packages which are dependent on older versions of jQuery
@@ -81,7 +82,8 @@ define([
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date'
+        'ui.date',
+        'as.sortable',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', '$analyticsProvider',
@@ -127,10 +129,15 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0) && !response.data.bypassGenericSiteErrorPage) {
+                    if (response.status >= 500 && !response.data.bypassGenericSiteErrorPage) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
-                        $state.go('error');
+                        if (response.status == 502) {
+                            // A '502 Bad Gateway' response means that the API no longer exists:
+                            $state.go('error_stale');
+                        } else {
+                            $state.go('error');
+                        }
                         console.warn("Error from API:", response);
                     }
                     return $q.reject(response);
@@ -147,7 +154,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.8.1/api");
+            apiProvider.urlPrefix("/api/v2.8.6/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -615,6 +622,7 @@ define([
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
         $rootScope.webSocketCheckTimeout = null;
+        $rootScope.webSocketErrorCount = 0;
         var lastKnownServerTime = null;
 
         var openNotificationSocket = function() {
@@ -636,6 +644,7 @@ define([
 
                 $rootScope.notificationWebSocket.onopen = function(_event) {
                     $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
+                    $rootScope.webSocketErrorCount = 0; // Reset error count on successful open.
                 }
 
 
@@ -727,10 +736,16 @@ define([
                                 console.log("WebSocket endpoint overloaded. Trying again later!")
                                 $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 60000);
                             } else {
+                                $rootScope.webSocketErrorCount += 1;
+                                // If too many errors have occurred whilst re-trying, abort:
+                                if ($rootScope.webSocketErrorCount >= 3) {
+                                    console.error("WebSocket reconnect failed multiple times. Aborting retry!");
+                                    break;
+                                }
                                 // This is likely a network interrupt or else a server restart.
                                 // For the latter, we really don't want all reconnections at once.
-                                // Wait a random time between 10s and 60s, and then attempt reconnection:
-                                var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
+                                // Wait a random time between 20s and 60s, and then attempt reconnection:
+                                var randomRetryIntervalSeconds = 20 + Math.floor(Math.random() * 40);
                                 console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
                                 $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, randomRetryIntervalSeconds * 1000);
                             }

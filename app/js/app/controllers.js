@@ -72,8 +72,6 @@ define(function(require) {
 
 	const teacherFeaturesPageController = require("./controllers/TeacherFeaturesPageController");
 
-	const questionsPageControllers = require("./controllers/QuestionsPageControllers");
-
 	const equalityPageController = require("./controllers/EqualityPageController");
 	const sketcherPageController = require("./controllers/SketcherPageController");
 
@@ -147,7 +145,6 @@ define(function(require) {
 	.controller('BooksController', booksControllers.PageController)
 	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
 
-	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
 	.controller('EqualityPageController', equalityPageController.PageController)
 	.controller('SketcherPageController', sketcherPageController.PageController)
 

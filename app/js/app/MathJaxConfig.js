@@ -52,12 +52,13 @@ define([], function() {
 				"units": ["\\rm{#1}",1],
 				// Chemistry:
 				"standardstate": ["\\mathbin{\u29B5}",0],
-				// Boolean Algebra:
+				// Boolean Algebra (mathematical syntax):
 				"true": "\\boldsymbol{\\rm{T}}",
 				"false": "\\boldsymbol{\\rm{F}}",
 				"and": ["{#1} \\wedge {#2}", 2],
 				"or": ["{#1} \\lor {#2}", 2],
 				"not": ["\\lnot{#1}", 1],
+				"bracketnot": ["\\lnot{(#1)}", 1],
 				"xor": ["{#1} \\veebar {#2}", 2],
 				"equivalent": "\\equiv"
 			},
@@ -87,9 +88,11 @@ define([], function() {
 
 	// FIXME: We could easily use the user's preferences to change the definitions:
 	if (false) {
+		// Boolean Algebra (engineering syntax):
     	MathJax.Hub.config.TeX.Macros.and = ["{#1} \\cdot {#2}", 2];
     	MathJax.Hub.config.TeX.Macros.or = ["{#1} + {#2}", 2];
     	MathJax.Hub.config.TeX.Macros.not = ["\\overline{#1}", 1];
+    	MathJax.Hub.config.TeX.Macros.bracketnot = MathJax.Hub.config.TeX.Macros.not; // Don't do anything special for engineering syntax!
     	MathJax.Hub.config.TeX.Macros.xor = ["{#1} \\oplus {#2}", 2];
     	MathJax.Hub.config.TeX.Macros.true = "1";
     	MathJax.Hub.config.TeX.Macros.false = "0";

@@ -92,7 +92,7 @@
 
             <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast && event.eventStatus != 'WAITING_LIST_ONLY' && (event.placesAvailable > 0 || (event.tags.indexOf('student') != -1 && user.role != 'STUDENT'))" href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
 
-            <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.eventStatus == 'WAITING_LIST_ONLY' || event.placesAvailable <= 0 || bookingDeadlinePast) && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Join waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
+            <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.eventStatus == 'WAITING_LIST_ONLY' || event.placesAvailable <= 0 || bookingDeadlinePast) && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Apply<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
       </div>
 
@@ -100,7 +100,7 @@
       <span ng-show="!user._id">
         <a ng-if="!user._id && event.eventStatus != 'CLOSED' && !event.expired && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to Book</a>
         
-        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && !event.expired && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to join waiting list</a>
+        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && !event.expired && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to apply</a>
       </span>
 
       <!-- options for those logged in -->

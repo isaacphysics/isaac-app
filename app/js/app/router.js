@@ -285,7 +285,13 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             // Create biology generic pages and register them here
         }
         
-        $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
+        $sp.state('questions', {
+                url: "/questions",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('gameBoards', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
@@ -506,10 +512,9 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
         $sp.state('board', {
             url: "/board/:id",
-            onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
-                $location.url("/#" + $stateParams.id);
+            onEnter: ["$stateParams", "$state", "$rootScope", function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.id}, {location: "replace"});
                 $rootScope.setLoading(false);
-                throw "Prevent entering board redirect state."
             }],
         });
 
@@ -638,6 +643,14 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             views: {
                 "body": {
                     templateUrl: "/partials/states/error.html",
+                },
+            },
+        });
+
+        $sp.state('error_stale', {
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/error_stale.html",
                 },
             },
         });
@@ -891,7 +904,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('gameEditor', {
-            url: "/game_builder?query&subject&level&sort&base",
+            url: "/game_builder?query&subject&level&book_id&sort&base",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
             },

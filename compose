@@ -40,6 +40,7 @@ pg-$ENV:
       - pg-$ENV:/var/lib/postgresql/data
       - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-create-script.sql:/docker-entrypoint-initdb.d/00-isaac-create.sql:ro
       - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-functions.sql:/docker-entrypoint-initdb.d/01-isaac-functions.sql:ro
+      - ../isaac-api/src/main/resources/db_scripts/quartz_scheduler_create_script.sql:/docker-entrypoint-initdb.d/02-isaac-quartz.sql:ro
 EOM
 
 
@@ -82,10 +83,10 @@ services:
       - elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
-      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
-      - /local/data/keys:/local/data/rutherford/keys:ro
-      - /local/data/school_list_2019.csv:/local/data/rutherford/school_list_2019.csv:ro
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
+      - /local/data/rutherford-content:/local/data/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/keys:ro
+      - /local/data/school_list_2019.csv:/local/data/school_list_2019.csv:ro
       - /var/log/isaac/$ENV:/isaac-logs:rw
     networks:
       default:
