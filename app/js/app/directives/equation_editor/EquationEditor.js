@@ -327,7 +327,7 @@ define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/e
                         // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
                         scope.symbolLibrary.allowVars = true;
 
-                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
+                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                         scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
 
                         let onEqualityPage = document.location.pathname === '/equality';
@@ -1349,45 +1349,6 @@ define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/e
                     }
                     ],
 
-                    hiddenOps: [{
-                        type: 'Relation',
-                        menu: {
-                            label: '\\leq',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: '<='
-                        }
-                    }, {
-                        type: 'Relation',
-                        menu: {
-                            label: '\\geq',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: '>='
-                        }
-                    }, {
-                        type: 'Relation',
-                        menu: {
-                            label: '<',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: '<'
-                        }
-                    }, {
-                        type: 'Relation',
-                        menu: {
-                            label: '>',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: '>'
-                        }
-                    }
-                    ],
-
                     chemOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -1526,6 +1487,42 @@ define(["inequality", "../../../lib/equation_editor/test_cases.js", "/partials/e
                         },
                         properties: {
                             relation: '='
+                        }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '<',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '<'
+                        }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '>',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '>'
+                        }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '\\leq',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '<='
+                        }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '\\geq',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '>='
                         }
                     }
                     ],
