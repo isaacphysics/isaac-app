@@ -1,5 +1,5 @@
 'use strict';
-define(["../../../lib/math.js"], function(m) {
+define([], function() {
 
     const SAMPLE_INTERVAL = 10;
     const numOfPts = 100;
@@ -225,11 +225,45 @@ define(["../../../lib/math.js"], function(m) {
 
         bezierLineStyle: function(pts) {
 
+            // See https://github.com/josdejong/mathjs/blob/v5.8.0/src/function/probability/product.js
+            let product = function(i, n) {
+                let half;
+                if (n < i) {
+                    return 1;
+                }
+                if (n === i) {
+                    return n;
+                }
+                half = (n + i) >> 1 // divide (n + i) by 2 and truncate to integer
+                return product(i, half) * product(half + 1, n);
+            }
+
+             // See https://github.com/josdejong/mathjs/blob/v5.8.0/src/function/probability/combinations.js
+            let combinations = function(n, k) {
+                let prodrange, nMinusk;
+
+                 if (n < 0 || k < 0) {
+                    throw new TypeError('Positive integer value expected in function combinations');
+                }
+                if (k > n) {
+                    throw new TypeError('k must be less than or equal to n');
+                }
+
+                 nMinusk = n - k;
+
+                 if (k < nMinusk) {
+                    prodrange = product(nMinusk + 1, n);
+                    return prodrange / product(1, k);
+                }
+                prodrange = product(k + 1, n)
+                return prodrange / product(1, nMinusk);
+            }
+
             let drawnNumberOfPoints = pts.length - 1;
             let comb = [];
             for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
                 // from the other math library!!!! not the same as Math!!!!
-                comb.push(m.combinations(drawnNumberOfPoints, currentIndex));
+                comb.push(combinations(drawnNumberOfPoints, currentIndex));
             }
 
             let step = 1 / numOfPts;
