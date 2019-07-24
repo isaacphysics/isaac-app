@@ -127,7 +127,7 @@ define(["inequality",
 
                         } else {
                             // Warn on possible interprtation mistakes:
-                            if (/(?<=.)(?<![ *+±=^\-\/\n0-9()]|arc|a)(sin|cos|tan|sec|cosec|cot|sqrt|sinh|cosh|tanh|ln|log)\(/.test(pycode)) {
+                            if (/([^ *+±=^\-\/\n0-9()ac])(sin|cos|tan|sec|cosec|cot|sqrt|sinh|cosh|tanh|ln|log)\(/.test(pycode)) {
                                 scope.textEntryError.push('You may be missing a space or a multiplication sign before a trig function or logarithm.');
                             }
                             // Successfully parsed something:
