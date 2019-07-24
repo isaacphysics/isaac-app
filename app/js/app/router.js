@@ -234,6 +234,15 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
                     $rootScope.setLoading(false);
                 }],
             });
+            $sp.state('solve_physics_problems', {
+                url: "/solve_physics_problems",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_solve_physics_problems', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
             $sp.state('gcsebook', {
                 url: "/gcsebook",
                 onEnter: ["$state","$rootScope", function($state, $rootScope) {
@@ -303,6 +312,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
         $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
+        $sp.state('book_solve_physics_problems', bookState("solve_physics_problems"));
         $sp.state('book_pre_uni_maths', bookState("pre_uni_maths"));
 
         $sp.state('answers', {
