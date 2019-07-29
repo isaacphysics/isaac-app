@@ -4,7 +4,7 @@
         {{selectedGroup == null ? "Create" : "Edit"}} group
         <span class="access-token" ng-show="selectedGroup">
             <a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a>&nbsp;
-            <span ng-if="selectedGroup && selectedGroup.ownerId == user._id && ($root.userPreferences.BETA_FEATURE.ADDITIONAL_GROUP_MANAGERS || selectedGroup.additionalManagers.length > 0)"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">Edit Group Managers</a></span>
+            <span ng-if="selectedGroup && selectedGroup.ownerId == user._id && selectedGroup.additionalManagers.length > 0"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">Edit Group Managers</a></span>
             <span ng-if="selectedGroup && selectedGroup.ownerId != user._id"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">View Group Managers</a></span>
         </span>
     </h6>
