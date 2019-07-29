@@ -23,6 +23,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     e.preventDefault();
                 });
 
+                function getSpec(attempt) {
+                    return api.generateSpecification(attempt);
+                }
+
                 // undo-ing, record history
                 scope.undo = function() {
                     if (scope.p.checkPointsUndo.length == 0 || scope.p.checkPointsUndo === undefined) {

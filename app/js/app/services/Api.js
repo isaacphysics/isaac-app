@@ -33,6 +33,12 @@ define([], function() {
             },
         });
 
+        this.questionSpecification = $resource(urlPrefix + "/questions/generateSpecification", {}, {
+            getSpec: {
+                method: "POST"
+            }
+        });
+
         this.contactForm = $resource(urlPrefix + "/contact/", {}, {
             send: {
                 method: "POST",
