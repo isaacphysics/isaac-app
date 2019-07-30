@@ -75,6 +75,8 @@ define(function(require) {
 	const equalityPageController = require("./controllers/EqualityPageController");
 	const sketcherPageController = require("./controllers/SketcherPageController");
 
+	const freeTextPageController = require("./controllers/FreeTextPageController");
+
 	const supportPageControllers = require("./controllers/SupportControllers");
 
 	/* Controllers */
@@ -147,6 +149,8 @@ define(function(require) {
 
 	.controller('EqualityPageController', equalityPageController.PageController)
 	.controller('SketcherPageController', sketcherPageController.PageController)
+
+	.controller('FreeTextPageController', freeTextPageController.PageController)
 
 	.controller('SupportPageController', supportPageControllers.PageController)
 });

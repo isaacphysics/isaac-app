@@ -356,6 +356,16 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         //     },
         // })
 
+        $sp.state('freetext', {
+            url: "/freetext",
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/free_text.html",
+                    controller: "FreeTextPageController"
+                },
+            },
+        })
+
         $sp.state('contact', {
             url: "/contact?preset&subject",
 
