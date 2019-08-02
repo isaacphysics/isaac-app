@@ -81,45 +81,43 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
             return;
         }
 
-        
         scope.setLoading(true);
+            
+        api.assignments.getFullAssignmentsByGroup({groupId: groupId}).$promise.then(function(a){
+            // clear the lightweight assignments for this group and replace them with full versions
+            scope.groupAssignments[groupId] = [];
+            a.forEach(function(assignment){
+                // assignment local sort options
+                assignment.pupilSortOptions = {
+                    familyName: {value: 'user.familyName', reverse: false},
+                    totalQuestionPercentage: {value: 'tickCount', reverse: true},
+                    totalQuestionPartPercentage: {value: 'correctQuestionPartsCount', reverse: true}
+                };
+                assignment.pupilSortOption = assignment.pupilSortOptions.familyName;
+                assignment.sortPupilsBy = function (property) {
+                    let sortOptionToSet = this.pupilSortOptions[property];
+                    if (sortOptionToSet == this.pupilSortOption) {
+                        this.pupilSortOption.reverse = !this.pupilSortOption.reverse;  
+                    } else if (sortOptionToSet != undefined) {
+                        this.pupilSortOption = sortOptionToSet;
+                    } else {
+                        console.error("Property '" + property + "' is not a valid pupilSortOption");
+                    }
+                };
 
-        for (let i = 0; i < scope.groupAssignments[groupId].length; i++) {
-            let assignment = scope.groupAssignments[groupId][i];
-
-            assignment.gameBoard = api.gameBoards.get({id: assignment.gameboardId});
-            gameboardPromises.push(assignment.gameBoard.$promise);
-            // assignment local sort options
-            assignment.pupilSortOptions = {
-                familyName: {value: 'user.familyName', reverse: false},
-                totalQuestionPercentage: {value: 'tickCount', reverse: true},
-                totalQuestionPartPercentage: {value: 'correctQuestionPartsCount', reverse: true}
-            };
-            assignment.pupilSortOption = assignment.pupilSortOptions.familyName;
-            assignment.sortPupilsBy = function (property) {
-                let sortOptionToSet = this.pupilSortOptions[property];
-                if (sortOptionToSet == this.pupilSortOption) {
-                    this.pupilSortOption.reverse = !this.pupilSortOption.reverse;  
-                } else if (sortOptionToSet != undefined) {
-                    this.pupilSortOption = sortOptionToSet;
-                } else {
-                    console.error("Property '" + property + "' is not a valid pupilSortOption");
-                }
-            };
-            scope.assignments[assignment._id] = assignment;
-        }
-
-        Promise.all(gameboardPromises).then(function() {
-            // add a sort option for each question in each assignment
-            scope.groupAssignments[groupId].forEach(function (assignment) {
-                assignment.gameBoard.questions.forEach(function (question, index) {
+                assignment.gameboard.questions.forEach(function (question, index) {
                     assignment.pupilSortOptions[scope.questionPageLabel + index] = {value: scope.questionPageLabel + index, reverse: true};
                 });
-            });
+
+                assignment.gameBoard = assignment.gameboard;
+                scope.groupAssignments[groupId].push(assignment);
+                scope.assignments[assignment._id] = assignment;
+
+            })
             scope.setLoading(false);
             scope.groupExpanded[groupId] = true;
             scope.$apply();
-        });
+        })
     };
 
     scope.$watchCollection("assignmentExpanded", function() {
@@ -131,61 +129,60 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                 scope.assignmentProgress[k].$promise.then(function(progressIdx, progress) {
                     scope.setLoading(false);
 
-                    scope.assignments[progressIdx].gameBoard.$promise.then(function(gameBoard) {
+                    let gameBoard = scope.assignments[progressIdx].gameBoard;
 
-                        // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
-                        let questions = gameBoard.questions;
-                        scope.assignmentAverages[progressIdx] = [];
-                        scope.assignmentTotalQuestionParts[progressIdx] = 0;
-                        
-                        for (let i in questions) {
-                            let q = questions[i];
-                            let tickCount = 0;
+                    // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
+                    let questions = gameBoard.questions;
+                    scope.assignmentAverages[progressIdx] = [];
+                    scope.assignmentTotalQuestionParts[progressIdx] = 0;
+                    
+                    for (let i in questions) {
+                        let q = questions[i];
+                        let tickCount = 0;
 
-                            for (let j = 0; j < progress.length; j++) {
-                                let studentResults = progress[j].results;
-
-                                if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
-                                    tickCount++;
-                                }
-                            }
-
-                            let tickPercent = Math.round(100 * (tickCount / progress.length));
-                            scope.assignmentAverages[progressIdx].push(tickPercent);
-                            scope.assignmentTotalQuestionParts[progressIdx] += q.questionPartsTotal;
-                        }
-
-                        // Calculate student totals and gameboard totals
-                        scope.assignmentProgress[progressIdx].studentsCorrect = 0;
                         for (let j = 0; j < progress.length; j++) {
+                            let studentResults = progress[j].results;
 
-                            let studentProgress = progress[j];
-
-                            if (progress[j].user.authorisedFullAccess) {
-
-                                studentProgress.tickCount = 0;
-                                studentProgress.correctQuestionPartsCount = 0;
-                                studentProgress.incorrectQuestionPartsCount = 0;
-                                studentProgress.notAttemptedPartResults = [];
-
-                                for (let i in studentProgress.results) {
-                                    if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
-                                        studentProgress.tickCount++;
-                                    }
-                                    studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
-                                    studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
-                                    studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
-                                    // for sorting the table on the particular question, student progress needs a unique attribute name for this value
-                                    studentProgress[scope.questionPageLabel + i] = studentProgress.correctPartResults[i];
-                                }
-
-                                if (studentProgress.tickCount == gameBoard.questions.length) {
-                                    scope.assignmentProgress[progressIdx].studentsCorrect++;
-                                }
-
+                            if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
+                                tickCount++;
                             }
                         }
-                    });
+
+                        let tickPercent = Math.round(100 * (tickCount / progress.length));
+                        scope.assignmentAverages[progressIdx].push(tickPercent);
+                        scope.assignmentTotalQuestionParts[progressIdx] += q.questionPartsTotal;
+                    }
+
+                    // Calculate student totals and gameboard totals
+                    scope.assignmentProgress[progressIdx].studentsCorrect = 0;
+                    for (let j = 0; j < progress.length; j++) {
+
+                        let studentProgress = progress[j];
+
+                        if (progress[j].user.authorisedFullAccess) {
+
+                            studentProgress.tickCount = 0;
+                            studentProgress.correctQuestionPartsCount = 0;
+                            studentProgress.incorrectQuestionPartsCount = 0;
+                            studentProgress.notAttemptedPartResults = [];
+
+                            for (let i in studentProgress.results) {
+                                if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
+                                    studentProgress.tickCount++;
+                                }
+                                studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
+                                studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
+                                studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
+                                // for sorting the table on the particular question, student progress needs a unique attribute name for this value
+                                studentProgress[scope.questionPageLabel + i] = studentProgress.correctPartResults[i];
+                            }
+
+                            if (studentProgress.tickCount == gameBoard.questions.length) {
+                                scope.assignmentProgress[progressIdx].studentsCorrect++;
+                            }
+
+                        }
+                    }
                 }.bind(this, k));
                 scope.assignmentSelectedQuestion[k] = 0;
             }
