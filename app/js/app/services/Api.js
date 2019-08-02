@@ -298,6 +298,12 @@ define([], function() {
                 isArray: true,
                 url: urlPrefix + "/assignments/assign", 
             },
+            'getFullAssignmentsByGroup' : {
+                method: 'GET',
+                isArray: true,
+                params: {groupId: '@groupId'},
+                url: urlPrefix + "/assignments/assign?group=:groupId", 
+            },
             'getAssignedGroups' : {
                 method: 'GET', 
                 //isArray: true,
