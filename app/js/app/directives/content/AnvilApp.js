@@ -50,6 +50,24 @@ define(["/partials/content/AnvilApp.html"], function(templateUrl) {
                     }
                 }
 
+                // Find the accordion section ID, if present:
+                let p = scope;
+                let lastId = null;
+                while (p.$parent) {
+                    p = p.$parent;
+                    if (!p.doc) {
+                        continue;
+                    }
+                    if (p.doc.type == "content" && p.doc.layout == "accordion") {
+                        ps.accordion_section_id = lastId;
+                        break;
+                    }
+                    if (p.doc.canonicalSourceFile) {
+                        break; // This is a top-level document, no more to search!
+                    }
+                    lastId = p.doc.id;
+                }
+
                 if (location.pathname.indexOf("/questions/") == 0) {
                     ps.page_id = location.pathname.replace("/questions/", "");
                     ps.page_type = "isaacQuestionPage";
