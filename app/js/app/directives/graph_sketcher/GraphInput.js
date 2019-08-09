@@ -17,10 +17,6 @@ define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
                     $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.graphSpec).then(
                         function(finalState) {
                             scope.state = finalState;
-                            api.questionSpecification.getSpec({"type":"graphChoice","value":JSON.stringify(finalState)}).$promise.then(function(result){
-                                scope.getSpec = result.results;
-                                console.log(scope.getSpec);
-                            });
                             scope.$apply();
                         },
                         function(exception) {
@@ -28,12 +24,6 @@ define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
                         }
                     );
                 };
-
-                // scope.$watch("state", function(s) {
-                //     if (!s) {
-                //         element.find(".graph-preview").html("Draw a graph");
-                //     } 
-                // });
             }
         };
     }];
