@@ -24,20 +24,20 @@ else
   API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
 fi 
 
-API_NAME=api-$ENV-$API_VERSION
-APP_NAME=app-$ENV-$APP_VERSION
+API_NAME=phy-api-$ENV-$API_VERSION
+APP_NAME=phy-app-$ENV-$APP_VERSION
 
 # Define the Postgres YML. Note that when ENV is "test" an additional volume line is appended to the end!
 read -r -d '' PG_SERVICE << EOM
-pg-$ENV:
-    container_name: pg-$ENV
+phy-pg-$ENV:
+    container_name: phy-pg-$ENV
     restart: unless-stopped
-    image: postgres:9.6
+    image: postgres:11
     environment:
       POSTGRES_USER: rutherford
       POSTGRES_PASSWORD: rutherf0rd
     volumes:
-      - pg-$ENV:/var/lib/postgresql/data
+      - phy-pg-$ENV:/var/lib/postgresql/data
       - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-create-script.sql:/docker-entrypoint-initdb.d/00-isaac-create.sql:ro
       - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-functions.sql:/docker-entrypoint-initdb.d/01-isaac-functions.sql:ro
       - ../isaac-api/src/main/resources/db_scripts/quartz_scheduler_create_script.sql:/docker-entrypoint-initdb.d/02-isaac-quartz.sql:ro
@@ -53,10 +53,10 @@ elif [ "$ENV" == "live" ]; then
   exit 1
 elif [ "$ENV" == "test" ]; then
   # Need to add the SQL script that loads the test data to pg-test:
-  TEST_INIT_DATA="      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql"
+  TEST_INIT_DATA="      - /local/data/test-phy-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql"
   PG_SERVICE="$PG_SERVICE"$'\n'"$TEST_INIT_DATA"
 else
-  echo "Must set environment to dev or staging."
+  echo "Must set environment to dev, staging or test"
   exit 1
 fi
 
@@ -70,7 +70,7 @@ services:
     networks:
       default:
         aliases:
-          - app-$ENV
+          - phy-app-$ENV
   $API_NAME:
     container_name: $API_NAME
     image: docker.isaacscience.org/isaac-api:$API_VERSION
@@ -78,31 +78,31 @@ services:
     extra_hosts:
       - local-smtp:$LOCAL_SMTP
     links:
-      - pg-$ENV:postgres
+      - phy-pg-$ENV:postgres
     external_links:
-      - elasticsearch-live:elasticsearch
+      - phy-elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
-      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
-      - /local/data/rutherford-content:/local/data/git-contentstore/rutherford-content:rw
+      - /local/data/isaac-config/phy/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
+      - /local/data/rutherford-content:/local/data/rutherford-content:rw
       - /local/data/keys:/local/data/keys:ro
       - /local/data/school_list_2019.csv:/local/data/school_list_2019.csv:ro
-      - /var/log/isaac/$ENV:/isaac-logs:rw
+      - /var/log/isaac/phy-$ENV:/isaac-logs:rw
     networks:
       default:
         aliases:
-          - api-$ENV-any
+          - phy-api-$ENV-any
     logging:
       driver: journald
       options:
-        tag: isaac-api-$ENV
+        tag: phy-isaac-api-$ENV
   $PG_SERVICE
 networks:
   default:
     external:
       name: isaac
 volumes:
-  pg-$ENV:
+  phy-pg-$ENV:
     external: true
 
 EOF
