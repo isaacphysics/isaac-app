@@ -25,7 +25,7 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', 'api', fu
             };
             api.questionSpecification.getSpec({"type":"graphChoice","value":JSON.stringify(s)}).$promise.then(
                 function(spec) {
-                    $scope.getSpec = spec.results;
+                    $scope.getSpec = spec.results.toString();
                 });
         } catch (e) {
             console.error("Invalid curves");
