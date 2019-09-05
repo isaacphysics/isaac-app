@@ -70,6 +70,7 @@ export const PageController = ['$scope', 'auth', 'api', 'persistence', '$statePa
 
 	$scope.signUpFunction = function() {
 		persistence.save('afterAuth', $scope.target || "");
+		$("#mobile-login-form").ruDropDownHide(this);
 		$scope.$root.user.email = $scope.loginUser.email;
 		$scope.$root.user.password = $scope.loginUser.password;
 		return $scope.user;

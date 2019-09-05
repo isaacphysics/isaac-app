@@ -24,33 +24,33 @@ fi
 docker pull docker.isaacscience.org/isaac-api:$API_VERSION
 
 
-ETL_NAME=etl-$API_VERSION
+ETL_NAME=phy-etl-$API_VERSION
 
-cat << EOF | docker-compose -p dc-etl -f - $@
+cat << EOF | docker-compose -p dc-phy-etl -f - $@
 version: '2'
 services:
-  etl:
+  phy-etl:
     container_name: $ETL_NAME
     image: docker.isaacscience.org/isaac-api:$API_VERSION
     volumes:
       - /local/data/m2:/root/.m2:rw
-      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
-      - /local/data/isaac-config/content_indices.properties:/local/data/conf/content_indices.properties:rw
-      - /local/data/rutherford-content:/local/data/git-contentstore/rutherford-content:rw
+      - /local/data/isaac-config/phy/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
+      - /local/data/isaac-config/phy/content_indices.properties:/local/data/conf/content_indices.properties:rw
+      - /local/data/rutherford-content:/local/data/rutherford-content:rw
       - /local/data/keys:/local/data/keys:ro
       - /local/data/school_list_2019.csv:/local/data/school_list_2019.csv:ro
-      - /var/log/isaac/etl:/isaac-logs:rw
+      - /var/log/isaac/phy-etl:/isaac-logs:rw
     command: ["mvn", "jetty:run", "-P", "etl"]
     external_links:
-      - elasticsearch-live:elasticsearch
+      - phy-elasticsearch-live:elasticsearch
     networks:
       default:
         aliases:
-          - etl
+          - phy-etl
     logging:
       driver: journald
       options:
-        tag: isaac-etl
+        tag: phy-isaac-etl
 networks:
   default:
     external:
