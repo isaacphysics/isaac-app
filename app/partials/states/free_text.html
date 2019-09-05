@@ -4,11 +4,15 @@
 <div style="height:75px"></div>
 <div class="row">
     <div class="small-16 columns">
+    	<h2>Rules</h2>
     	<input type="text" name="rule" ng-model="freeTextRule"/>
-        <div isaac-free-text-question selectedValue="freeTextState" question-doc="questionDoc" class="isaac-free-text-question"></div>
+    	<h2>Answer</h2>
+        <!-- <div isaac-free-text-question selectedValue="freeTextState" question-doc="questionDoc" class="isaac-free-text-question"></div> -->
+        <input type="text" name="answer" ng-model="freeTextAnswer">
         </div>
     </div>
 </div>
 <div>
+	{{freeTextAnswerJson}}
 	{{freeTextRuleJson}}
 </div>

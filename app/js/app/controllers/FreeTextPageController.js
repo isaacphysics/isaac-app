@@ -19,6 +19,12 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
     $scope.freeTextRuleJson = {
         value: ""
     };
+    $scope.freeTextAnswerJson = {
+        value: ""
+    };
+    $scope.selectedValue = {
+        "value": "sup"
+    };
     // $scope.freeTextState = {
     //     value: ""
     // };
@@ -27,7 +33,10 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
     };
     $scope.$watch("freeTextRule", function(s) {
         console.log("hiya");
-        if (s == null) return;
+        if (s == null || s == "") {
+            $scope.freeTextRuleJson = null;
+            return;
+        }
         try {
             console.log(s);
             $scope.freeTextRuleJson = {
@@ -48,14 +57,17 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
             console.error("Invalid answer.");
         }
     });
-    $scope.$watch("freeTextState", function(s) {
+    $scope.$watch("freeTextAnswer", function(s) {
         console.log("hi");
-        if (s == null) return;
+        if (s == null || s == "") {
+            $scope.freeTextAnswerJson = null;
+            return;
+        }
         try {
-            let answer = JSON.parse(s);
-            $scope.freeTextState = {
-                value: answer
-            }
+            console.log(s);
+            $scope.freeTextAnswerJson = {
+                value: s
+            };
         } catch (e) {
             console.error("Invalid answer.");
         }
