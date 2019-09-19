@@ -57,6 +57,11 @@ define([], function() {
                 url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
                 isArray: true,
             },
+            conceptsFromHistory: {
+                method: 'GET',
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts_with_history?history=:history",
+                isArray: true,
+            },
         });
 
         this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
