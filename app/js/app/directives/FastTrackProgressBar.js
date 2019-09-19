@@ -97,9 +97,13 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                 let hexagonQuarterHeight = hexagonUnitLength / Math.sqrt(3);
                 scope.currentlyWorkingOn = getCurrentlyWorkingOn();
                 if (scope.currentlyWorkingOn.isConcept) {
-                    // NOTE: We could extract the "upper" question id and pass
-                    // it back to the API instead of having the API do it.
-                    scope.conceptQuestions = api.fastTrack.conceptsFromHistory({gameboardId: $stateParams.board, history: $location.search().questionHistory.split(',')});
+                    let history = $location.search().questionHistory.split(',');
+                    let uppers = history.filter(e => /upper/i.test(e));
+                    if (uppers.length > 0) {
+                        scope.conceptQuestions = api.fastTrack.conceptsWithUpper({gameboardId: $stateParams.board, upper: uppers[uppers.length-1]});
+                    } else {
+                        scope.conceptQuestions = api.fastTrack.concepts({gameboardId: $stateParams.board, concept: scope.currentlyWorkingOn.title});
+                    }
                 } else {
                     scope.conceptQuestions =  {$promise: Promise.resolve(null)};
                 }
