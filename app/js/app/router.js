@@ -345,7 +345,6 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             },
         });
 
-        // Temporarily disable until we have refactored
         $sp.state('sketcher', {
             url: "/sketcher",
             views: {
