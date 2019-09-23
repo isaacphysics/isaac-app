@@ -100,7 +100,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                     let history = $location.search().questionHistory.split(',');
                     let uppers = history.filter(e => /upper/i.test(e));
                     if (uppers.length > 0) {
-                        scope.conceptQuestions = api.fastTrack.conceptsWithUpper({gameboardId: $stateParams.board, upper: uppers[uppers.length-1]});
+                        scope.conceptQuestions = api.fastTrack.conceptsWithUpper({gameboardId: $stateParams.board, upper: uppers[uppers.length-1], conceptTitle: scope.currentlyWorkingOn.title});
                     } else {
                         scope.conceptQuestions = api.fastTrack.concepts({gameboardId: $stateParams.board, concept: scope.currentlyWorkingOn.title});
                     }

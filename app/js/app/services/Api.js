@@ -57,9 +57,9 @@ define([], function() {
                 url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
                 isArray: true,
             },
-            conceptsWithHistory: {
+            conceptsWithUpper: {
                 method: 'GET',
-                url: urlPrefix + "/fasttrack/:gameboardId/concepts_with_upper?upper=:upper",
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts_with_upper?upper=:upper&conceptTitle=:conceptTitle",
                 isArray: true,
             },
         });
