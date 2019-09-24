@@ -261,6 +261,19 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><span class="hide-for-small-only">Engineering</span><span class="show-for-small-only">Eng</span></td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch32">&nbsp;</label>
+                                                <input id="ch32" type="checkbox" ng-model="subjectInterests.ENGINEERING_UNI" input-animation>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -483,16 +496,6 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-if="user.role != 'STUDENT'">
-                      <td><a href="https://labs.isaacphysics.org/teachers-sharing-groups.html" target="_blank">Sharing Groups</a></td>
-                      <td class="hide-for-small-only">Allow additional teachers to manage your groups; set assignments, view marks and add students.</td>
-                      <td class="feature-checkbox">
-                        <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="teachers-sharing-groups">&nbsp;</label>
-                          <input id="teachers-sharing-groups" type="checkbox" ng-model="betaFeatures.ADDITIONAL_GROUP_MANAGERS" input-animation>
-                        </div>
-                      </td>
-                    </tr>
                     <tr>
                       <td>High Contrast Mode</td>
                       <td class="hide-for-small-only">A dark non-italic text on a white background version of our questions. If you use this feature, please do <a ui-sref='contact({"subject": "High Contrast Beta Feature"})' target='_blank'>give us feedback or make requests here</a>.</td>

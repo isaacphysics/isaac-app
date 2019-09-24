@@ -303,6 +303,12 @@ define([], function() {
                 isArray: true,
                 url: urlPrefix + "/assignments/assign", 
             },
+            'getFullAssignmentsByGroup' : {
+                method: 'GET',
+                isArray: true,
+                params: {groupId: '@groupId'},
+                url: urlPrefix + "/assignments/assign?group=:groupId", 
+            },
             'getAssignedGroups' : {
                 method: 'GET', 
                 //isArray: true,
@@ -394,7 +400,7 @@ define([], function() {
         let questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
         let conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
         let gameBoardsList = $resource(urlPrefix + "/gameboards/user_gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
-        let deleteBoard = $resource(urlPrefix + "/gameboards/user_gameboards/:id", {}, {'query': {method: 'DELETE'}});
+        let deleteBoard = $resource(urlPrefix + "/gameboards/user_gameboards/:ids", {}, {'query': {method: 'DELETE'}});
         let saveBoard = $resource(urlPrefix + "/gameboards/user_gameboards/:id", {}, {'query': {method: 'POST'}});
         let eventsList = $resource(urlPrefix + "/events");
 
@@ -407,7 +413,7 @@ define([], function() {
         }
         
         this.deleteGameBoard = function(id){
-            return deleteBoard.query({"id" : id});
+            return deleteBoard.query({"ids" : id});
         }
 
         this.saveGameBoard = function(id) {

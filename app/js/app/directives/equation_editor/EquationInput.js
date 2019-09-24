@@ -126,6 +126,10 @@ define(["inequality",
                             }
 
                         } else {
+                            // Warn on possible interprtation mistakes:
+                            if (/([^ *+±=^\-\/\n0-9()ac])(sin|cos|tan|sec|cosec|cot|sqrt|sinh|cosh|tanh|ln|log)\(/.test(pycode)) {
+                                scope.textEntryError.push('You may be missing a space or a multiplication sign before a trig function or logarithm.');
+                            }
                             // Successfully parsed something:
                             if (pycode === '') {
                                 element.find(".eqn-preview > .inner-eqn-preview").html("Click here to enter a formula!");

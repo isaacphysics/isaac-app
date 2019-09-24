@@ -48,6 +48,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boar
         });
     };
 
+    // TODO: not sure this is still used now we have the delete boards function?
     $scope.deleteBoard = function(board){
         lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
             if (groupsAssigned[board.id] != null && groupsAssigned[board.id].length != 0) {
@@ -109,8 +110,10 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boar
                 let boardCount = 0;
                 let numSelectedBoards = $scope.selectedBoards.length;
 
-                $scope.selectedBoards.forEach(function(boardId) {
+                $scope.boardIdsToDelete = [];
 
+                // we want to filter the list of selected boards to those which are safe to delete - ie not assigned to groups.
+                $scope.selectedBoards.forEach(function(boardId) {
                     boardCount++;
                     let assigned = false;
 
@@ -122,20 +125,24 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boar
                     if (assigned) {
                         return;
                     }
+                    
+                    $scope.boardIdsToDelete.push(boardId)
+                });
 
+                api.deleteGameBoard($scope.boardIdsToDelete).$promise.then(function(){
                     $scope.setLoading(true);
-                    api.deleteGameBoard(boardId).$promise.then(function(){
-                        $scope.boardSelectToggle(boardId);
-                        if (boardCount == numSelectedBoards) {
-                            // TODO: This needs to be reviewed
-                            // Currently reloading boards after delete
-                            updateBoards($scope.boards.results.length);
-                            $scope.setLoading(false);
-                        }
+                    if (boardCount == numSelectedBoards) {
+                        // we want to unselect the items that have been successfully deleted so that if there are any boards with groups they remain checked. See counts below.
+                        $scope.boardIdsToDelete.forEach(function(boardId){
+                            $scope.boardSelectToggle(boardId);
+                        });
+
+                        updateBoards($scope.boards.results.length);
                         $scope.setLoading(false);
-                    }).catch(function(e){
-                        $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-                    });
+                    }
+                    $scope.setLoading(false);
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
 
                 let deletedBoardsCount = selectedBoardCount - assignedCount;
