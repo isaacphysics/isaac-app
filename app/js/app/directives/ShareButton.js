@@ -47,11 +47,13 @@ define([], function() {
                         // Attempt to select the share URL for users with a modern browser:
                         let shareUrlDiv = element.parent().find(".share-url-div")[0];
                         if (window.getSelection && shareUrlDiv) {
-                            let selection = window.getSelection();        
-                            let range = document.createRange();
-                            range.selectNodeContents(shareUrlDiv);
-                            selection.removeAllRanges();
-                            selection.addRange(range);
+                            setTimeout(() => {
+                                let selection = window.getSelection();
+                                let range = document.createRange();
+                                range.selectNodeContents(shareUrlDiv);
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }, 0);
                         }
                     }
                 };
