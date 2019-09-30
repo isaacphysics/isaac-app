@@ -374,7 +374,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                 }
                             }
                             if (tc != undefined) {
-                                // && graphUtils.getDist(mousePosition, knot) > MOUSE_DETECT_RADIUS + 10
                                 if (mousePosition[0] >= tc.minX && mousePosition[0] <= tc.maxX && mousePosition[1] >= tc.minY && mousePosition[1] <= tc.maxY) {
                                     movedCurveIdx = clickedCurveIdx;
                                     action = "MOVE_CURVE";
@@ -696,12 +695,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     drawnPts[drawnPts.length - 1][0] = canvasProperties.width/2;
                                 }
 
-                                // sampler.sample, bezier.genericBezier
                                 let pts = [];
                                 if (scope.selectedLineType == "bezier") {
                                     pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
                                 } else if (scope.selectedLineType == "linear") {
-                                    // pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
                                     pts = graphUtils.linearLineStyle([drawnPts[0],drawnPts[drawnPts.length-1]])
                                 }
                                 curve = {};
@@ -755,7 +752,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         p.mouseReleased(e);
                     }
 
-                    // TODO BH remember to properly resize curves for continuous resizing - i.e. undo/redo correctly
                     p.windowResized = function() {
                         let data = graphUtils.encodeData(false, canvasProperties, curves);
                         canvasProperties.width = window.innerWidth;
@@ -855,7 +851,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             return(scope.state);
                         });
 
-                        // reload previous answer if there is one ////////////////////////////////////////////////
+                        // reload previous answer if there is one
                         if (scope.state.curves != undefined) {
                             graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
                             clickedCurveIdx = undefined

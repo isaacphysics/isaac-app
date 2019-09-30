@@ -34,14 +34,14 @@ define(['./GraphUtils.js'], function(graphUtils) {
             // want to connect closest points x,y wise, not just x wise
             let pts = curve.pts;
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i][0] - pts[i-1][0] < 100 && pts[i][1] - pts[i-1][1] < 100) {// TODO why <100?
+                if (pts[i][0] - pts[i-1][0] < 100 && pts[i][1] - pts[i-1][1] < 100) {// 100 chosen as close enough to reliably be the same curve
                     this.p.line(pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
                 }
             }
 
             this.p.pop();
 
-            curve.endPt = graphUtils.findEndPts(curve.pts); // TODO is this needed?
+            curve.endPt = graphUtils.findEndPts(curve.pts);
             // draw x intercepts, y intercepts and turning points
             this.drawKnots(curve['interX']);
             this.drawKnots(curve['interY']);
@@ -340,8 +340,5 @@ define(['./GraphUtils.js'], function(graphUtils) {
     GraphView.CURVE_STRKWEIGHT = 2;
     GraphView.KNOT_DETECT_COLOR = [0];
 
-
-    // TODO MT pass these in as arguments
-
-    return {graphView: GraphView}
+    return {graphView: GraphView};
 });

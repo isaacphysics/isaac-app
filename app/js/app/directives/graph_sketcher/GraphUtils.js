@@ -130,8 +130,6 @@ define([], function() {
 
         decodeData: function(data, width, height) {
 
-            // let data = this.clone(rawData);
-
             function denormalise(pt) {
                 pt[0] = pt[0] * width + width/2;
                 pt[1] = height/2 - pt[1] * height;
@@ -297,7 +295,6 @@ define([], function() {
             let i = 0;
             let j = 0;
             while (i < pts.length) {
-                // func.getDist
                 
                 while (j < pts.length && this.getDist(pts[i], pts[j]) < SAMPLE_INTERVAL) {
                     j += 1;
@@ -348,13 +345,13 @@ define([], function() {
             return found;
         },
 
-        findEndPts: function(pts) { //TODO look at this, pts now
+        findEndPts: function(pts) { 
             if (pts.length == 0) return [];
 
             let ends = [];
 
             ends.push(this.createPoint(pts[0][0], pts[0][1]));
-            ends.push(this.createPoint(pts[pts.length - 2][0], pts[pts.length - 2][1]));//TODO possible 1, from 101?
+            ends.push(this.createPoint(pts[pts.length - 1][0], pts[pts.length - 1][1]));//TODO possible 1, from 101?
 
 
             for (let i = 1; i < pts.length; i++) {
@@ -606,7 +603,7 @@ define([], function() {
                         leftStaticPoints.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
                     } else {
-                        selectedCurve.pts.pop(selectedCurve.pts[t]); // TODO why does one point have an undefined index?
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
                     }
                 }
 
@@ -648,7 +645,7 @@ define([], function() {
                 let maxX = selectedCurve.pts[0][0];
                 let minY = selectedCurve.pts[0][1];
                 let maxY = selectedCurve.pts[0][1];
-                for (let k = 1; k < selectedCurve.pts.length; k++) { // TODO BH search through 'important' points instead
+                for (let k = 1; k < selectedCurve.pts.length; k++) {
                     minX = Math.min(selectedCurve.pts[k][0], minX);
                     maxX = Math.max(selectedCurve.pts[k][0], maxX);
                     minY = Math.min(selectedCurve.pts[k][1], minY);
@@ -717,8 +714,6 @@ define([], function() {
                                 symbol.x = knot[0];
                                 symbol.y = knot[1];
                                 knot.symbol = symbol;
-                            } else {
-                                // freeSymbols.push(symbol);// TODO MT not defined
                             }
                         }
                     }

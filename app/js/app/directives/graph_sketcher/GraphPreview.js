@@ -14,20 +14,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
             link: function(scope, element, _attrs) {
                 let graphPreviewDiv = element.find(".graph-preview");
 
-                // let canvasID = undefined;
-
                 if(typeof scope.canvasID !== "undefined") {
                     scope.canvasID = scope.questionDoc.id;
                 } else {
                     scope.canvasID = 0;
                 }
-
-                // if (scope.questionDoc) {
-                //     scope.canvasID = scope.questionDoc.id;
-                // } else {
-                //     scope.canvasID = 0;
-                // }
-
 
                 scope.sketch = function(p) {
 
