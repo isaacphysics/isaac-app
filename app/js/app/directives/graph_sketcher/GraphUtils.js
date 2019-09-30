@@ -57,8 +57,8 @@ define([], function() {
                 let x = (pt[0] - canvasProperties.width/2) / canvasProperties.width;
                 let y = (canvasProperties.height/2 - pt[1]) / canvasProperties.height;
                 if (trunc) {
-                    pt[0] = Math.trunc(x * 10000) / 10000;
-                    pt[1] = Math.trunc(y * 10000) / 10000;
+                    pt[0] = Math.round(x * 10000) / 10000;
+                    pt[1] = Math.round(y * 10000) / 10000;
                 } else {
                     pt[0] = x;
                     pt[1] = y;
@@ -260,7 +260,6 @@ define([], function() {
             let drawnNumberOfPoints = pts.length - 1;
             let comb = [];
             for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
-                // from the other math library!!!! not the same as Math!!!!
                 comb.push(combinations(drawnNumberOfPoints, currentIndex));
             }
 
@@ -351,9 +350,9 @@ define([], function() {
             let ends = [];
 
             ends.push(this.createPoint(pts[0][0], pts[0][1]));
-            ends.push(this.createPoint(pts[pts.length - 1][0], pts[pts.length - 1][1]));//TODO possible 1, from 101?
+            ends.push(this.createPoint(pts[pts.length - 1][0], pts[pts.length - 1][1]));
 
-
+            // 200 acceptable for showing a curve is no longer just one line
             for (let i = 1; i < pts.length; i++) {
                 if (pts[i-1][0] - pts[i][0] > 200) {
                     ends.push(this.createPoint(pts[i-1][0], pts[i-1][1]));
@@ -465,8 +464,11 @@ define([], function() {
                         position = j;
                     }
                 }
-                ((statPts[i][1] < pts[position-5][1] && statPts[i][1] < pts[position+5][1])) && pot_max.push(statPts[i]);
-                ((statPts[i][1] > pts[position-5][1] && statPts[i][1] > pts[position+5][1])) && pot_min.push(statPts[i]);
+                if (statPts[i][1] < pts[position-5][1] && statPts[i][1] < pts[position+5][1]) {
+                    pot_max.push(statPts[i]);
+                } else if (statPts[i][1] > pts[position-5][1] && statPts[i][1] > pts[position+5][1]) {
+                    pot_min.push(statPts[i]);
+                }
             }
 
             let true_max = this.duplicateStationaryPts(pot_max, mode);
@@ -483,10 +485,18 @@ define([], function() {
             for (let i = 0; i < pts.length; i++) {
                 let similar_ind = [pts[i]]
                 for (let j = 0; j < pts.length; j++) {
-                    (pts[j][0] !== pts[i][0]) && ((pts[j][0] < pts[i][0] + 5) && (pts[j][0] > pts[i][0] - 5)) && similar_ind.push(pts[j])
+                    if ((pts[j][0] !== pts[i][0]) && ((pts[j][0] < pts[i][0] + 5) && (pts[j][0] > pts[i][0] - 5))) {
+                        similar_ind.push(pts[j]);
+                    }
                 }
-                mode == 'maxima' ? similar_ind.sort(function(a, b){return a[1] - b[1]}) : similar_ind.sort(function(a, b){return b[1] - a[1]})
-                non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
+                if (mode == 'maxima') {
+                    similar_ind.sort(function(a, b){return a[1] - b[1]})
+                } else {
+                    similar_ind.sort(function(a, b){return b[1] - a[1]})
+                }
+                if (non_duplicates.indexOf(similar_ind[0]) === -1) {
+                    non_duplicates.push(similar_ind[0])
+                }
             }
             return non_duplicates;
         },
