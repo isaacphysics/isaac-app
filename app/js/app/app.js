@@ -43,6 +43,34 @@ define([
     // Require polyfill script to enable packages which are dependent on older versions of jQuery
     require('../script/polyfill.js')
 
+    const physicsLogoAcsiiArt = "\n" +
+    "  ▄▄▄█▄▄\n" +
+    " ▀██▀▀████▄        ▄██\n" +
+    "  ▀██▄▄ ▀███▄    ▄█▀\n" +
+    "    ▀███▄▄ ▀█▄  ▄█\n" +
+    "       ▀▀▀██   ▀▀\n" +
+    "           ▄▄███▄▄\n" +
+    "        ▄███████████▄\n" +
+    "     ▄█████████████████▄\n" +
+    "  ▄███████████████████████▄\n" +
+    "█████████████████████████████\n" +
+    "██  █████████████████████████     _____  _               _\n" +
+    "██▀▀█▀   ▀█    ▀█    ▀█▀   ██    |  __ \\| |             (_)\n" +
+    "██  █  ███████  ████  █  ████    | |__) | |__  _   _ ___ _  ___ ___\n" +
+    "██  █▄   ▀█     █     █  ████    |  ___/| '_ \\| | | / __| |/ __/ __|\n" +
+    "██  ████  █ ██  █ ██  █  ████    | |    | | | | |_| \\__ \\ | (__\\__ \\\n" +
+    "██  █▄   ▄█   ▄ █   ▄ █▄   ██    |_|    |_| |_|\\__, |___/_|\\___|___/\n" +
+    "█████████████████████████████                   __/ |\n" +
+    "  ▀███████████████████████▀                    |___/\n" +
+    "     ▀█████████████████▀\n" +
+    "        ▀███████████▀\n" +
+    "           ▀▀███▀▀" +
+    "\n\xA0";
+    if (navigator.vendor.indexOf("Google") > -1 || navigator.userAgent.indexOf("Firefox") > -1) {
+        // Only looks reasonable in these modern browsers:
+        console.log(physicsLogoAcsiiArt);
+    }
+
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
