@@ -76,7 +76,9 @@
                                     </span>
                                 </span>
                             </h2>
-                            <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
+                            <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}
+                                <a href="{{contentEditorURL}}" target="_blank">&#9998;</a> <a title="Preview in React" href="{{staging2URL}}" target="_blank">&#8618;</a>
+                            </h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>
                     </div>

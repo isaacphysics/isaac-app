@@ -26,6 +26,7 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 	$scope.state = {};
 
 	$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
+	$scope.staging2URL = window.location.href.replace(window.location.origin, 'https://staging-2.isaacphysics.org');
 
 	let pageTags = page.tags || [];
 

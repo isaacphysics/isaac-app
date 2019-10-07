@@ -17,6 +17,9 @@
                                 <div class="share-url-div">{{shareUrl}}</div>
                             </div>
                             <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
+                            <h3 api-environment="dev">{{page.published ? "Published" : "Unpublished"}}
+                                <a href="{{contentEditorURL}}" target="_blank">&#9998;</a> <a title="Preview in React" href="{{staging2URL}}" target="_blank">&#8618;</a>
+                            </h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
