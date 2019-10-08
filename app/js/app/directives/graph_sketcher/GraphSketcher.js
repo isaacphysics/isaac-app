@@ -806,7 +806,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         if (initialState == undefined || typeof(initialState) == "undefined") {
                             scope.state = {freeSymbols: [], curves: []};
                             initialState = scope.state;
-                        } else if (typeof(initialState.curves) == undefined || initialState.curves == undefined) {
+                        } else if (typeof(initialState.curves) == undefined || initialState.curves == undefined || initialState.curves == []) {
                             scope.state = {freeSymbols: [], curves: []};
                         } else {
                             scope.state = initialState;
@@ -847,12 +847,16 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             scope.log = null;
                             scope.p.remove();
                             curves = [];
+                            if (scope.state.curves==[]) {
+                                scope.state = undefined;
+                                scope.preview = undefined;
+                            }
                             resolve(scope.state);
                             return(scope.state);
                         });
 
                         // reload previous answer if there is one
-                        if (scope.state.curves != undefined) {
+                        if (scope.state.curves != undefined && scope.state.curves !== []) {
                             graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
                             clickedCurveIdx = undefined
                             reDraw();
