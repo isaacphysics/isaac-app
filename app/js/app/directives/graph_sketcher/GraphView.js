@@ -13,7 +13,7 @@ define(['./GraphUtils.js'], function(graphUtils) {
     // self explanatory drawing methods
     class GraphView {
         constructor(p) {
-            this.p = p
+            this.p = p;
         }        
 
         drawCurves(curves, color) {
@@ -34,8 +34,8 @@ define(['./GraphUtils.js'], function(graphUtils) {
             // want to connect closest points x,y wise, not just x wise
             let pts = curve.pts;
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i].x - pts[i-1].x < 100 && pts[i].y - pts[i-1].y < 100) {
-                    this.p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
+                if (pts[i][0] - pts[i-1][0] < 100 && pts[i][1] - pts[i-1][1] < 100) {// 100 chosen as close enough to reliably be the same curve
+                    this.p.line(pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
                 }
             }
 
@@ -66,8 +66,8 @@ define(['./GraphUtils.js'], function(graphUtils) {
                 this.p.noFill();
                 this.p.stroke(color);
                 this.p.strokeWeight(1.5);
-                this.p.line(knot.x - 3, knot.y - 3, knot.x + 3, knot.y + 3);
-                this.p.line(knot.x + 3, knot.y - 3, knot.x - 3, knot.y + 3);
+                this.p.line(knot[0] - 3, knot[1] - 3, knot[0] + 3, knot[1] + 3);
+                this.p.line(knot[0] + 3, knot[1] - 3, knot[0] - 3, knot[1] + 3);
                 this.p.pop();
             }
         }
@@ -78,37 +78,10 @@ define(['./GraphUtils.js'], function(graphUtils) {
                 this.p.noFill();
                 this.p.stroke(GraphView.KNOT_DETECT_COLOR);
                 this.p.strokeWeight(2);
-                this.p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
-                this.p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
+                this.p.line(knot[0] - 5, knot[1] - 5, knot[0] + 5, knot[1] + 5);
+                this.p.line(knot[0] + 5, knot[1] - 5, knot[0] - 5, knot[1] + 5);
                 this.p.pop();
             }
-        }
-
-        drawSymbols(symbols, color) {
-            for (let i = 0; i < symbols.length; i++) {
-                this.drawSymbol(symbols[i], color);
-            }
-        }
-
-        drawSymbol(symbol, color) {
-            if (color == undefined) {
-                color = DEFAULT_KNOT_COLOR;
-            }
-            this.p.push();
-
-            this.p.stroke(color);
-            this.p.strokeWeight(1.5);
-            this.p.noFill();
-            this.p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-            this.p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
-
-            this.p.stroke(0);
-            this.p.strokeWeight(0.5);
-            this.p.fill(0);
-            this.p.textSize(16);
-            this.p.text(symbol.text, symbol.x - 5, symbol.y + 20);
-
-            this.p.pop();
         }
 
         drawVerticalDotLine(x, begin, end) {
@@ -177,6 +150,10 @@ define(['./GraphUtils.js'], function(graphUtils) {
 
         drawStretchBox(idx, curves) {
             if (idx == undefined) {
+                return;
+            }
+
+            if (curves[idx] == undefined) {
                 return;
             }
 
@@ -363,8 +340,5 @@ define(['./GraphUtils.js'], function(graphUtils) {
     GraphView.CURVE_STRKWEIGHT = 2;
     GraphView.KNOT_DETECT_COLOR = [0];
 
-
-    // TODO MT pass these in as arguments
-
-    return {graphView: GraphView}
+    return {graphView: GraphView};
 });

@@ -15,7 +15,7 @@ define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestio
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
                     try {
-                        ctrl.formulaChoice = JSON.parse(scope.question.selectedChoice.graphData);
+                        ctrl.formulaChoice = JSON.parse(scope.question.selectedChoice.value);
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
@@ -36,7 +36,7 @@ define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestio
                     if (f) {
                         scope.question.selectedChoice = {
                             type: "graphChoice",
-                            graphData: JSON.stringify(f)
+                            value: JSON.stringify(f)
                         }
                     } else {
                         scope.question.selectedChoice = null;

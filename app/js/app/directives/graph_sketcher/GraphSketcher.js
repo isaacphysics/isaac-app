@@ -1,6 +1,6 @@
 'use strict';
-define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
-    function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
+define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/graph_sketcher.html"],
+    function(p5, graphViewBuilder, graphUtils, templateUrl) {
     return ["$rootScope", "api", function($rootScope, api) {
         return {
             restrict: "A",
@@ -9,41 +9,23 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
             link: function(scope, element, _attrs) {
 
                 scope.title = "Sketcher";
-                scope.selectedLineType = bezierLineType;
+                scope.selectedLineType = "bezier";
 
                 // objects which are shared between sketch and the ui buttons
                 let colorSelect = element.find(".color-select")[0];
                 let encodeData;
                 let reDraw;
-                let freeSymbols = [];
                 let curves = [];
                 let clickedKnot = null;
                 let clickedCurveIdx;
 
-                function initiateFreeSymbols() {
-                    freeSymbols = [];
-
-                    const symbolList = ['A', 'B', 'C', 'D', 'E'];
-                    symbolList.forEach(function(symbol) {
-                        freeSymbols.push(graphUtils.createSymbol(symbol));
-                    });
-                    refreshFreeSymbols();
-                }
-
-                function refreshFreeSymbols() {
-                    let start = 15;
-                    let separation = 30;
-
-                    for (let i = 0; i < freeSymbols.length; i++) {
-                        let symbol = freeSymbols[i];
-                        symbol.x = start + i * separation;
-                        symbol.y = start;
-                    }
-                }
-
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
                 });
+
+                function getSpec(attempt) {
+                    return api.generateSpecification(attempt);
+                }
 
                 // undo-ing, record history
                 scope.undo = function() {
@@ -52,12 +34,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     }
 
                     let checkPointRedo = {};
-                    checkPointRedo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     checkPointRedo.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsRedo.push(checkPointRedo);
 
                     let checkPointUndo = scope.p.checkPointsUndo.pop();
-                    freeSymbols = JSON.parse(checkPointUndo.freeSymbolsJSON);
                     curves = JSON.parse(checkPointUndo.curvesJSON);
                     clickedKnot = null;
                     clickedCurveIdx = undefined;
@@ -73,12 +53,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     }
 
                     let checkPointUndo = {};
-                    checkPointUndo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     checkPointUndo.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsUndo.push(checkPointUndo);
 
                     let checkPointRedo = scope.p.checkPointsRedo.pop();
-                    freeSymbols = JSON.parse(checkPointRedo.freeSymbolsJSON);
                     curves = JSON.parse(checkPointRedo.curvesJSON);
 
                     clickedKnot = null;
@@ -97,17 +75,16 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                 // Want to distinguish straight vs curved (poly) lines
                 scope.straight = function() {
-                    scope.selectedLineType = linearLineType;
+                    scope.selectedLineType = "linear";
                 }
 
                 scope.poly = function() {
-                    scope.selectedLineType = bezierLineType;
+                    scope.selectedLineType = "bezier";
                 }
 
                 // The ability to wipe the canvas, deletion for example
                 scope.clean = function() {
                     scope.p.checkPoint = {};
-                    scope.p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     scope.p.checkPoint.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsUndo.push(scope.p.checkPoint);
                     scope.p.checkPointsRedo = [];
@@ -115,7 +92,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     curves = [];
                     clickedKnot = null;
                     clickedCurveIdx = undefined;
-                    initiateFreeSymbols();
                     reDraw();
                 }
 
@@ -139,7 +115,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     let action = undefined;
                     let isMouseDragged;
                     let releasePt;
-                    let drawMode;
                     let key = undefined;
 
                     // for drawing curve
@@ -153,7 +128,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     // for moving and stretching curve
                     let movedCurveIdx;
                     let stretchMode;
-                    let isMaxima = false;
+                    let isMaxima = undefined;
 
 
                     // for moving symbols
@@ -169,22 +144,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     p.checkPointsUndo = [];
                     p.checkPointsRedo = [];
 
-                    // Allows symbol retention upon curve deletion
-                    function freeAllSymbols(knots) {
-                        for (let i = 0; i < knots.length; i++) {
-                            let knot = knots[i];
-                            if (knot.symbol != undefined) {
-                                freeSymbols.push(knot.symbol);
-                            }
-                            if (knot.xSymbol != undefined) {
-                                freeSymbols.push(knot.xSymbol);
-                            }
-                            if (knot.ySymbol != undefined) {
-                                freeSymbols.push(knot.ySymbol);
-                            }
-                        }
-                    }
-
                     function isOverButton(pt, button) {
                         if (button.position() == undefined) {
                             return false;
@@ -194,13 +153,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let top = button.position().top;
                         let width = button.width();
                         let height = button.height();
-                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
+                        return (pt[0] > left && pt[0] < left + width && pt[1] > top && pt[1] < top + height);
                     }
 
                     // Mouse is inactive if over buttons - stops curves being drawn where they can't be seen
                     function isActive(pt) {
 
-                        if (!(pt.x > 0 && pt.x < canvasProperties.width && pt.y > 0 && pt.y < canvasProperties.height)) {
+                        if (!(pt[0] > 0 && pt[0] < canvasProperties.width && pt[1] > 0 && pt[1] < canvasProperties.height)) {
                             return false;
                         }
 
@@ -230,8 +189,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         p.createCanvas(canvasProperties.width, canvasProperties.height);
                         p.noLoop();
                         p.cursor(p.ARROW);
-
-                        initiateFreeSymbols();
                         reDraw();
                     }
 
@@ -240,7 +197,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let mousePosition = graphUtils.getMousePt(e);
 
                         function detect(x, y) {
-                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                            return (Math.abs(mousePosition[0] - x) < 5 && Math.abs(mousePosition[1] - y) < 5);
                         }
 
                         // this function does not react if the mouse is over buttons or outside the canvas.
@@ -251,7 +208,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let found = "notFound";
 
                         if (found == "notFound") {
-                            found = graphUtils.overItem(curves, e, freeSymbols, MOUSE_DETECT_RADIUS, found);
+                            found = graphUtils.overItem(curves, e, MOUSE_DETECT_RADIUS, found);
                             if (found == "overKnot") {
                                 p.cursor(p.HAND);
                                 return;
@@ -267,7 +224,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         // stretch box
                         if (clickedCurveIdx != undefined) {
                             let c = curves[clickedCurveIdx];
-                            if (mousePosition.x >= c.minX && mousePosition.x <= c.maxX && mousePosition.y >= c.minY && mousePosition.y <= c.maxY) {
+                            if (mousePosition[0] >= c.minX && mousePosition[0] <= c.maxX && mousePosition[1] >= c.minY && mousePosition[1] <= c.maxY) {
                                 found = true;
                                 p.cursor(p.MOVE);
                             } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
@@ -337,94 +294,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
 
                         function detect(x, y) {
-                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                            return (Math.abs(mousePosition[0] - x) < 5 && Math.abs(mousePosition[1] - y) < 5);
                         }
                         // record down mousePosition status, may be used later for undo.
                         p.checkPoint = {};
-                        p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         p.checkPoint.curvesJSON = JSON.stringify(curves);
 
-                        // check if it is to move a symbol
-                        for (let i = 0; i < freeSymbols.length; i++) {
-                            if (graphUtils.isOverSymbol(mousePosition, freeSymbols[i])) {
-                                movedSymbol = freeSymbols[i];
-                                freeSymbols.splice(i, 1);
-                                prevMousePt = mousePosition;
-                                action = "MOVE_SYMBOL";
-                                return;
-                            }
-                        }
-
                         let found = false;
-                        function detach1(knots) {
-                            if (found) {
-                                return;
-                            }
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.symbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.symbol)) {
-                                    movedSymbol = knot.symbol;
-                                    knot.symbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'symbol';
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        function detach2(knots) {
-                            if (found) {
-                                return;
-                            }
-                            detach1(knots);
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.xSymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.xSymbol)) {
-                                    movedSymbol = knot.xSymbol;
-                                    knot.xSymbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'xSymbol';
-                                    found = true;
-                                }
-                                if (knot.ySymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.ySymbol)) {
-                                    movedSymbol = knot.ySymbol;
-                                    knot.ySymbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'ySymbol';
-                                    found = true;
-                                }
-                                if (found) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        for (let i = 0; i < curves.length; i++) {
-                            let interX = curves[i]['interX'];
-                            detach1(interX);
-
-                            let interY = curves[i]['interY'];
-                            detach1(interY);
-
-                            let maxima = curves[i]['maxima'];
-                            detach2(maxima);
-
-                            let minima = curves[i]['minima'];
-                            detach2(minima);
-
-                            if (found) {
-                                break;
-                            }
-                        }
-
-                        if (found) {
-                            action = "MOVE_SYMBOL";
-                            prevMousePt = mousePosition;
-                            // clickedCurveIdx = undefined;
-
-                            return;
-                        }
 
                         // check if stretching curve
                         if (clickedCurveIdx != undefined) {
@@ -498,8 +374,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 }
                             }
                             if (tc != undefined) {
-                                // && graphUtils.getDist(mousePosition, knot) > MOUSE_DETECT_RADIUS + 10
-                                if (mousePosition.x >= tc.minX && mousePosition.x <= tc.maxX && mousePosition.y >= tc.minY && mousePosition.y <= tc.maxY) {
+                                if (mousePosition[0] >= tc.minX && mousePosition[0] <= tc.maxX && mousePosition[1] >= tc.minY && mousePosition[1] <= tc.maxY) {
                                     movedCurveIdx = clickedCurveIdx;
                                     action = "MOVE_CURVE";
                                     clickedKnot = null;
@@ -518,34 +393,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             clickedCurveIdx = undefined;
                             clickedKnot = null;
                             reDraw();
-                        }
-
-                        if (key === "shift") {
-                            lineStart = mousePosition;
-                            drawMode = "line";
-                        } else {
-                            drawMode = "curve";
-                        }
-
-                        if (key === 46) {
-                            // delete key pressed
-                            if (clickedCurveIdx != undefined) {
-                                let curve = (curves.splice(movedCurveIdx, 1))[0];
-
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
-                                clickedCurveIdx = undefined;
-                            }
                         }
 
                         // get drawnColor
@@ -576,26 +423,22 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             let selectedCurve = curves[clickedCurve];
                             // we need to know the (important) ordered end and turning points
                             let importantPoints = [];
-                            if (selectedCurve.pts[0].x > selectedCurve.pts[selectedCurve.pts.length - 1].x) {
+                            if (selectedCurve.pts[0][0] > selectedCurve.pts[selectedCurve.pts.length - 1][0]) {
                                 selectedCurve.pts.reverse();
-                                for (let i = 0; i < selectedCurve.pts.length; i++) { //TODO maybe remove the i property of pts
-                                    selectedCurve.pts[i].ind = i;
-                                }
-                                selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
-                                selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
-                                selectedCurve.minima = graphUtils.findTurnPts(selectedCurve.pts, 'minima');
                             }
+                            selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
+                            selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
+                            selectedCurve.minima = graphUtils.findTurnPts(selectedCurve.pts, 'minima');
                             importantPoints.push.apply(importantPoints, selectedCurve.endPt);
                             importantPoints.push.apply(importantPoints, selectedCurve.maxima);
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
-                            importantPoints.sort(function(a, b){return a.ind - b.ind});
+                            importantPoints.sort(function(a, b){return a[0] - b[0]});
 
                             // maxima and minima are treated in slightly different ways
-                            if (isMaxima) {
-                                graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
-                            } else if (!isMaxima) {
-                                graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
+                            if (isMaxima !== undefined) {
+                                curves[clickedCurve] = graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
                             }
+
                             reDraw();
                             prevMousePt = mousePosition;
 
@@ -605,17 +448,17 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             scope.trashActive = isOverButton(mousePosition, element.find(".trash-button"));
                             scope.$apply();
 
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
+                            let dx = mousePosition[0] - prevMousePt[0];
+                            let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
-                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties, freeSymbols);
+                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
                             reDraw();
 
                         } else if (action == "STRETCH_CURVE") {
                             p.cursor(p.MOVE);
 
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
+                            let dx = mousePosition[0] - prevMousePt[0];
+                            let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
 
                             let currentCurve = curves[clickedCurveIdx];
@@ -732,57 +575,18 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             reDraw();
                             scope.graphView.drawCorner(stretchMode, currentCurve);
 
-                        } else if (action == "MOVE_SYMBOL") {
-                            p.cursor(p.MOVE);
-
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
-                            prevMousePt = mousePosition;
-
-                            movedSymbol.x += dx;
-                            movedSymbol.y += dy;
-
-                            reDraw();
-                            scope.graphView.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
-
-                            for (let i = 0; i < curves.length; i++) {
-                                let interX = curves[i]['interX'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interX, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let interY = curves[i]['interY'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interY, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let maxima = curves[i]['maxima'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(maxima, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let minima = curves[i]['minima'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(minima, movedSymbol, MOUSE_DETECT_RADIUS));
-                            }
-
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
                             if (curves.length < CURVE_LIMIT) {
-                                if (drawMode == "curve") {
-                                    p.push();
-                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
-                                    if (drawnPts.length > 0) {
-                                        let precedingPoint = drawnPts[drawnPts.length - 1];
-                                        p.line(precedingPoint.x, precedingPoint.y, mousePosition.x, mousePosition.y);
-                                    }
-                                    p.pop();
-                                    drawnPts.push(mousePosition);
-                                } else {
-                                    reDraw();
-
-                                    p.push();
-                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
-                                    p.line(lineStart.x, lineStart.y, mousePosition.x, mousePosition.y);
-                                    p.pop();
-
-                                    lineEnd = mousePosition;
+                                p.push();
+                                p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
+                                p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
+                                if (drawnPts.length > 0) {
+                                    let precedingPoint = drawnPts[drawnPts.length - 1];
+                                    p.line(precedingPoint[0], precedingPoint[1], mousePosition[0], mousePosition[1]);
                                 }
+                                p.pop();
+                                drawnPts.push(mousePosition);
                             }
                         }
                     }
@@ -790,37 +594,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     // Need to know where to update points to - gives final position
                     p.mouseReleased = function(_e) {
                         let mousePosition = releasePt;
-
-                        function loop(knots) {
-                            for (let i = 0; i < knots.length; i++) {
-                                let knot = knots[i];
-                                for (let j = 0; j < freeSymbols.length; j++) {
-                                    let sym = freeSymbols[j];
-                                    if (graphUtils.getDist(knot, sym) < 20) {
-                                        sym.x = knot.x;
-                                        sym.y = knot.y;
-                                        knot.symbol = sym;
-                                        freeSymbols.splice(j, 1);
-                                    }
-                                }
-
-                            }
-                        }
-
-                        function attach(knots, found) {
-                            if (found) {
-                                return;
-                            }
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot.x;
-                                    movedSymbol.y = knot.y;
-                                    knot.symbol = movedSymbol;
-                                    found = true;
-                                }
-                            }
-                        }
 
                         // if it is just a click, handle click in the following if block
                         if (!isMouseDragged) {
@@ -875,18 +648,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             if (scope.trashActive) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
 
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
                                 clickedCurveIdx = undefined;
                             }
 
@@ -906,149 +667,69 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             // let c = curves[clickedCurveIdx];
 
-                        } else if (action == "MOVE_SYMBOL") {
-                            p.checkPointsUndo.push(p.checkPoint);
-                            p.checkPointsRedo = [];
-                            scope.$apply();
-
-                            let found = false;
-
-                            for (let i = 0; i < curves.length; i++) {
-                                let interX = curves[i]['interX'];
-                                attach(interX, found);
-
-                                let interY = curves[i]['interY'];
-                                attach(interY, found);
-
-                                let maxima = curves[i]['maxima'];
-                                attach(maxima, found);
-
-                                let minima = curves[i]['minima'];
-                                attach(minima, found);
-
-                                if (found) {
-                                    break;
-                                }
-                            }
-
-                            if (!found && clickedKnot != null) {
-                                let knot = clickedKnot;
-                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot.x;
-                                    movedSymbol.y = canvasProperties.height/2;
-                                    knot.xSymbol = movedSymbol;
-                                    found = true;
-                                } else if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = canvasProperties.width/2;
-                                    movedSymbol.y = knot.y;
-                                    knot.ySymbol = movedSymbol;
-                                    found = true;
-                                }
-                            }
-
-                            if (!found) {
-                                freeSymbols.push(movedSymbol);
-                            }
-
-                            reDraw();
-
                         } else if (action == "DRAW_CURVE") {
 
                             if (curves.length < CURVE_LIMIT){
 
                                 let curve;
 
-                                if (drawMode == "curve") {
-                                    // reject if curve drawn is too short
-                                    if (graphUtils.sample(drawnPts).length < 3) {
-                                        return;
-                                    }
-
-                                    p.checkPointsUndo.push(p.checkPoint);
-                                    p.checkPointsRedo = [];
-                                    scope.$apply();
-
-                                    // adjustment of start and end to attach to the axis automatically.
-                                    if (Math.abs(drawnPts[0].y - canvasProperties.height/2) < 3) {
-                                        drawnPts[0].y = canvasProperties.height/2;
-                                    }
-                                    if (Math.abs(drawnPts[0].x - canvasProperties.width/2) < 3) {
-                                        drawnPts[0].x = canvasProperties.width/2;
-                                    }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasProperties.height/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].y = canvasProperties.height/2;
-                                    }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasProperties.width/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].x = canvasProperties.width/2;
-                                    }
-
-                                    // sampler.sample, bezier.genericBezier
-                                    let pts = scope.selectedLineType.lineStyle(graphUtils.sample(drawnPts));
-                                    curve = {};
-                                    curve.pts = pts;
-
-                                    let minX = pts[0].x;
-                                    let maxX = pts[0].x;
-                                    let minY = pts[0].y;
-                                    let maxY = pts[0].y;
-                                    for (let i = 1; i < pts.length; i++) {
-                                        minX = Math.min(pts[i].x, minX);
-                                        maxX = Math.max(pts[i].x, maxX);
-                                        minY = Math.min(pts[i].y, minY);
-                                        maxY = Math.max(pts[i].y, maxY);
-                                    }
-                                    curve.minX = minX;
-                                    curve.maxX = maxX;
-                                    curve.minY = minY;
-                                    curve.maxY = maxY;
-
-                                    curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
-                                    curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
-                                    curve.minima = graphUtils.findTurnPts(pts, 'minima');
-                                    curve.colorIdx = drawnColorIdx;
-
-                                } else {
-                                    p.checkPointsUndo.push(p.checkPoint);
-                                    p.checkPointsRedo = [];
-                                    scope.$apply();
-
-
-                                    let n = 100;
-                                    let rx = lineEnd.x - lineStart.x;
-                                    let ry = lineEnd.y - lineStart.y;
-                                    let sx = rx / n;
-                                    let sy = ry / n;
-                                    let pts = [];
-                                    for (let i = 0; i < n-1; i++) {
-                                        let x = lineStart.x + i * sx;
-                                        let y = lineStart.y + i * sy;
-                                        pts.push(graphUtils.createPoint(x, y, i));
-                                    }
-
-                                    curve = {};
-                                    curve.pts = pts;
-
-                                    curve.minX = Math.min(lineStart.x, lineEnd.x);
-                                    curve.maxX = Math.max(lineStart.x, lineEnd.x);
-                                    curve.minY = Math.min(lineStart.y, lineEnd.y);
-                                    curve.maxY = Math.max(lineStart.y, lineEnd.y);
-
-                                    curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
-                                    curve.maxima = [];
-                                    curve.minima = [];
-                                    curve.colorIdx = drawnColorIdx;
+                                if (graphUtils.sample(drawnPts).length < 3) {
+                                    return;
                                 }
 
+                                p.checkPointsUndo.push(p.checkPoint);
+                                p.checkPointsRedo = [];
+                                scope.$apply();
 
+                                // adjustment of start and end to attach to the axis automatically.
+                                if (Math.abs(drawnPts[0][1] - canvasProperties.height/2) < 3) {
+                                    drawnPts[0][1] = canvasProperties.height/2;
+                                }
+                                if (Math.abs(drawnPts[0][0] - canvasProperties.width/2) < 3) {
+                                    drawnPts[0][0] = canvasProperties.width/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1][1] - canvasProperties.height/2) < 3) {
+                                    drawnPts[drawnPts.length - 1][1] = canvasProperties.height/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1][0] - canvasProperties.width/2) < 3) {
+                                    drawnPts[drawnPts.length - 1][0] = canvasProperties.width/2;
+                                }
 
-                                loop(curve.maxima);
-                                loop(curve.minima);
-                                loop(curve.interX);
-                                loop(curve.interY);
+                                let pts = [];
+                                if (scope.selectedLineType == "bezier") {
+                                    pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
+                                } else if (scope.selectedLineType == "linear") {
+                                    pts = graphUtils.linearLineStyle([drawnPts[0],drawnPts[drawnPts.length-1]])
+                                }
+                                curve = {};
+                                curve.pts = pts;
+
+                                let minX = pts[0][0];
+                                let maxX = pts[0][0];
+                                let minY = pts[0][1];
+                                let maxY = pts[0][1];
+                                for (let i = 1; i < pts.length; i++) {
+                                    minX = Math.min(pts[i][0], minX);
+                                    maxX = Math.max(pts[i][0], maxX);
+                                    minY = Math.min(pts[i][1], minY);
+                                    maxY = Math.max(pts[i][1], maxY);
+                                }
+                                curve.minX = minX;
+                                curve.maxX = maxX;
+                                curve.minY = minY;
+                                curve.maxY = maxY;
+
+                                curve.endPt = graphUtils.findEndPts(pts);
+                                curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
+                                curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
+                                if (scope.selectedLineType == "bezier") {
+                                    curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
+                                    curve.minima = graphUtils.findTurnPts(pts, 'minima');
+                                } else {
+                                    curve.maxima = [];
+                                    curve.minima = [];
+                                }
+                                curve.colorIdx = drawnColorIdx;
 
                                 curves.push(curve);
                                 reDraw();
@@ -1071,9 +752,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         p.mouseReleased(e);
                     }
 
-                    // TODO BH remember to properly resize curves for continuous resizing - i.e. undo/redo correctly
                     p.windowResized = function() {
-                        let data = encodeData(false);
+                        let data = graphUtils.encodeData(false, canvasProperties, curves);
                         canvasProperties.width = window.innerWidth;
                         canvasProperties.height = window.innerHeight;
                         p.resizeCanvas(window.innerWidth, window.innerHeight);
@@ -1088,18 +768,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             if (clickedCurveIdx != undefined) {
                                 let curve = (curves.splice(clickedCurveIdx, 1))[0];
 
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
                                 clickedCurveIdx = undefined;
                                 reDraw();
                             }
@@ -1111,134 +779,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         if (curves.length < 4) {
                             scope.graphView.drawBackground(canvasProperties.width, canvasProperties.height);
                             scope.graphView.drawCurves(curves);
-                            scope.graphView.drawSymbols(freeSymbols, DEFAULT_KNOT_COLOR);
                             scope.graphView.drawStretchBox(clickedCurveIdx, curves);
-                            scope.state = encodeData();
+                            scope.state = graphUtils.encodeData(true, canvasProperties, curves);
                         }
-                    };
-
-                    // enables data to be encoded/decoded to input on reload (2nd attempt at a question etc)
-                    encodeData = function(trunc) {
-
-                        if (trunc == undefined) {
-                            trunc = true;
-                        }
-
-                        if (canvasProperties.width > 5000 || canvasProperties.width <= 0) {
-                            alert("Invalid canvasProperties.width.");
-                            return;
-                        }
-
-                        if (canvasProperties.height > 5000 || canvasProperties.height <= 0) {
-                            alert("Invalid canvasProperties.height.");
-                            return;
-                        }
-
-                        let data = {};
-                        data.canvasWidth = canvasProperties.width;
-                        data.canvasHeight = canvasProperties.height;
-
-                        let clonedCurves = graphUtils.clone(curves);
-
-                        // sort segments according to their left most points.
-                        function compare(curve1, curve2) {
-                            function findMinX(pts) {
-                                if (pts.length == 0) return 0;
-                                let min = canvasProperties.width;
-                                for (let i = 0; i < pts.length; i++)
-                                    min = Math.min(min, pts[i].x);
-                                return min;
-                            }
-
-                            let min1 = findMinX(curve1.pts);
-                            let min2 = findMinX(curve2.pts);
-                            if (min1 < min2) return -1
-                            else if (min1 == min2) return 0
-                            else return 1;
-                        }
-
-                        clonedCurves.sort(compare);
-
-                        function normalise(pt) {
-                            let x = (pt.x - canvasProperties.width/2) / canvasProperties.width;
-                            let y = (canvasProperties.height/2 - pt.y) / canvasProperties.height;
-                            if (trunc) {
-                                pt.x = Math.trunc(x * 1000) / 1000;
-                                pt.y = Math.trunc(y * 1000) / 1000;
-                            } else {
-                                pt.x = x;
-                                pt.y = y;
-                            }
-                        }
-
-                        function normalise1(knots) {
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                normalise(knot);
-                                if (knot.symbol != undefined) {
-                                    normalise(knot.symbol);
-                                }
-                            }
-                        }
-
-                        function normalise2(knots) {
-                            normalise1(knots);
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.xSymbol != undefined) {
-                                    normalise(knot.xSymbol);
-                                }
-                                if (knot.ySymbol != undefined) {
-                                    normalise(knot.ySymbol);
-                                }
-                            }
-                        }
-
-
-                        for (let i = 0; i < clonedCurves.length; i++) {
-                            let pts = clonedCurves[i].pts;
-                            for (let j = 0; j < pts.length; j++) {
-                                normalise(pts[j]);
-                            }
-
-                            let tmp;
-
-                            tmp = (clonedCurves[i].minX - canvasProperties.width/2) / canvasProperties.width;
-                            clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (clonedCurves[i].maxX - canvasProperties.width/2) / canvasProperties.width;
-                            clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (canvasProperties.height/2 - clonedCurves[i].minY) / canvasProperties.height;
-                            clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (canvasProperties.height/2 - clonedCurves[i].maxY) / canvasProperties.height;
-                            clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
-
-
-                            let interX = clonedCurves[i].interX;
-                            normalise1(interX);
-
-                            let interY = clonedCurves[i].interY;
-                            normalise1(interY);
-
-                            let maxima = clonedCurves[i].maxima;
-                            normalise2(maxima);
-
-                            let minima = clonedCurves[i].minima;
-                            normalise2(minima);
-                        }
-
-                        data.curves = clonedCurves;
-
-                        let clonedFreeSymbols = graphUtils.clone(freeSymbols);
-                        for (let i = 0; i < clonedFreeSymbols.length; i++) {
-                            let symbol = clonedFreeSymbols[i];
-                            normalise(symbol);
-                        }
-                        data.freeSymbols = clonedFreeSymbols;
-
-                        return data;
                     };
                 }
 
@@ -1260,7 +803,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         // initialise our canvas
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         graphSketcherModal.foundation("reveal", "open");
-                        if (initialState.curves == undefined) {
+                        if (initialState == undefined || typeof(initialState) == "undefined") {
+                            scope.state = {freeSymbols: [], curves: []};
+                            initialState = scope.state;
+                        } else if (typeof(initialState.curves) == undefined || initialState.curves == undefined || initialState.curves == []) {
                             scope.state = {freeSymbols: [], curves: []};
                         } else {
                             scope.state = initialState;
@@ -1301,13 +847,18 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             scope.log = null;
                             scope.p.remove();
                             curves = [];
+                            if (scope.state.curves==[]) {
+                                scope.state = undefined;
+                                scope.preview = undefined;
+                            }
                             resolve(scope.state);
                             return(scope.state);
                         });
 
-                        // reload previous answer if there is one ////////////////////////////////////////////////
-                        if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
+                        // reload previous answer if there is one
+                        if (scope.state.curves != undefined && scope.state.curves !== []) {
                             graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
+                            clickedCurveIdx = undefined
                             reDraw();
                         }
                     });

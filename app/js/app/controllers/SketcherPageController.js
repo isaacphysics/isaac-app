@@ -14,6 +14,21 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, _$stateParams) {
+export const PageController = ['$scope', '$rootScope', '$stateParams', 'api', function($scope, _$rootScope, _$stateParams, api) {
     $scope.mode = "sketcher";
+    $scope.$watch("graphState", function(s) {
+        if (s == null) return;
+        try {
+            let curves = s;
+            $scope.curveState = {
+                curve: curves
+            };
+            api.questionSpecification.getSpec({"type":"graphChoice","value":JSON.stringify(s)}).$promise.then(
+                function(spec) {
+                    $scope.getSpec = spec.results.toString();
+                });
+        } catch (e) {
+            console.error("Invalid curves");
+        }
+    });
 }];

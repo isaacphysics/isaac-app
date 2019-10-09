@@ -14,7 +14,15 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
             link: function(scope, element, _attrs) {
                 let graphPreviewDiv = element.find(".graph-preview");
 
-                scope.canvasID = scope.questionDoc.id;
+                // if (scope.state.curves == undefined || scope.state.curves == []) {
+                //     scope.canvasID = undefined;
+                // }
+
+                if(typeof scope.canvasID !== "undefined") {
+                    scope.canvasID = scope.questionDoc.id;
+                } else {
+                    scope.canvasID = 0;
+                }
 
                 scope.sketch = function(p) {
 
@@ -22,7 +30,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     let canvasHeight = graphPreviewDiv.height();
                     let canvasWidth = graphPreviewDiv.width();
 
-                    let curves = [];
+                    let curves;
+
+                    if (typeof scope.state.curves !== "undefined" && scope.state.curves !== []) {
+                        curves = scope.state.curves;
+                    } else {
+                        curves = [];
+                    }
 
                     scope.graphView = new graphViewBuilder.graphView(p);
 
@@ -43,8 +57,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         let data = graphUtils.clone(rawData);
 
                         function denormalise(pt) {
-                                pt.x = pt.x * canvasWidth + canvasWidth/2;
-                                pt.y = canvasHeight/2 - pt.y * canvasHeight;
+                                pt[0] = pt[0] * canvasWidth + canvasWidth/2;
+                                pt[1] = canvasHeight/2 - pt[1] * canvasHeight;
                             }
 
                         function denormalise1(knots) {
@@ -101,7 +115,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     p.decodeData = decodeData;
                 }
 
-                scope.updateGraphPreview = function() {
+                function updateGraphPreview() {
                     if (scope.preview == undefined) {
                         scope.preview = new p5(scope.sketch, graphPreviewDiv[0]);
                     }
@@ -110,11 +124,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     }
                 }
 
-
-                scope.updateGraphPreview();
-
                 scope.$watch("state", function(_newState, _oldState) {
-                    scope.updateGraphPreview();
+                    updateGraphPreview();
                 })
             }
 

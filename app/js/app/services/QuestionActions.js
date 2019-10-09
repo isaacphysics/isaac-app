@@ -51,11 +51,6 @@ define([], function() {
 						}
 					}
 
-					if (scope.doc.type == "isaacGraphSketcherQuestion") {
-						scope.question.validationResponse = TEMP_GRAPH_SKETCHER_RESULT;
-						return; // Do not submit Graph SKetecher question attemps
-					}
-
 					let s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
 					s.$promise.then(function foo(validationResponse) {
 						scope.question.validationResponse = validationResponse;

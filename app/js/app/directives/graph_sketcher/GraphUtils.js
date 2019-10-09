@@ -1,22 +1,138 @@
-"use strict";
-define(function() {
+'use strict';
+define([], function() {
 
     const SAMPLE_INTERVAL = 10;
+    const numOfPts = 100;
 
     return {
 
         // methods used in manipulating the graphs
         getDist: function(pt1, pt2) {
-            return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
+            return Math.sqrt(Math.pow(pt1[0] - pt2[0], 2) + Math.pow(pt1[1] - pt2[1], 2));
+        },
+
+        // enables data to be encoded/decoded to input on reload (2nd attempt at a question etc)
+        encodeData: function(trunc, canvasProperties, curves) {
+
+            if (trunc == undefined) {
+                trunc = true;
+            }
+
+            if (canvasProperties.width > 5000 || canvasProperties.width <= 0) {
+                alert("Invalid canvasProperties.width.");
+                return;
+            }
+
+            if (canvasProperties.height > 5000 || canvasProperties.height <= 0) {
+                alert("Invalid canvasProperties.height.");
+                return;
+            }
+
+            let data = {};
+            data.canvasWidth = canvasProperties.width;
+            data.canvasHeight = canvasProperties.height;
+
+            let clonedCurves = this.clone(curves);
+
+            // sort segments according to their left most points.
+            function compare(curve1, curve2) {
+                function findMinX(pts) {
+                    if (pts.length == 0) return 0;
+                    let min = canvasProperties.width;
+                    for (let i = 0; i < pts.length; i++)
+                        min = Math.min(min, pts[i][0]);
+                    return min;
+                }
+
+                let min1 = findMinX(curve1.pts);
+                let min2 = findMinX(curve2.pts);
+                if (min1 < min2) return -1
+                else if (min1 == min2) return 0
+                else return 1;
+            }
+
+            clonedCurves.sort(compare);
+
+            function normalise(pt) {
+                let x = (pt[0] - canvasProperties.width/2) / canvasProperties.width;
+                let y = (canvasProperties.height/2 - pt[1]) / canvasProperties.height;
+                if (trunc) {
+                    pt[0] = Math.round(x * 10000) / 10000;
+                    pt[1] = Math.round(y * 10000) / 10000;
+                } else {
+                    pt[0] = x;
+                    pt[1] = y;
+                }
+            }
+
+            function normalise1(knots) {
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    normalise(knot);
+                    if (knot.symbol != undefined) {
+                        normalise(knot.symbol);
+                    }
+                }
+            }
+
+            function normalise2(knots) {
+                normalise1(knots);
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    if (knot.xSymbol != undefined) {
+                        normalise(knot.xSymbol);
+                    }
+                    if (knot.ySymbol != undefined) {
+                        normalise(knot.ySymbol);
+                    }
+                }
+            }
+
+
+            for (let i = 0; i < clonedCurves.length; i++) {
+                let pts = clonedCurves[i].pts;
+                for (let j = 0; j < pts.length; j++) {
+                    normalise(pts[j]);
+                }
+
+                let tmp;
+
+                tmp = (clonedCurves[i].minX - canvasProperties.width/2) / canvasProperties.width;
+                clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (clonedCurves[i].maxX - canvasProperties.width/2) / canvasProperties.width;
+                clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (canvasProperties.height/2 - clonedCurves[i].minY) / canvasProperties.height;
+                clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (canvasProperties.height/2 - clonedCurves[i].maxY) / canvasProperties.height;
+                clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
+
+
+                let interX = clonedCurves[i].interX;
+                normalise1(interX);
+
+                let interY = clonedCurves[i].interY;
+                normalise1(interY);
+
+                let maxima = clonedCurves[i].maxima;
+                normalise2(maxima);
+
+                let minima = clonedCurves[i].minima;
+                normalise2(minima);
+            }
+
+            data.curves = clonedCurves;
+
+            return data;
         },
 
         decodeData: function(data, width, height) {
 
-            // let data = this.clone(rawData);
-
             function denormalise(pt) {
-                pt.x = pt.x * width + width/2;
-                pt.y = height/2 - pt.y * height;
+                pt[0] = pt[0] * width + width/2;
+                pt[1] = height/2 - pt[1] * height;
             }
 
             function denormalise1(knots) {
@@ -70,11 +186,6 @@ define(function() {
                 denormalise2(minima);
             }
 
-            let freeSymbols = data.freeSymbols;
-            for (let j = 0; j < freeSymbols.length; j++) {
-                denormalise(freeSymbols[j]);
-            }
-
             return;
         },
 
@@ -89,28 +200,92 @@ define(function() {
             return (this.createPoint(x, y));
         },
 
-        symbolOverKnot: function(knots, movedSymbol, MOUSE_DETECT_RADIUS) {
-            for (let j = 0; j < knots.length; j++) {
-                if (knots[j].symbol == undefined && this.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
-                    return knots[j];
-                }
+        createPoint: function(x, y) {
+            let obj = [x, y];
+            return obj;
+        },
+
+        linearLineStyle: function(pts) {
+            pts.sort(function(a, b){return a[0] - b[0]});
+            let start = pts[0];
+            let end = pts[1];
+            let increment = 1/numOfPts;
+            let linearPoints = [];
+            let x_diff = pts[1][0]-pts[0][0];
+            let y_diff = pts[1][1]-pts[0][1];
+            for (let currentPoint = 0; currentPoint < numOfPts; currentPoint += 1) {
+                let x_co = pts[0][0] + (currentPoint*increment*x_diff);
+                let y_co = pts[0][1] + (currentPoint*increment*y_diff);
+                linearPoints.push(this.createPoint(x_co,y_co));
             }
+            return linearPoints;
         },
 
-        createPoint: function(x, y, c) {
-            let obj = {};
-            obj.ind = c;
-            obj.x = x;
-            obj.y = y;
-            return obj;
-        },
+        bezierLineStyle: function(pts) {
 
-        createSymbol: function(text, x, y) {
-            let obj = {};
-            obj.text = text;
-            obj.x = x;
-            obj.y = y;
-            return obj;
+            // See https://github.com/josdejong/mathjs/blob/v5.8.0/src/function/probability/product.js
+            let product = function(i, n) {
+                let half;
+                if (n < i) {
+                    return 1;
+                }
+                if (n === i) {
+                    return n;
+                }
+                half = (n + i) >> 1 // divide (n + i) by 2 and truncate to integer
+                return product(i, half) * product(half + 1, n);
+            }
+
+             // See https://github.com/josdejong/mathjs/blob/v5.8.0/src/function/probability/combinations.js
+            let combinations = function(n, k) {
+                let prodrange, nMinusk;
+
+                 if (n < 0 || k < 0) {
+                    throw new TypeError('Positive integer value expected in function combinations');
+                }
+                if (k > n) {
+                    throw new TypeError('k must be less than or equal to n');
+                }
+
+                 nMinusk = n - k;
+
+                 if (k < nMinusk) {
+                    prodrange = product(nMinusk + 1, n);
+                    return prodrange / product(1, k);
+                }
+                prodrange = product(k + 1, n)
+                return prodrange / product(1, nMinusk);
+            }
+
+            let drawnNumberOfPoints = pts.length - 1;
+            let comb = [];
+            for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
+                comb.push(combinations(drawnNumberOfPoints, currentIndex));
+            }
+
+            let step = 1 / numOfPts;
+            let bezier = [];
+            let u;
+
+            let tmp1;
+            let tmp2;
+            let tmp3;
+
+            for (let i = 0; i < numOfPts; i += 1) {
+                u = i * step;
+                let sx = 0;
+                let sy = 0;
+                for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
+                    tmp1 = Math.pow(u, currentIndex);
+                    tmp2 = Math.pow(1 - u, drawnNumberOfPoints - currentIndex);
+                    tmp3 = comb[currentIndex] * tmp1 * tmp2;
+                    sx += tmp3 * pts[currentIndex][0];
+                    sy += tmp3 * pts[currentIndex][1];
+                }
+                bezier.push(this.createPoint(sx, sy));
+            }
+            bezier.push(pts[pts.length - 1]);
+            return bezier;
         },
 
         sample: function(pts) {
@@ -119,7 +294,6 @@ define(function() {
             let i = 0;
             let j = 0;
             while (i < pts.length) {
-                // func.getDist
                 
                 while (j < pts.length && this.getDist(pts[i], pts[j]) < SAMPLE_INTERVAL) {
                     j += 1;
@@ -135,35 +309,16 @@ define(function() {
             return sampled;
         },
 
-        isOverSymbol: function(pt, symbol) {
-            if (symbol == undefined) {
-                return false;
-            }
-            let left = symbol.x - 5;
-            let right = symbol.x + 5;
-            let top = symbol.y - 5;
-            let bottom = symbol.y + 20 + 5;
-            return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
-        },
-
-        overItem: function(curves, e, freeSymbols, MOUSE_DETECT_RADIUS, found) {
+        overItem: function(curves, e, MOUSE_DETECT_RADIUS, found) {
             let mousePosition = this.getMousePt(e);
             let loop = function(knots) {
                 for (let j = 0; j < knots.length; j++) {
                     let knot = knots[j];
                     if (this.getDist(mousePosition, knot) < MOUSE_DETECT_RADIUS) {
                         found = "overKnot";
-                    } else if (knot.symbol != undefined && this.isOverSymbol(mousePosition, knot.symbol)) {
-                        found = "overAttachedSymbol";
-                    }
+                    } 
                 }
             }.bind(this);
-
-            for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
-                if (this.isOverSymbol(mousePosition, freeSymbols[i])) {
-                    found = "overFreeSymbol";
-                }
-            }
 
             for (let j = 0; j < curves.length; j++) { // detects if mouse is over curve
                 for (let k = 0; k < curves[j].pts.length; k++) {
@@ -189,27 +344,28 @@ define(function() {
             return found;
         },
 
-        findEndPts: function(pts) {
+        findEndPts: function(pts) { 
             if (pts.length == 0) return [];
 
             let ends = [];
 
-            ends.push(this.createPoint(pts[0].x, pts[0].y, pts[0].ind));
-            ends.push(this.createPoint(pts[pts.length - 2].x, pts[pts.length - 2].y, pts[pts.length - 2].ind));
+            ends.push(this.createPoint(pts[0][0], pts[0][1]));
+            ends.push(this.createPoint(pts[pts.length - 1][0], pts[pts.length - 1][1]));
 
+            // 200 acceptable for showing a curve is no longer just one line
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i-1].x - pts[i].x > 200) {
-                    ends.push(this.createPoint(pts[i-1].x, pts[i-1].y, pts[i-1].ind));
-                    ends.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                if (pts[i-1][0] - pts[i][0] > 200) {
+                    ends.push(this.createPoint(pts[i-1][0], pts[i-1][1]));
+                    ends.push(this.createPoint(pts[i][0], pts[i][1]));
                     continue;
                 }
             }
 
             if (ends.length == 2) {
                 for (let i = pts.length - 2; i > 1; i--) {
-                    if (pts[i+1].x - pts[i].x > 200) {
-                        ends.push(this.createPoint(pts[i+1].x, pts[i+1].y, pts[i+1].ind));
-                        ends.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                    if (pts[i+1][0] - pts[i][0] > 200) {
+                        ends.push(this.createPoint(pts[i+1][0], pts[i+1][1]));
+                        ends.push(this.createPoint(pts[i][0], pts[i][1]));
                         continue;
                     }
                 }
@@ -223,18 +379,18 @@ define(function() {
 
             let intercepts = [];
 
-            if (pts[0].y == canvasHeight/2) intercepts.push(pts[0]);
+            if (pts[0][1] == canvasHeight/2) intercepts.push(pts[0]);
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i].y == canvasHeight/2) {
-                    intercepts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                if (pts[i][1] == canvasHeight/2) {
+                    intercepts.push(this.createPoint(pts[i][0], pts[i][1]));
                     continue;
                 }
 
-                if ((pts[i-1].y - canvasHeight/2) * (pts[i].y - canvasHeight/2) < 0 && (pts[i-1].y - pts[i].y < Math.abs(200))) {
-                    let dx = pts[i].x - pts[i-1].x;
-                    let dy = pts[i].y - pts[i-1].y;
+                if ((pts[i-1][1] - canvasHeight/2) * (pts[i][1] - canvasHeight/2) < 0 && (pts[i-1][1] - pts[i][1] < Math.abs(200))) {
+                    let dx = pts[i][0] - pts[i-1][0];
+                    let dy = pts[i][1] - pts[i-1][1];
                     let grad = dy/dx;
-                    let esti = pts[i-1].x + (1 / grad) * (canvasHeight/2 - pts[i-1].y);
+                    let esti = pts[i-1][0] + (1 / grad) * (canvasHeight/2 - pts[i-1][1]);
                     intercepts.push(this.createPoint(esti, canvasHeight/2));
                 }
             }
@@ -247,18 +403,18 @@ define(function() {
 
             let intercepts = [];
 
-            if (pts[0].x == canvasWidth/2) intercepts.push(pts[0]);
+            if (pts[0][0] == canvasWidth/2) intercepts.push(pts[0]);
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i].x == canvasWidth/2) {
-                    intercepts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                if (pts[i][0] == canvasWidth/2) {
+                    intercepts.push(this.createPoint(pts[i][0], pts[i][1]));
                     continue;
                 }
 
-                if ((pts[i-1].x - canvasWidth/2) * (pts[i].x - canvasWidth/2) < 0 && (pts[i-1].x - pts[i].x < Math.abs(200))) {
-                    let dx = pts[i].x - pts[i-1].x;
-                    let dy = pts[i].y - pts[i-1].y;
+                if ((pts[i-1][0] - canvasWidth/2) * (pts[i][0] - canvasWidth/2) < 0 && (pts[i-1][0] - pts[i][0] < Math.abs(200))) {
+                    let dx = pts[i][0] - pts[i-1][0];
+                    let dy = pts[i][1] - pts[i-1][1];
                     let grad = dy/dx;
-                    let esti = pts[i-1].y + grad * (canvasWidth/2 - pts[i-1].x);
+                    let esti = pts[i-1][1] + grad * (canvasWidth/2 - pts[i-1][0]);
                     intercepts.push(this.createPoint(canvasWidth/2, esti));
                 }
             }
@@ -271,60 +427,82 @@ define(function() {
               return [];
             }
 
-            let grad = [];
-            for (let i = 0; i < pts.length - 1; i++) {
-                let dx = pts[i+1].x - pts[i].x;
-                let dy = pts[i+1].y - pts[i].y;
-                grad.push(dy/dx);
-            }
-
             let turnPts = [];
+            let potentialPts = [];
+            let statPts = [];
+            let pot_max = [];
+            let pot_min = [];
+            let CUTOFF = 10;
 
-            for (let i = 1; i < grad.length; i++) {
-                if (!isNaN(grad[i-1]) && !isNaN(grad[i])) {
-                    if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
-
-                        let limit = 0.01;
-
-                        let l = i - 2;
-                        while (l >= 0 && Math.abs(grad[l]) < limit && Math.abs(grad[l]) > Math.abs(grad[l+1]) && grad[l] * grad[l+1] >= 0) {
-                            l--;
-                        }
-                        if (!(Math.abs(grad[l]) >= limit)) {
-                            continue;
-                        }
-
-                        let r = i + 1;
-                        while (r < grad.length && Math.abs(grad[r]) < limit && Math.abs(grad[r]) > Math.abs(grad[r-1]) && grad[r] * grad[r-1] >= 0) {
-                            r++;
-                        }
-                        if (!(Math.abs(grad[r]) >= limit)) {
-                            continue;
-                        }
-
-                        let acc1 = grad[l];
-                        let acc2 = grad[r];
-
-                        if (mode == 'maxima') {
-                            if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
-                                turnPts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                            } 
-                        } else {
-                            if ((pts[i].x > pts[i-1].x && acc1 > 0 && acc2 < 0) || (pts[i].x < pts[i-1].x && acc1 < 0 && acc2 > 0)) {
-                                turnPts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                            } 
-                        }
-
-
-                    }
+            for (let i = CUTOFF; i < pts.length-CUTOFF; i++) {
+                if ((pts[i][1] < pts[i-1][1] && pts[i][1] < pts[i+1][1]) || (pts[i][1] > pts[i-1][1] && pts[i][1] > pts[i+1][1]) || (pts[i][1] == pts[i-1][1])) {
+                    potentialPts.push(this.createPoint(pts[i][0], pts[i][1]));
                 }
             }
 
+            let stationaryArrays = Object.create(null);
+
+            // loop over turn pts and put them in arrays by same y value
+            potentialPts.forEach(function(pt) {
+                let stationaryArray = stationaryArrays[pt[1]];
+                if (!stationaryArray) {
+                    stationaryArray = stationaryArrays[pt[1]] = [];
+                }
+                stationaryArray.push(pt);
+            });
+
+            Object.keys(stationaryArrays).forEach(function(key) {
+                let middle = stationaryArrays[key][Math.floor(stationaryArrays[key].length / 2)];
+                statPts.push(middle);
+            });
+
+            let position = null
+
+            for (let i = 0; i < statPts.length; i++) { 
+                for (let j = 0; j < pts.length; j++) {
+                    if (statPts[i][0] == pts[j][0]) {
+                        position = j;
+                    }
+                }
+                if (statPts[i][1] < pts[position-5][1] && statPts[i][1] < pts[position+5][1]) {
+                    pot_max.push(statPts[i]);
+                } else if (statPts[i][1] > pts[position-5][1] && statPts[i][1] > pts[position+5][1]) {
+                    pot_min.push(statPts[i]);
+                }
+            }
+
+            let true_max = this.duplicateStationaryPts(pot_max, mode);
+            let true_min = this.duplicateStationaryPts(pot_min, mode);
+
+            mode == 'maxima' ? turnPts = true_max : turnPts = true_min;  
+            turnPts.sort(function(a, b){return a[0] - b[0]});
+            
             return turnPts;
         },
 
+        duplicateStationaryPts: function(pts, mode) {
+            let non_duplicates = []
+            for (let i = 0; i < pts.length; i++) {
+                let similar_ind = [pts[i]]
+                for (let j = 0; j < pts.length; j++) {
+                    if ((pts[j][0] !== pts[i][0]) && ((pts[j][0] < pts[i][0] + 5) && (pts[j][0] > pts[i][0] - 5))) {
+                        similar_ind.push(pts[j]);
+                    }
+                }
+                if (mode == 'maxima') {
+                    similar_ind.sort(function(a, b){return a[1] - b[1]})
+                } else {
+                    similar_ind.sort(function(a, b){return b[1] - a[1]})
+                }
+                if (non_duplicates.indexOf(similar_ind[0]) === -1) {
+                    non_duplicates.push(similar_ind[0])
+                }
+            }
+            return non_duplicates;
+        },
+
         // given a curve, translate the curve
-        translateCurve: function(curve, dx, dy, canvasProperties, freeSymbols) {
+        translateCurve: function(curve, dx, dy, canvasProperties) {
             let pts = curve.pts;
 
             curve.minX += dx;
@@ -333,29 +511,16 @@ define(function() {
             curve.maxY += dy;
 
             for (let i = 0; i < pts.length; i++) {
-                pts[i].x += dx;
-                pts[i].y += dy;
+                pts[i][0] += dx;
+                pts[i][1] += dy;
             }
 
             function moveTurnPts(knots) {
                 for (let i = 0; i < knots.length; i++) {
                     let knot = knots[i];
 
-                    knot.x += dx;
-                    knot.y += dy;
-
-                    if (knot.symbol != undefined) {
-                        knot.symbol.x += dx;
-                        knot.symbol.y += dy;
-                    }
-
-                    if (knot.xSymbol != undefined) {
-                        knot.xSymbol.x = knot.x;
-                    }
-
-                    if (knot.ySymbol != undefined) {
-                        knot.ySymbol.y = knot.y;
-                    }
+                    knot[0] += dx;
+                    knot[1] += dy;
                 }
             }
 
@@ -383,12 +548,10 @@ define(function() {
                         }
 
                         if (found) {
-                            symbol.x = knot.x;
+                            symbol.x = knot[0];
                             symbol.y = knot.y;
                             knot.symbol = symbol;
-                        } else {
-                            freeSymbols.push(symbol);
-                        }
+                        } 
                     }
                 }
                 return newInter;
@@ -415,19 +578,20 @@ define(function() {
             let tempMin = undefined;
             let tempMax = undefined;
             let turningPoints = isMaxima ? selectedCurve.maxima : selectedCurve.minima;
-
             for (let i = 0; i < importantPoints.length; i++) {
-                if (importantPoints[i].ind == turningPoints[selectedPointIndex].ind) {
+                if (importantPoints[i] == undefined || turningPoints[selectedPointIndex] == undefined) {
+                    break;
+                }
+                if (importantPoints[i][0] == turningPoints[selectedPointIndex][0]) {
                     tempMin = importantPoints[i - 1]; 
                     tempMax = importantPoints[i + 1];
                 }
             }
-
-            let xBuffer = 30;
-            let yBuffer = 15;
-            let withinXBoundary = (mousePosition.x - tempMax.x) < -xBuffer && (mousePosition.x - tempMin.x) > xBuffer;
-            let withinYBoundary = (isMaxima && ((mousePosition.y - tempMax.y) < -yBuffer && (mousePosition.y - tempMin.y) < -yBuffer)) || (!isMaxima && ((mousePosition.y - tempMax.y) > yBuffer && (mousePosition.y - tempMin.y) > yBuffer));
-            let movementWithinBoundary = withinXBoundary && withinYBoundary;
+            let XBUFFER = 30;
+            let YBUFFER = 15;
+            let withinXBoundary = (mousePosition[0] - tempMax[0]) < -XBUFFER && (mousePosition[0] - tempMin[0]) > XBUFFER;
+            let withinYBoundary = (isMaxima && ((mousePosition[1] - tempMax[1]) < -YBUFFER && (mousePosition[1] - tempMin[1]) < -YBUFFER)) || (!isMaxima && ((mousePosition[1] - tempMax[1]) > YBUFFER && (mousePosition[1] - tempMin[1]) > YBUFFER));
+            let movementWithinBoundary = (withinXBoundary && withinYBoundary);
             if (movementWithinBoundary) {
                 // to this point we get the clicked knot and the turning/end points either side, now we will split the curve into the two
                 // origional max/min sides and the 2 new curves to be stretched, then combine them all after.
@@ -436,45 +600,45 @@ define(function() {
                 let leftStretchedCurve = {pts: []};
                 let rightStretchedCurve = {pts: []};
                 for (let t = selectedCurve.pts.length-1; t > -1; t--) {
-                    if (selectedCurve.pts[t].ind > tempMax.ind) {
+                    if (selectedCurve.pts[t][0] > tempMax[0]) {
                         rightStaticPoints.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
-                    } else if (selectedCurve.pts[t].ind <= tempMax.ind && selectedCurve.pts[t].ind >= turningPoints[selectedPointIndex].ind) {
+                    } else if (selectedCurve.pts[t][0] <= tempMax[0] && selectedCurve.pts[t][0] >= turningPoints[selectedPointIndex][0]) {
                         rightStretchedCurve.pts.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
-                    } else if (selectedCurve.pts[t].ind <= turningPoints[selectedPointIndex].ind && selectedCurve.pts[t].ind >= tempMin.ind) {
+                    } else if (selectedCurve.pts[t][0] <= turningPoints[selectedPointIndex][0] && selectedCurve.pts[t][0] >= tempMin[0]) {
                         leftStretchedCurve.pts.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
-                    } else if (selectedCurve.pts[t].ind < tempMin.ind) {
+                    } else if (selectedCurve.pts[t][0] < tempMin[0]) {
                         leftStaticPoints.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
                     } else {
-                        selectedCurve.pts.pop(selectedCurve.pts[t]); // TODO why does one point have an undefined index?
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
                     }
                 }
 
-                leftStaticPoints.sort(function(a, b){return a.ind - b.ind});
-                rightStaticPoints.sort(function(a, b){return a.ind - b.ind});
-                leftStretchedCurve.pts.sort(function(a, b){return a.ind - b.ind});
-                rightStretchedCurve.pts.sort(function(a, b){return a.ind - b.ind});
+                leftStaticPoints.sort(function(a, b){return a[0] - b[0]});
+                rightStaticPoints.sort(function(a, b){return a[0] - b[0]});
+                leftStretchedCurve.pts.sort(function(a, b){return a[0] - b[0]});
+                rightStretchedCurve.pts.sort(function(a, b){return a[0] - b[0]});
 
                 // we have now split the curve into leftStaticPoints and rightStaticPoints, plus leftStretchedCurve and rightStretchedCurve
-                let lorx = turningPoints[selectedPointIndex].x - tempMin.x;
-                let lory = turningPoints[selectedPointIndex].y - tempMin.y;
-                let rorx = tempMax.x - turningPoints[selectedPointIndex].x;
-                let rory = turningPoints[selectedPointIndex].y - tempMax.y;
-                let dx = mousePosition.x - prevMousePt.x;
-                let dy = mousePosition.y - prevMousePt.y;
-                turningPoints[selectedPointIndex].x += dx;
-                turningPoints[selectedPointIndex].y += dy;
+                let lorx = turningPoints[selectedPointIndex][0] - tempMin[0];
+                let lory = turningPoints[selectedPointIndex][1] - tempMin[1];
+                let rorx = tempMax[0] - turningPoints[selectedPointIndex][0];
+                let rory = turningPoints[selectedPointIndex][1] - tempMax[1];
+                let dx = mousePosition[0] - prevMousePt[0];
+                let dy = mousePosition[1] - prevMousePt[1];
+                turningPoints[selectedPointIndex][0] += dx;
+                turningPoints[selectedPointIndex][1] += dy;
 
-                let lnrx = turningPoints[selectedPointIndex].x - tempMin.x;
-                let lnry = turningPoints[selectedPointIndex].y - tempMin.y;
-                let rnrx = tempMax.x - turningPoints[selectedPointIndex].x;
-                let rnry = turningPoints[selectedPointIndex].y - tempMax.y;
+                let lnrx = turningPoints[selectedPointIndex][0] - tempMin[0];
+                let lnry = turningPoints[selectedPointIndex][1] - tempMin[1];
+                let rnrx = tempMax[0] - turningPoints[selectedPointIndex][0];
+                let rnry = turningPoints[selectedPointIndex][1] - tempMax[1];
 
-                this.stretchCurve(leftStretchedCurve, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y, canvasProperties);    
-                this.stretchCurve(rightStretchedCurve, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y, canvasProperties);
+                this.stretchCurve(leftStretchedCurve, lorx, lory, lnrx, lnry, tempMin[0], tempMin[1], canvasProperties);    
+                this.stretchCurve(rightStretchedCurve, rorx, rory, rnrx, rnry, tempMax[0], tempMax[1], canvasProperties);
                         
                 turningPoints[selectedPointIndex] = mousePosition;
 
@@ -487,30 +651,31 @@ define(function() {
                 selectedCurve.interY = this.findInterceptY(canvasProperties.width, selectedCurve.pts);
                 selectedCurve.maxima = this.findTurnPts(selectedCurve.pts, 'maxima');
                 selectedCurve.minima = this.findTurnPts(selectedCurve.pts, 'minima');
-                let minX = selectedCurve.pts[0].x;
-                let maxX = selectedCurve.pts[0].x;
-                let minY = selectedCurve.pts[0].y;
-                let maxY = selectedCurve.pts[0].y;
-                for (let k = 1; k < selectedCurve.pts.length; k++) { // TODO BH search through 'important' points instead
-                    minX = Math.min(selectedCurve.pts[k].x, minX);
-                    maxX = Math.max(selectedCurve.pts[k].x, maxX);
-                    minY = Math.min(selectedCurve.pts[k].y, minY);
-                    maxY = Math.max(selectedCurve.pts[k].y, maxY);
+                let minX = selectedCurve.pts[0][0];
+                let maxX = selectedCurve.pts[0][0];
+                let minY = selectedCurve.pts[0][1];
+                let maxY = selectedCurve.pts[0][1];
+                for (let k = 1; k < selectedCurve.pts.length; k++) {
+                    minX = Math.min(selectedCurve.pts[k][0], minX);
+                    maxX = Math.max(selectedCurve.pts[k][0], maxX);
+                    minY = Math.min(selectedCurve.pts[k][1], minY);
+                    maxY = Math.max(selectedCurve.pts[k][1], maxY);
                 }
                 selectedCurve.minX = minX;
                 selectedCurve.maxX = maxX;
                 selectedCurve.minY = minY;
                 selectedCurve.maxY = maxY;
             }
+            return selectedCurve;
         },
 
         stretchCurve: function(c, orx, ory, nrx, nry, baseX, baseY, canvasProperties) {
 
             function stretch(pt) {
-                let nx = (pt.x - baseX) / orx;
-                let ny = (pt.y - baseY) / ory;
-                pt.x = nx * nrx + baseX;
-                pt.y = ny * nry + baseY;
+                let nx = (pt[0] - baseX) / orx;
+                let ny = (pt[1] - baseY) / ory;
+                pt[0] = nx * nrx + baseX;
+                pt[1] = ny * nry + baseY;
             }
 
             let pts = c.pts;
@@ -526,18 +691,6 @@ define(function() {
                         let knot = knots[j];
 
                         stretch(knot);
-
-                        if (knot.symbol != undefined) {
-                            stretch(knot.symbol);
-                        }
-
-                        if (knot.xSymbol != undefined) {
-                            stretch(knot.xSymbol);
-                        }
-
-                        if (knot.ySymbol != undefined) {
-                            stretch(knot.ySymbol);
-                        }
                     }
                 }
             }
@@ -568,11 +721,9 @@ define(function() {
                             }
 
                             if (found) {
-                                symbol.x = knot.x;
-                                symbol.y = knot.y;
+                                symbol.x = knot[0];
+                                symbol.y = knot[1];
                                 knot.symbol = symbol;
-                            } else {
-                                freeSymbols.push(symbol);// TODO MT not defined
                             }
                         }
                     }
