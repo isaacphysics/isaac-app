@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, subject, editorURL) {
+export const PageController = ['$scope', 'page', 'tags', '$rootScope', '$location', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, $location, subject, editorURL) {
 	$scope.doc = page;
 	$scope.page = page;
 	$rootScope.pageTitle = page.title;
 	$rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
     $scope.contentEditorURL = editorURL + page.canonicalSourceFile;
-    $scope.staging2URL = window.location.href.replace(window.location.origin, 'https://staging-2.isaacphysics.org');
+    $scope.staging2URL = 'https://staging-2.isaacphysics.org' + $location.url();
 }];
