@@ -1,5 +1,5 @@
 define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, templateUrl) {
-    return ['$rootScope', '$stateParams', 'persistence', 'api', function($rootScope, $stateParams, persistence, api) {
+    return ['$rootScope', '$stateParams', '$location', 'persistence', 'api', function($rootScope, $stateParams, $location, persistence, api) {
         return {
             restrict: 'A',
 
@@ -97,7 +97,13 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                 let hexagonQuarterHeight = hexagonUnitLength / Math.sqrt(3);
                 scope.currentlyWorkingOn = getCurrentlyWorkingOn();
                 if (scope.currentlyWorkingOn.isConcept) {
-                    scope.conceptQuestions = api.fastTrack.concepts({gameboardId: $stateParams.board, concept: scope.currentlyWorkingOn.title});
+                    let history = $location.search().questionHistory.split(',');
+                    let uppers = history.filter(e => /upper/i.test(e));
+                    if (uppers.length > 0) {
+                        scope.conceptQuestions = api.fastTrack.concepts({gameboardId: $stateParams.board, upperQuestionId: uppers[uppers.length-1], conceptTitle: scope.currentlyWorkingOn.title});
+                    } else {
+                        scope.conceptQuestions = api.fastTrack.concepts({gameboardId: $stateParams.board, conceptTitle: scope.currentlyWorkingOn.title});
+                    }
                 } else {
                     scope.conceptQuestions =  {$promise: Promise.resolve(null)};
                 }
@@ -216,7 +222,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                         progress.questions.topTen.push(question);
                     }
 
-                    // Evalueate concept question progress
+                    // Evaluate concept question progress
                     if (currentlyWorkingOn.isConcept) {
                         let upperAndLowerConceptQuestions = new Map([['upper', conceptQuestions.upperLevelQuestions], ['lower', conceptQuestions.lowerLevelQuestions]]);
                         for (let [conceptQuestionType, conceptQuestionsOfType] of upperAndLowerConceptQuestions) {

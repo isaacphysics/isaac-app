@@ -60,9 +60,14 @@ define([], function() {
         this.fastTrack = $resource("", {}, {
             concepts: {
                 method: 'GET',
-                url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:conceptTitle&upper_question_id=:upperQuestionId",
                 isArray: true,
             },
+            // conceptsWithUpper: {
+            //     method: 'GET',
+            //     url: urlPrefix + "/fasttrack/:gameboardId/concepts_with_upper?upper=:upper&conceptTitle=:conceptTitle",
+            //     isArray: true,
+            // },
         });
 
         this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
