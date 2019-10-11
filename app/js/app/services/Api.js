@@ -343,8 +343,8 @@ define([], function() {
         this.eventMapData = $resource(urlPrefix + "/events/map_data?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
         this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
-            'getAllBookings' : {
-                url: urlPrefix + "/events/bookings",
+            'getCountForAllBookings' : {
+                url: urlPrefix + "/events/bookings/count",
                 method: 'GET', 
             },
             'getBookings' : {
