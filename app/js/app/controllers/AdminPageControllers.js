@@ -77,9 +77,7 @@ export const AdminStatsSummaryController = ["$scope", "api", function($scope, ap
 
         $scope.setLoading(false)
     });
-    api.eventBookings.getAllBookings({
-        "count_only": true
-    }).$promise.then(function(result) {
+    api.eventBookings.getCountForAllBookings().$promise.then(function(result) {
         $scope.eventBookingsCount = result.count;
     })
 }];
