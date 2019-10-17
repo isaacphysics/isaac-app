@@ -332,7 +332,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             } else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
                 $scope.errorMessage = "Name field missing or invalid.";
             // bad email address given
-            } else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
+            } else if ($scope.account.email.$invalid) {
                 $scope.errorMessage = "Email address missing or invalid.";
             } else if ($scope.user.dateOfBirth && !$scope.confirmed_over_thirteen) {
                 if ($scope.user._id) {
@@ -354,6 +354,12 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.$watchCollection("user", function() {
         $scope.updateSuccess = false;
         $scope.updateFail = false;
+        // We use a similar validation regex in the API, and so prevent saving if it would fail there anyway:
+        if ($scope.user.email && !$scope.user.email.match(/.+@.+\.[^.]+$/)) {
+            $scope.account.email.$setValidity('emailValid', false);
+        } else {
+            $scope.account.email.$setValidity('emailValid', true);
+        }
     })
 
     $scope.cancelOnDestroyEvent = $scope.$on("$destroy", function() { // This returns an unsubscribe function to cancel the handler.
