@@ -271,13 +271,14 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         let confirmedThirteen = $scope.confirmed_over_thirteen || (!$scope.user.dateOfBirth && $scope.user._id); // If there is a user ID, they have already registered and confirmed their age!
         if (formValid && passwordsValidated && confirmedThirteen) {
             //TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
-            let userSettings = {
-                registeredUser : $scope.user,
-                userPreferences : {
+            let currentUserPreferences = {
                     EMAIL_PREFERENCE : $scope.emailPreferences,
                     SUBJECT_INTEREST : $scope.subjectInterests,
                     BETA_FEATURE: $scope.betaFeatures
-                }
+            };
+            let userSettings = {
+                registeredUser : $scope.user,
+                userPreferences : $scope.editingSelf ? currentUserPreferences : {}
             }
 
             // add the current password if it's confirmed, and put new password in user object
