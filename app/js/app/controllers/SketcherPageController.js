@@ -17,7 +17,10 @@
 export const PageController = ['$scope', '$rootScope', '$stateParams', 'api', function($scope, _$rootScope, _$stateParams, api) {
     $scope.mode = "sketcher";
     $scope.$watch("graphState", function(s) {
-        if (s == null) return;
+        if (s == null) {
+            $scope.graphState = {};
+            return;
+        }
         try {
             let curves = s;
             $scope.curveState = {
