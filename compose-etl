@@ -32,6 +32,8 @@ services:
   phy-etl:
     container_name: $ETL_NAME
     image: docker.isaacscience.org/isaac-api:$API_VERSION
+    environment:
+      - SEGUE_CONFIG_LOCATION=/local/data/conf/segue-config.properties
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/phy/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro

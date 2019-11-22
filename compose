@@ -81,6 +81,8 @@ services:
       - phy-pg-$ENV:postgres
     external_links:
       - phy-elasticsearch-live:elasticsearch
+    environment:
+      - SEGUE_CONFIG_LOCATION=/local/data/conf/segue-config.properties
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/phy/segue-config.$ENV.properties:/local/data/conf/segue-config.properties:ro
