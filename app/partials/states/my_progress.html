@@ -56,12 +56,12 @@
                                     fill="none"></circle>
                         </svg>
                         <div class="streak-value-progress">
-                            {{ progress.userSnapshot.streakRecord.currentStreak || 0 }}
+                            {{ progress.userSnapshot.dailyStreakRecord.currentStreak || 0 }}
                         </div>
                     </div>
                     <div style="text-align: center;">
-                        Longest streak: {{ progress.userSnapshot.streakRecord.largestStreak || 0 }}
-                        day<span ng-if="progress.userSnapshot.streakRecord.largestStreak != 1">s</span>
+                        Longest streak: {{ progress.userSnapshot.dailyStreakRecord.largestStreak || 0 }}
+                        day<span ng-if="progress.userSnapshot.dailyStreakRecord.largestStreak != 1">s</span>
                         <span
                             style="cursor: pointer;"
                             data-ot-escape-content="false"
