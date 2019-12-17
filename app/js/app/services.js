@@ -83,5 +83,5 @@
 
 	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacSymbolicLogicQuestion", "isaacAnvilQuestion"])
 
-	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017', 'ft_core_stage2'])
+	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017', 'ft_core_2018', 'ft_core_stage2'])
 });
