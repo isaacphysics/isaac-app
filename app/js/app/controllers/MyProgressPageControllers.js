@@ -88,15 +88,15 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
         }
 
         // --- STREAK PROGRESS --- //
-        if ($scope.progress.userSnapshot.streakRecord) {
+        if ($scope.progress.userSnapshot.dailyStreakRecord) {
             let currentProgressValue = $('#current-streak-progress-bar');
             let radius = 40;
             let circumference = 2 * Math.PI * radius;
             let currentDashOffset = circumference;
 
-            if ($scope.progress.userSnapshot.streakRecord.currentActivity <= 3) {
-                currentDashOffset = circumference * (1 - ($scope.progress.userSnapshot.streakRecord.currentActivity/3));
-            } else if ($scope.progress.userSnapshot.streakRecord.currentActivity > 3) {
+            if ($scope.progress.userSnapshot.dailyStreakRecord.currentActivity <= 3) {
+                currentDashOffset = circumference * (1 - ($scope.progress.userSnapshot.dailyStreakRecord.currentActivity/3));
+            } else if ($scope.progress.userSnapshot.dailyStreakRecord.currentActivity > 3) {
                 currentDashOffset = 0;
             }
 
