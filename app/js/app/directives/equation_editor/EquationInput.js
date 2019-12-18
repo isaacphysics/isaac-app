@@ -24,7 +24,7 @@ define(["inequality",
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
-                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).sort().join(", ");
+                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(/;/g, ',')}).sort().join(", ");
                     } catch (err) {
                         // Do not let invalid availableSymbols prevent anyone from answering the question!
                         scope.symbolList = null;
