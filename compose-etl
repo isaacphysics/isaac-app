@@ -31,7 +31,7 @@ version: '2'
 services:
   phy-etl:
     container_name: $ETL_NAME
-    image: docker.isaacscience.org/isaac-api:$API_VERSION
+    image: docker.isaacscience.org/isaac-etl:$API_VERSION
     environment:
       - SEGUE_CONFIG_LOCATION=/local/data/conf/segue-config.properties
       - JAVA_OPTIONS=-Dlog.path=/isaac-logs -Dsegue.version=$API_VERSION -Djetty.port=8090
