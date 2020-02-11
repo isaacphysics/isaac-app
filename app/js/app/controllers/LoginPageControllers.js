@@ -29,4 +29,9 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 			$state.go('home');
 		}
 	});
+
+	$scope.submitForm = function(provider) {
+		let target = $location.search().target;
+		auth.loginRedirect(provider, target);
+	}
 }];

@@ -5,3 +5,35 @@
 	<div class='small-16 columns' ng-include="'/partials/login.html'">
 	</div>
 </div>
+
+<!-- Twitter Login Modal -->
+<div isaac-modal="twitterLogin">
+  <div class="reveal-modal-head">
+    <h2>Twitter Log In</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <div class="row text-center">
+    	<form ng-submit="submitForm('twitter')">
+	        <p>Sign on with Facebook and Twitter will be <b>removed on the 23rd March</b>. To continue to log in to your account after this date you will need to ensure a valid email address is associated with your account, and add a password on the My Account page.</p>
+	        <button>Log in</button>
+	    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Facebook Login Modal -->
+<div isaac-modal="facebookLogin">
+  <div class="reveal-modal-head">
+    <h2>Facebook Log In</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <div class="row text-center">
+    	<form ng-submit="submitForm('facebook')">
+	        <p>Sign on with Facebook and Twitter will be <b>removed on the 23rd March</b>. To continue to log in to your account after this date you will need to ensure a valid email address is associated with your account, and add a password on the My Account page.</p>
+	        <button>Log in</button>
+	    </form>
+    </div>
+  </div>
+</div>
