@@ -203,6 +203,9 @@ define([], function() {
 			}, {
 				id: "series",
 				parent: "algebra"
+			}, {
+				id: "complex_numbers",
+				parent: "algebra"
 			},
 			
 			// Functions topics
