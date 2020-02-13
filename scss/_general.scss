@@ -285,7 +285,6 @@ body
 .hexagon-offset-even {
     @media #{$large-up} {
         margin-top: -72px !important;
-        left: 4px;
     } 
     @media #{$medium-only} {
         margin-top: -15px;
