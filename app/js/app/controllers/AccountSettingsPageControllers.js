@@ -213,6 +213,16 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     }
     
     $scope.addLinkedAccount = function(provider) {
+        if (provider == "TWITTER") {
+            $scope.modals.twitterLogin.show();
+        } else if (provider == "FACEBOOK") {
+            $scope.modals.facebookLogin.show();
+        } else {
+            auth.linkRedirect(provider);
+        }
+    }
+
+    $scope.addDeprecatedProvider = function(provider) {
         auth.linkRedirect(provider);
     }
 
