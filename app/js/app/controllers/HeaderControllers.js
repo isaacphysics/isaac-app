@@ -18,6 +18,10 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout'
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
     $scope.showImportantAnnouncement = !persistence.load('importantAnnouncementDismissed');
+    $rootScope.showCoronavirusBanner = $location.path() === '/';
+    $rootScope.$on('$locationChangeSuccess', function() {
+        $rootScope.showCoronavirusBanner = $location.path() === '/';
+    })
 
     //Find out which version we're on
     api.environment.get().$promise.then(function(response){
