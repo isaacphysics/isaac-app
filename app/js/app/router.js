@@ -196,6 +196,9 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             $sp.state('gcse', staticPageState("/gcse", "gcse"));
             $sp.state('alevel', staticPageState("/alevel", "alevel"));
 
+            // There is a curse. They say: May You Live in Interesting Times:
+            $sp.state('coronavirus', genericPageState("/coronavirus", "2020_03_coronavirus"));
+
             // Redirects for old URLs:
             $sp.state('mission', {
                 url: "/mission",
