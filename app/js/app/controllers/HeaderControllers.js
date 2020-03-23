@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', 'persistence', function($rootScope, $scope, _auth, api, _$timeout, persistence) {
+export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location', '$timeout', 'persistence', function($rootScope, $scope, _auth, api, $location, _$timeout, persistence) {
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
     $scope.showImportantAnnouncement = !persistence.load('importantAnnouncementDismissed');
