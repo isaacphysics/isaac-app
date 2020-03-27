@@ -185,7 +185,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     $scope.socialAccounts = function(){
         // object for linked account, nothing linked by default
-        let linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
+        let linked = {"GOOGLE":false};
 
         // loop through linked accounts
         angular.forEach($scope.authenticationSettings.linkedAccounts, function(account){
@@ -193,7 +193,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
                 // If there is a match update to true
                 if (key === account) linked[key] = true;
             });
-            
+
         });
         return linked;
     }
@@ -211,7 +211,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             }
         });
     }
-    
+
     $scope.addLinkedAccount = function(provider) {
         auth.linkRedirect(provider);
     }
@@ -380,7 +380,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             $scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
             return;
         }
-        
+
         // Some users paste the URL in the token box, so remove the token from the end if they do.
         // Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
         $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
@@ -445,7 +445,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             $scope.showToast($scope.toastTypes.Success, "Status Updated", "You have updated your membership status.");
         }).catch(function(e){
             $scope.showToast($scope.toastTypes.Failure, "Status Update Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-        })  
+        })
     }
 
     $scope.revokeAuthorisation = function(userToRevoke){
@@ -455,11 +455,11 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             $scope.modals.revocationConfirmation.hide();
         }).catch(function(e){
             $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-        })              
+        })
     }
 
     $scope.revokeAllAuthorisations = function(){
-        let revoke = $window.confirm('Are you sure you want to revoke all users\' access?');   
+        let revoke = $window.confirm('Are you sure you want to revoke all users\' access?');
 
         if (revoke) {
             api.authorisations.revokeAll().$promise.then(function(){
@@ -467,14 +467,14 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
                 $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked all access to your data.");
             }).catch(function(e){
                 $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-            })              
+            })
         } else {
             return;
         }
     }
 
     $scope.releaseAuthorisation = function(userToRevoke){
-        let revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');   
+        let revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');
 
         if (revoke) {
             api.authorisations.release({id: userToRevoke.id}).$promise.then(function(){
@@ -482,14 +482,14 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
                 $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to your student's data.");
             }).catch(function(e){
                 $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-            })              
+            })
         } else {
             return;
         }
     }
 
     $scope.releaseAllAuthorisations = function(){
-        let revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');   
+        let revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');
 
         if (revoke) {
             api.authorisations.releaseAll().$promise.then(function(){
@@ -497,7 +497,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
                 $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to all of your students' data.");
             }).catch(function(e){
                 $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-            })              
+            })
         } else {
             return;
         }
@@ -507,7 +507,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.convertToTeacherName = function(userObject) {
         if (null == userObject)
             return null;
-        
+
         return (userObject.givenName ? userObject.givenName.charAt(0) + ". " : "") + userObject.familyName;
     }
     // end authorisation stuff
