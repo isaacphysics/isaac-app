@@ -20,6 +20,8 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', 'api', fu
         if (s == null) {
             $scope.graphState = {};
             return;
+        } else if (Object.keys(s).length === 0 && s.constructor === Object) {
+            return;
         }
         try {
             let curves = s;
