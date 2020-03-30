@@ -71,6 +71,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
             $scope.selectedGroup = null;
             $scope.selectedGroupMembers = null;
+            $scope.selectedGroupMemberIDs = null;
             $scope.selectedGroupToken = null;
             $scope.groupJoinURL = null;
         } else {
@@ -79,8 +80,12 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
             $scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
             $scope.selectedGroupAdditionalManagers = $scope.selectedGroup.additionalManagers;
             
-            $scope.selectedGroupMembers.$promise.then(function(){
+            $scope.selectedGroupMembers.$promise.then(function(groupMembers){
                 $timeout(Opentip.findElements, 100);
+                $scope.selectedGroupMemberIDs = [];
+                angular.forEach(groupMembers, function(groupMember) {
+                    $scope.selectedGroupMemberIDs.push(groupMember.id);
+                });
                 $scope.setLoading(false);
             }).catch(function(e) {
                 console.error(e)
@@ -118,7 +123,6 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
                 return;
             }
         }
-
     }
 
     $scope.changeGroupArchiveState = function(archiveState) {

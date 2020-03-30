@@ -9,6 +9,9 @@
                 <span ng-if="selectedGroup && selectedGroup.ownerId != user._id">View </span>
                 Group Managers</a>
             </a>
+            <span ng-if="user.role != 'TEACHER'">&nbsp; or &nbsp;
+                <a ui-sref="adminEmailsWithUserIds({'userIds': selectedGroupMemberIDs})">Email members</a>
+            </span>
         </span>
     </h6>
 
