@@ -57,7 +57,8 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 					api.logger.log(logData);
 				}
 
-				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com") + "?enablejsapi=1&rel=0&fs=1&modestbranding=1&origin=" + window.location.origin);
+				let embedUrl = scope.doc.src.replace('youtu.be/', 'www.youtube.com/watch?v=').replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com");
+				scope.videoSrc = $sce.trustAsResourceUrl(embedUrl + "?enablejsapi=1&rel=0&fs=1&modestbranding=1&origin=" + window.location.origin);
 				YT.ready(function() {
 					setTimeout(function() {
 						new YT.Player(element.find("iframe")[0], {
