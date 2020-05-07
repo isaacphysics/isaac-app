@@ -447,6 +447,24 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             }
         });
 
+        $sp.state('accessibilityStatement', {
+            url: "/pages/accessibility_statement",
+            onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                if (window.location.host == "isaacphysics.org") {
+                    console.log("This page does not apply to this AngularJS site and is unavailable.")
+                    $state.go('404', {
+                        target: "/pages/accessibility_statement"
+                    });
+                    $rootScope.setLoading(false);
+                } else {
+                    $state.go('pages', {
+                        id: "accessibility_statement"
+                    });
+                    $rootScope.setLoading(false);
+                }
+            }],
+        });
+
         $sp.state('pages', {
             url: "/pages/:id",
             resolve: {
