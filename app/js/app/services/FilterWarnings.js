@@ -106,7 +106,7 @@ define([], function() {
             if (contains(topics, "simultaneous") && !(contains(levels, 1) || levels.length == 0))
                 warnings.push(["simultaneous", "There are no Simultaneous Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-            if (contains(topics, "manipulation") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 4) || levels.length == 0))
+            if (contains(topics, "manipulation") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
                 warnings.push(["manipulation", "There are no Algebraic Manipulation questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
             if (contains(topics, "quadratics") && !(contains(levels, 1) || levels.length == 0))
