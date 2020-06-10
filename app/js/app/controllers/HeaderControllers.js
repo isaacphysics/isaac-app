@@ -18,9 +18,24 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
     $scope.showImportantAnnouncement = !persistence.load('importantAnnouncementDismissed');
-    $rootScope.showCoronavirusBanner = $location.path() === '/';
+
+    $rootScope.coronavirusBanner = {};
+    let updateCoronavirusBanner = function() {
+        $rootScope.coronavirusBanner.show = ['/', '/alevel', '/gcse'].indexOf($location.path()) >= 0;
+        if ($location.path() == '/alevel') {
+            $rootScope.coronavirusBanner.text = "A Level ";
+            $rootScope.coronavirusBanner.urlHash = "#alevel";
+        } else if ($location.path() == '/gcse') {
+            $rootScope.coronavirusBanner.text = "GCSE ";
+            $rootScope.coronavirusBanner.urlHash = "#gcse";
+        } else {
+            $rootScope.coronavirusBanner.text = "";
+            $rootScope.coronavirusBanner.urlHash = "";
+        }
+    }
+    updateCoronavirusBanner();
     $rootScope.$on('$locationChangeSuccess', function() {
-        $rootScope.showCoronavirusBanner = $location.path() === '/';
+        updateCoronavirusBanner();
     })
 
     //Find out which version we're on

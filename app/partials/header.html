@@ -147,8 +147,9 @@
         </div>
 
         <div class="header-strip">
-            <div class="alert alert-warning text-center" ng-show="showCoronavirusBanner">
-                See <a class="alert-link" href="/coronavirus">how Isaac Physics can support your teaching and learning</a> during the response to COVID-19.
+            <div class="alert alert-warning text-center" ng-show="coronavirusBanner.show">
+                <div class="alert-title">Virtual {{coronavirusBanner.text}}lessons during the pandemic</div>
+                <span>Isaac Physics can <a class="alert-link" ng-href="/coronavirus{{coronavirusBanner.urlHash}}">support your learning and teaching</a> during COVID-19.</span>
             </div>
             <div class="important-announcement" ng-show="showImportantAnnouncement">
                 <div class="row no-print">
