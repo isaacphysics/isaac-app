@@ -147,9 +147,14 @@
         </div>
 
         <div class="header-strip">
+            <div class="alert alert-danger" role="alert" ng-show="browserIsIE">
+                <div class="text-center alert-inner">
+                    We will drop all support for Internet Explorer by September 2020. You will need to use a modern browser to continue to access our site. <br><a href="/contact?subject=Internet%20Explorer">Contact us if this will cause problems</a>.
+                </div>
+            </div>
             <div class="alert alert-warning text-center" ng-show="coronavirusBanner.show">
                 <div class="alert-title">Virtual {{coronavirusBanner.text}}lessons during the pandemic</div>
-                <span>Isaac Physics can <a class="alert-link" ng-href="/coronavirus{{coronavirusBanner.urlHash}}">support your learning and teaching</a> during COVID-19.</span>
+                <span>Isaac Physics can <a ng-href="/coronavirus{{coronavirusBanner.urlHash}}">support your learning and teaching</a> during COVID-19.</span>
             </div>
             <div class="important-announcement" ng-show="showImportantAnnouncement">
                 <div class="row no-print">

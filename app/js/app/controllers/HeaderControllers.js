@@ -18,6 +18,7 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
     $scope.showImportantAnnouncement = !persistence.load('importantAnnouncementDismissed');
+    $rootScope.browserIsIE = navigator.userAgent.indexOf("MSIE ") >= 0 || !!navigator.userAgent.match(/Trident.*rv:11\./);
 
     $rootScope.coronavirusBanner = {};
     let updateCoronavirusBanner = function() {
