@@ -84,7 +84,9 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
                 $timeout(Opentip.findElements, 100);
                 $scope.selectedGroupMemberIDs = [];
                 angular.forEach(groupMembers, function(groupMember) {
-                    $scope.selectedGroupMemberIDs.push(groupMember.id);
+                    if (groupMember.authorisedFullAccess && groupMember.groupMembershipInformation && groupMember.groupMembershipInformation.status == 'ACTIVE') {
+                        $scope.selectedGroupMemberIDs.push(groupMember.id);
+                    }
                 });
                 $scope.setLoading(false);
             }).catch(function(e) {
