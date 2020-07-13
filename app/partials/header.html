@@ -152,18 +152,18 @@
                     We will drop all support for Internet Explorer by September 2020. You will need to use a modern browser to continue to access our site. <br><a href="/contact?subject=Internet%20Explorer">Contact us if this will cause problems</a>.
                 </div>
             </div>
-            <div class="alert alert-warning text-center" ng-show="coronavirusBanner.show">
-                <div class="alert-title">Virtual {{coronavirusBanner.text}}lessons during the pandemic</div>
-                <span>Isaac Physics can <a ng-href="/coronavirus{{coronavirusBanner.urlHash}}">support your learning and teaching</a> during COVID-19.</span>
-            </div>
             <div class="important-announcement" ng-show="showImportantAnnouncement">
                 <div class="row no-print">
                     <div class="small-16 columns">
-                        <h1><small>Advance notice</small></h1>
-                        <p><big>Please note that Isaac Physics will be unavailable for a few hours on Thursday evening (22<sup>nd</sup> August) due to planned maintenance. Check our <a href="https://twitter.com/isaacphysics" target="_blank">Twitter feed</a> for more information.</big></p>
+                        <h2><small>Advance notice</small></h2>
+                        <p>Please note that Isaac Physics will be unavailable during the morning of 1<sup>st</sup> August due to planned maintenance. Check our <a href="https://twitter.com/isaacphysics" target="_blank">Twitter feed</a> for more information.</p>
                         <button class="dismiss" ng-click="dismissImportantAnnouncement()"></button>
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-warning text-center" ng-show="coronavirusBanner.show">
+                <div class="alert-title">Virtual {{coronavirusBanner.text}}lessons during the pandemic</div>
+                <span>Isaac Physics can <a ng-href="/coronavirus{{coronavirusBanner.urlHash}}">support your learning and teaching</a> during COVID-19.</span>
             </div>
             <div class="row">
                 <div class="small-16 columns inner-strip">
