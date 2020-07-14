@@ -84,7 +84,7 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location
     // I highly sympathise with anyone experiencing distress at the mere
     // thought of the following. Hold tight.
     $scope.shouldShowImportantAnnouncement = function() {
-        const startDate = new Date('2019-08-19T00:00:00Z');
+        const startDate = new Date('2020-07-27T09:00:00Z');
         const endDate = new Date('2020-08-01T09:00:00Z');
         return !persistence.load('importantAnnouncementDismissed') && (startDate <= Date.now() && Date.now() <= endDate);
     }
