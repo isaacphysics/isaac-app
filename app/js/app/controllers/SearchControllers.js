@@ -106,6 +106,8 @@ define(["../services/SearchResults.js"], function(SearchResults) {
                 return "concept";
             } else if (summaryObject.type === questionPage) {
                 return "question";
+            } else if (summaryObject.type === 'page') {
+                return "pages";
             }
         }    
     }]
