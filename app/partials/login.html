@@ -1,15 +1,13 @@
 <form name="form" class="login-wrap" ng-submit="login()" ng-controller="LoginController" novalidate>
     <div class="row">
-        <div class='large-5 medium-5 columns text-center'>
-            <div class="login-social">
-                <h2><span class="ru_green">Log in</span> or <span class="ru_green">sign up</span> with:</h2>
-                <a tabindex="0" ng-click="auth.loginRedirect('google', target)" class="login-social-google">Google</a>
-            </div>
+        <div class='medium-5 columns text-center'>
+            <p class="login-social">
+                Please note that login with Google has been disabled on the old version of the site. You can add a password to your account using the "Forgotten your password?" button.
+            </p>
         </div>
-        <div class='large-2 medium-2 columns text-center login-separator'>
-            <span class="ru_green">or</span>
+        <div class='medium-2 columns text-center login-separator'>
         </div>
-        <div ng-hide="passwordResetFlag" class='large-8 medium-8 medium-offset-1 columns login-form'>
+        <div ng-hide="passwordResetFlag" class='medium-8 medium-offset-1 columns login-form'>
             <p ng-show="errorMessage">
                 <strong class="ru_red">{{errorMessage}}</strong>
             </p>
