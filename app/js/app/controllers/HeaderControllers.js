@@ -22,7 +22,7 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location
 
     $rootScope.coronavirusBanner = {};
     let updateCoronavirusBanner = function() {
-        $rootScope.coronavirusBanner.show = ['/', '/alevel', '/gcse'].indexOf($location.path()) >= 0;
+        $rootScope.coronavirusBanner.show = false;//['/', '/alevel', '/gcse'].indexOf($location.path()) >= 0;
         if ($location.path() == '/alevel') {
             $rootScope.coronavirusBanner.text = "A Level ";
             $rootScope.coronavirusBanner.urlHash = "#alevel";
@@ -84,9 +84,9 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$location
     // I highly sympathise with anyone experiencing distress at the mere
     // thought of the following. Hold tight.
     $scope.shouldShowImportantAnnouncement = function() {
-        const startDate = new Date('2020-07-27T09:00:00Z');
-        const endDate = new Date('2020-08-01T09:00:00Z');
-        return false; // !persistence.load('importantAnnouncementDismissed') && (startDate <= Date.now() && Date.now() <= endDate);
+        const startDate = new Date('2020-01-01T09:00:00Z');
+        const endDate = new Date('2021-01-01T00:00:00Z');
+        return !persistence.load('importantAnnouncementDismissed') && (startDate <= Date.now() && Date.now() <= endDate);
     }
     $rootScope.showImportantAnnouncement = $scope.shouldShowImportantAnnouncement();
 
