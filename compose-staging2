@@ -12,7 +12,7 @@ APP_VERSION=$2
 shift 2
 
 if [ $1 = "create" ] || [ $1 = "exec" ] || [ $1 = "pull" ] || [ $1 = "push" ] || [ $1 = "run" ] || [ $1 = "start" ] || [ $1 = "up" ]; then
-  docker pull docker.isaacscience.org/isaac-phy-app:$APP_VERSION
+  docker pull docker.isaacscience.org/isaac-app:$APP_VERSION
 fi
 
 APP_NAME=phy-app-$ENV-$APP_VERSION
@@ -29,7 +29,7 @@ version: '2'
 services:
   $APP_NAME:
     container_name: $APP_NAME
-    image: docker.isaacscience.org/isaac-phy-app:$APP_VERSION
+    image: docker.isaacscience.org/isaac-app:$APP_VERSION
     restart: unless-stopped
     networks:
       default:
